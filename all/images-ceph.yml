@@ -1,0 +1,7 @@
+---
+##########################
+# project: ceph
+
+ceph_docker_image: osism/ceph-daemon
+ceph_docker_image_tag: "{{ ceph_image_version }}"
+ceph_docker_tag: "{{ ceph_image_version }}}"
