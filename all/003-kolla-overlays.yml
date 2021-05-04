@@ -4,5 +4,5 @@ enable_qinling: "no"
 enable_searchlight: "no"
 
 enable_horizon_karbor: "no"
-enable_horizon_qinqling: "no"
+enable_horizon_qinling: "no"
 enable_horizon_searchlight: "no"
