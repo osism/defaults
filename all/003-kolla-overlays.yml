@@ -1,3 +1,4 @@
 ---
 enable_karbor: "no"
 enable_qinling: "no"
+enable_searchlight: "no"
