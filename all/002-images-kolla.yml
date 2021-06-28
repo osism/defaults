@@ -208,7 +208,7 @@ vmtp_tag: "{{ kolla_image_version }}"
 ##############################
 # role: mariadb
 
-mariadb_image: "{{ docker_registry }}/{{ docker_namespace }}/mariadb"
+mariadb_image: "{{ docker_registry }}/{{ docker_namespace }}/{{ 'mariadb' if kolla_image_version in ['victoria'] else 'mariadb-server'  }}"
 mariadb_tag: "{{ kolla_image_version }}"
 mariadb_clustercheck_image: "{{ docker_registry }}/{{ docker_namespace }}/mariadb-clustercheck"
 mariadb_clustercheck_tag: "{{ mariadb_tag }}"
