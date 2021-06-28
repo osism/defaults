@@ -6,3 +6,6 @@ enable_searchlight: "no"
 enable_horizon_karbor: "no"
 enable_horizon_qinling: "no"
 enable_horizon_searchlight: "no"
+
+ceph_glance_user: glance
+ceph_glance_pool_name: images
