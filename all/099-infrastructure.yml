@@ -16,6 +16,11 @@ cephclient_keyring: "{{ lookup('file', '{{ configuration_directory }}/environmen
 cephclient_keyring_name: client.admin
 
 ##########################
+# openldap
+
+openldap_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
 # openstackclient
 
 openstackclient_configuration_directory: "{{ configuration_directory }}/environments/openstack"
