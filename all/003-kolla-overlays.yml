@@ -3,6 +3,8 @@ enable_karbor: "no"
 enable_qinling: "no"
 enable_searchlight: "no"
 
+enable_prometheus: "yes"
+
 enable_horizon_karbor: "no"
 enable_horizon_qinling: "no"
 enable_horizon_searchlight: "no"
