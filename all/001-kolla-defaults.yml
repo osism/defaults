@@ -94,8 +94,13 @@ database_max_pool_size: 1
 # Docker options
 ####################
 docker_registry_email:
-docker_registry:
-docker_namespace: "kolla"
+
+# NOTE: This value differs from the defaults and is explicitly commented here.
+# docker_registry:
+
+# NOTE: This value differs from the defaults and is explicitly commented here.
+# docker_namespace: "kolla"
+
 docker_registry_username:
 docker_registry_insecure: "{{ 'yes' if docker_registry else 'no' }}"
 docker_runtime_directory: ""
