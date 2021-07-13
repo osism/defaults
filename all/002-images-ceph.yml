@@ -5,3 +5,9 @@
 ceph_docker_image: osism/ceph-daemon
 ceph_docker_image_tag: "{{ ceph_image_version }}"
 ceph_docker_tag: "{{ ceph_image_version }}}"
+
+##############################
+# role: cephclient
+
+cephclient_image: "{{ docker_registry }}/{{ docker_namespace }}/cephclient"
+cephclient_tag: "{{ cephclient_version|default(ceph_image_version) }}"

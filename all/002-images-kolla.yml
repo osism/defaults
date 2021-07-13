@@ -709,3 +709,9 @@ barbican_worker_tag: "{{ barbican_tag }}"
 
 tempest_image: "{{ docker_registry }}/{{ docker_namespace }}/tempest"
 tempest_tag: "{{ kolla_image_version }}"
+
+##############################
+# role: openstackclient
+
+openstackclient_image: "{{ docker_registry }}/{{ docker_namespace }}/openstackclient"
+openstackclient_tag: "{{ openstackclient_version|default(kolla_image_version) }}"
