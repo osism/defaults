@@ -1,0 +1,5 @@
+---
+docker_registry_ansible: quay.io
+docker_registry_cephclient: quay.io
+docker_registry_keycloak: quay.io
+docker_registry_openstackclient: quay.io
