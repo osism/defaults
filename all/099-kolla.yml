@@ -1,22 +1,5 @@
 ---
 ##########################################################
-# NOTE: The Prometheus role deploys the Prometheus
-#       exporter and Prometheus alertmanager/server.
-#
-#       By default we only need the Prometheus exporters
-#       because we use Netdata for the collection and
-#       visualization.
-
-enable_prometheus: "yes"
-enable_prometheus_alertmanager: "no"
-enable_prometheus_server: "no"
-
-# NOTE: The node exporter is not required. Netdata and Zabbix are used for basic
-#       monitoring.
-
-enable_prometheus_node_exporter: "no"
-
-##########################################################
 # NOTE: The Chrony integrated in Kolla is not used. The
 #       osism.chrony role is used.
 
@@ -28,6 +11,7 @@ enable_chrony: "no"
 # infrastructure
 
 enable_central_logging: "yes"
+enable_prometheus: "yes"
 enable_redis: "yes"
 
 # openstack
