@@ -58,3 +58,8 @@ rundeck_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface
 # virtualbmc
 
 virtualbmc_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# nexus
+
+nexus_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
