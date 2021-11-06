@@ -63,3 +63,8 @@ virtualbmc_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interf
 # nexus
 
 nexus_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# boundary
+
+boundary_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
