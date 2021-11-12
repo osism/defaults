@@ -28,3 +28,8 @@ storage_address_family: "{{ network_address_family }}"
 swift_replication_address_family: "{{ swift_storage_address_family }}"
 swift_storage_address_family: "{{ storage_address_family }}"
 tunnel_address_family: "{{ network_address_family }}"
+
+# NOTE: default interfaces as used in OSISM playbooks + roles
+
+console_interface: "{{ internal_interface|default(eth0) }}"
+management_interface: "{{ internal_interface|default(eth0) }}"
