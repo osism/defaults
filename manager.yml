@@ -1,10 +1,10 @@
 ---
-ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-awx_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-flower_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
-vault_host: "{{ hostvars[inventory_hostname]['ansible_' + console_interface]['ipv4']['address'] }}"
+ara_server_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface|default(console_interface)]['ipv4']['address'] }}"
+awx_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface|default(console_interface)]['ipv4']['address'] }}"
+cockpit_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface|default(console_interface)]['ipv4']['address'] }}"
+flower_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface|default(console_interface)]['ipv4']['address'] }}"
+netbox_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface|default(console_interface)]['ipv4']['address'] }}"
+vault_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface|default(console_interface)]['ipv4']['address'] }}"
 
 netbox_url: http://netbox-nginx:8080/
 netbox_token: 11111111-1111-1111-1111-111111111111
