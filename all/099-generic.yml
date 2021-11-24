@@ -21,6 +21,7 @@ docker_registry_cephclient: quay.io
 docker_registry_openstackclient: quay.io
 
 docker_registry_homer: quay.io
+docker_registry_nexus: quay.io
 
 ##########################
 # docker
