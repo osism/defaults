@@ -29,6 +29,7 @@ docker_registry_nexus: quay.io
 
 docker_configure_storage_driver: true
 docker_storage_driver: overlay2
+docker_compose_install_type: package
 
 ##########################
 # debops
