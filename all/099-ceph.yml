@@ -218,7 +218,7 @@ rgw_pool_default_size: 3
 rgw_pool_default_pg_num: 8
 
 rgw_zone: default
-rgw_create_pools_defaults:
+rgw_create_pools:
   "{{ rgw_zone }}.rgw.buckets.data":
     pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
@@ -239,5 +239,3 @@ rgw_create_pools_defaults:
     pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
     type: replicated
-rgw_create_pools_extra: []
-rgw_create_pools: "{{ rgw_create_pools_defaults + rgw_create_pools_extra }}"
