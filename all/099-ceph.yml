@@ -48,13 +48,196 @@ grafana_admin_password:
 ##########################
 # manager
 
-ceph_mgr_modules:
+ceph_mgr_modules_defaults:
   - balancer
   - dashboard
   - prometheus
   - status
+ceph_mgr_modules_extra: []
+ceph_mgr_modules: "{{ ceph_mgr_modules_defaults + ceph_mgr_modules_extra }}"
 
 ##########################
 # rgw
 
 radosgw_frontend_port: 8081
+
+##########################
+# openstack pools
+
+openstack_pool_default_size: 3
+openstack_pool_default_min_size: 0
+openstack_pool_default_pg_num: 64
+
+openstack_cinder_backup_pool:
+  name: "backups"
+  pg_num: "{{ openstack_pool_default_pg_num }}"
+  pgp_num: "{{ openstack_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "rbd"
+  size: "{{ openstack_pool_default_size }}"
+  min_size: "{{ openstack_pool_default_min_size }}"
+  pg_autoscale_mode: false
+
+openstack_cinder_pool:
+  name: "volumes"
+  pg_num: "{{ openstack_pool_default_pg_num }}"
+  pgp_num: "{{ openstack_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "rbd"
+  size: "{{ openstack_pool_default_size }}"
+  min_size: "{{ openstack_pool_default_min_size }}"
+  pg_autoscale_mode: false
+
+openstack_glance_pool:
+  name: "images"
+  pg_num: "{{ openstack_pool_default_pg_num }}"
+  pgp_num: "{{ openstack_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "rbd"
+  size: "{{ openstack_pool_default_size }}"
+  min_size: "{{ openstack_pool_default_min_size }}"
+  pg_autoscale_mode: false
+
+openstack_gnocchi_pool:
+  name: "metrics"
+  pg_num: "{{ openstack_pool_default_pg_num }}"
+  pgp_num: "{{ openstack_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "rbd"
+  size: "{{ openstack_pool_default_size }}"
+  min_size: "{{ openstack_pool_default_min_size }}"
+  pg_autoscale_mode: false
+
+openstack_nova_pool:
+  name: "vms"
+  pg_num: "{{ openstack_pool_default_pg_num }}"
+  pgp_num: "{{ openstack_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "rbd"
+  size: "{{ openstack_pool_default_size }}"
+  min_size: "{{ openstack_pool_default_min_size }}"
+  pg_autoscale_mode: false
+
+openstack_pools_defaults:
+  - "{{ openstack_cinder_backup_pool }}"
+  - "{{ openstack_cinder_pool }}"
+  - "{{ openstack_glance_pool }}"
+  - "{{ openstack_gnocchi_pool }}"
+  - "{{ openstack_nova_pool }}"
+openstack_pools_extra: []
+openstack_pools: "{{ openstack_pools_defaults + openstack_pools_extra }}"
+
+##########################
+# openstack keys
+
+openstack_keys_defaults:
+  - name: client.cinder-backup
+    caps:
+      mon: "profile rbd"
+      osd: "profile rbd pool={{ openstack_cinder_backup_pool.name }}"
+    mode: "0600"
+  - name: client.cinder
+    caps:
+      mon: "profile rbd"
+      osd: "profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_glance_pool.name }}"
+    mode: "0600"
+  - name: client.glance
+    caps:
+      mon: "profile rbd"
+      osd: "profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_glance_pool.name }}"
+    mode: "0600"
+  - name: client.gnocchi
+    caps:
+      mon: "profile rbd"
+      osd: "profile rbd pool={{ openstack_gnocchi_pool.name }}"
+    mode: "0600"
+  - name: client.nova
+    caps:
+      mon: "profile rbd"
+      osd: "profile rbd pool={{ openstack_glance_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_cinder_backup_pool.name }}"
+    mode: "0600"
+openstack_keys_extra: []
+openstack_keys: "{{ openstack_keys_defaults + openstack_keys_extra }}"
+
+##########################
+# cephfs pools
+
+cephfs_pool_default_size: 3
+cephfs_pool_default_min_size: 0
+cephfs_pool_default_pg_num: 16
+
+cephfs_data_pool:
+  name: "cephfs_data"
+  pg_num: "{{ cephfs_pool_default_pg_num }}"
+  pgp_num: "{{ cephfs_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "cephfs"
+  size: "{{ cephfs_pool_default_size }}"
+  min_size: "{{ cephfs_pool_default_min_size }}"
+
+cephfs_metadata_pool:
+  name: "cephfs_metadata"
+  pg_num: "{{ cephfs_pool_default_pg_num }}"
+  pgp_num: "{{ cephfs_pool_default_pg_num }}"
+  rule_name: "replicated_rule"
+  type: 1
+  erasure_profile: ""
+  expected_num_objects: ""
+  application: "cephfs"
+  size: "{{ cephfs_pool_default_size }}"
+  min_size: "{{ cephfs_pool_default_min_size }}"
+
+cephfs_pools_defaults:
+  - "{{ cephfs_data_pool }}"
+  - "{{ cephfs_metadata_pool }}"
+cephfs_pools_extra: []
+cephfs_pools: "{{ cephfs_pools_defaults + cephfs_pools_extra }}"
+
+##########################
+# rgw pools
+
+rgw_pool_default_size: 3
+rgw_pool_default_pg_num: 8
+
+rgw_zone: default
+rgw_create_pools_defaults:
+  "{{ rgw_zone }}.rgw.buckets.data":
+    pg_num: "{{ rgw_pool_default_pg_num }}"
+    size: "{{ rgw_pool_default_size }}"
+    type: replicated
+  "{{ rgw_zone }}.rgw.buckets.index":
+    pg_num: "{{ rgw_pool_default_pg_num }}"
+    size: "{{ rgw_pool_default_size }}"
+    type: replicated
+  "{{ rgw_zone }}.rgw.meta":
+    pg_num: "{{ rgw_pool_default_pg_num }}"
+    size: "{{ rgw_pool_default_size }}"
+    type: replicated
+  "{{ rgw_zone }}.rgw.log":
+    pg_num: "{{ rgw_pool_default_pg_num }}"
+    size: "{{ rgw_pool_default_size }}"
+    type: replicated
+  "{{ rgw_zone }}.rgw.control":
+    pg_num: "{{ rgw_pool_default_pg_num }}"
+    size: "{{ rgw_pool_default_size }}"
+    type: replicated
+rgw_create_pools_extra: []
+rgw_create_pools: "{{ rgw_create_pools_defaults + rgw_create_pools_extra }}"
