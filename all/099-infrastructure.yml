@@ -68,3 +68,8 @@ nexus_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface][
 # boundary
 
 boundary_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# traefik
+
+traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
