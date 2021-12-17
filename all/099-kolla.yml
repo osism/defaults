@@ -50,6 +50,7 @@ keystone_token_provider: "fernet"
 
 # neutron
 
+enable_neutron_port_forwarding: "yes"
 enable_neutron_qos: "yes"
 
 # nova
