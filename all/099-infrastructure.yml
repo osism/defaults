@@ -73,3 +73,8 @@ boundary_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interfac
 # traefik
 
 traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# dnsdist
+
+dnsdist_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
