@@ -346,7 +346,7 @@ heat_api_cfn_listen_port: "{{ heat_api_cfn_port }}"
 
 horizon_port: "80"
 horizon_tls_port: "443"
-horizon_listen_port: "{{ horizon_tls_port if horizon_enable_tls_backend | default(kolla_enable_tls_backend) | bool else horizon_port }}"
+horizon_listen_port: "{{ horizon_tls_port if horizon_enable_tls_backend | bool else horizon_port }}"
 
 influxdb_http_port: "8086"
 
@@ -443,6 +443,7 @@ outward_rabbitmq_port: "5674"
 outward_rabbitmq_management_port: "15674"
 outward_rabbitmq_cluster_port: "25674"
 outward_rabbitmq_epmd_port: "4371"
+outward_rabbitmq_prometheus_port: "15694"
 
 ovsdb_port: "6640"
 
@@ -459,7 +460,7 @@ prometheus_node_exporter_port: "9100"
 prometheus_mysqld_exporter_port: "9104"
 prometheus_haproxy_exporter_port: "9101"
 prometheus_memcached_exporter_port: "9150"
-prometheus_rabbitmq_exporter_port: "15692"
+prometheus_rabbitmq_exporter_port: "{{ rabbitmq_prometheus_port }}"
 # Default cadvisor port of 8080 already in use
 prometheus_cadvisor_port: "18080"
 
@@ -480,6 +481,7 @@ rabbitmq_port: "{{ '5671' if rabbitmq_enable_tls | bool else '5672' }}"
 rabbitmq_management_port: "15672"
 rabbitmq_cluster_port: "25672"
 rabbitmq_epmd_port: "4369"
+rabbitmq_prometheus_port: "15692"
 
 redis_port: "6379"
 redis_sentinel_port: "26379"
@@ -1050,6 +1052,8 @@ enable_heat_horizon_policy_file: "{{ enable_heat }}"
 enable_keystone_horizon_policy_file: "{{ enable_keystone }}"
 enable_neutron_horizon_policy_file: "{{ enable_neutron }}"
 enable_nova_horizon_policy_file: "{{ enable_nova }}"
+
+horizon_enable_tls_backend: "{{ kolla_enable_tls_backend }}"
 
 horizon_internal_endpoint: "{{ internal_protocol }}://{{ kolla_internal_fqdn | put_address_in_context('url') }}:{{ horizon_tls_port if kolla_enable_tls_internal | bool else horizon_port }}"
 horizon_public_endpoint: "{{ public_protocol }}://{{ kolla_external_fqdn | put_address_in_context('url') }}:{{ horizon_tls_port if kolla_enable_tls_external | bool else horizon_port }}"
