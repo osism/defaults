@@ -8,7 +8,7 @@ docker_registry_keycloak: quay.io
 docker_registry_netbox: quay.io
 docker_registry_nexus: index.docker.io
 docker_registry_openstackclient: quay.io
-docker_registry_traefik: indx.docker.io
+docker_registry_traefik: index.docker.io
 docker_registry_vault: index.docker.io
 docker_registry_zookeeper: index.docker.io
 docker_registry_zuul: index.docker.io
