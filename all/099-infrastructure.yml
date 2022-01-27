@@ -78,3 +78,8 @@ traefik_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface
 # dnsdist
 
 dnsdist_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# cgit
+
+cgit_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
