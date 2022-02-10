@@ -1,6 +1,5 @@
 ---
 docker_namespace: osism
-kolla_image_version: latest
 
 ##############################
 # role: ceilometer
