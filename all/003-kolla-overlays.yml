@@ -11,3 +11,12 @@ enable_horizon_searchlight: "no"
 
 ceph_glance_user: glance
 ceph_glance_pool_name: images
+
+# In python-osism the Ironic notifications are used
+# regardless of whether Ceilometer is available or
+# not. This is necessary to update the system states
+# in the Netbox and to transfer the results of the
+# introspection.
+ironic_notification_topics:
+  - name: notifications
+    enabled: "yes"
