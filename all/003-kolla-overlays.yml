@@ -19,4 +19,4 @@ ceph_glance_pool_name: images
 # introspection.
 ironic_notification_topics:
   - name: notifications
-    enabled: "yes"
+    enabled: true
