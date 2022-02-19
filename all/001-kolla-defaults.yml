@@ -146,6 +146,9 @@ docker_zun_config:
 # Extra containerd options for Zun
 containerd_configure_for_zun: "no"
 
+# Enable Ceph backed Cinder Volumes for zun
+zun_configure_for_cinder_ceph: "no"
+
 # 42463 is the static group id of the zun user in the Zun image.
 # If users customize this value on building the Zun images,
 # they need to change this config accordingly.
@@ -288,6 +291,10 @@ barbican_api_port: "9311"
 barbican_api_listen_port: "{{ barbican_api_port }}"
 
 blazar_api_port: "1234"
+
+ceph_rgw_internal_fqdn: "{{ kolla_internal_fqdn }}"
+ceph_rgw_external_fqdn: "{{ kolla_external_fqdn }}"
+ceph_rgw_port: "6780"
 
 cinder_internal_fqdn: "{{ kolla_internal_fqdn }}"
 cinder_external_fqdn: "{{ kolla_external_fqdn }}"
@@ -463,6 +470,7 @@ prometheus_memcached_exporter_port: "9150"
 prometheus_rabbitmq_exporter_port: "{{ rabbitmq_prometheus_port }}"
 # Default cadvisor port of 8080 already in use
 prometheus_cadvisor_port: "18080"
+prometheus_fluentd_integration_port: "24231"
 
 # Prometheus alertmanager ports
 prometheus_alertmanager_port: "9093"
@@ -531,6 +539,7 @@ zookeeper_quorum_port: "3888"
 
 zun_api_port: "9517"
 zun_wsproxy_port: "6784"
+zun_wsproxy_protocol: "{{ 'wss' if kolla_enable_tls_external | bool else 'ws' }}"
 zun_cni_daemon_port: "9036"
 
 vitrage_api_port: "8999"
@@ -573,7 +582,7 @@ kolla_sysctl_conf_path: /etc/sysctl.conf
 
 # Endpoint type used to connect with OpenStack services with ansible modules.
 # Valid options are [ public, internal, admin ]
-openstack_interface: "admin"
+openstack_interface: "internal"
 
 # Openstack CA certificate bundle file
 # CA bundle file must be added to both the Horizon and Kolla Toolbox containers
@@ -583,11 +592,12 @@ openstack_cacert: ""
 # glance, keystone, neutron, nova, heat, and horizon.
 enable_openstack_core: "yes"
 
-# These roles are required for Kolla to be operation, however a savvy deployer
+# These roles are required for Kolla to be operational, however a savvy deployer
 # could disable some of these required roles and run their own services.
 enable_glance: "{{ enable_openstack_core | bool }}"
 enable_haproxy: "yes"
 enable_keepalived: "{{ enable_haproxy | bool }}"
+enable_loadbalancer: "{{ enable_haproxy | bool or enable_keepalived | bool }}"
 enable_keystone: "{{ enable_openstack_core | bool }}"
 enable_keystone_federation: "{{ (keystone_identity_providers | length > 0) and (keystone_identity_mappings | length > 0) }}"
 enable_mariadb: "yes"
@@ -610,6 +620,8 @@ enable_ceilometer: "no"
 enable_ceilometer_ipmi: "no"
 enable_cells: "no"
 enable_central_logging: "no"
+enable_ceph_rgw: "no"
+enable_ceph_rgw_loadbalancer: "{{ enable_ceph_rgw | bool }}"
 enable_chrony: "no"
 enable_cinder: "no"
 enable_cinder_backup: "yes"
@@ -683,6 +695,7 @@ enable_neutron_agent_ha: "no"
 enable_neutron_bgp_dragent: "no"
 enable_neutron_provider_networks: "no"
 enable_neutron_segments: "no"
+enable_neutron_packet_logging: "no"
 enable_neutron_sfc: "no"
 enable_neutron_trunk: "no"
 enable_neutron_metering: "no"
@@ -986,7 +999,7 @@ designate_public_endpoint: "{{ public_protocol }}://{{ designate_external_fqdn |
 # Neutron options
 #######################
 neutron_bgp_router_id: "1.1.1.1"
-neutron_bridge_name: "{{ 'br-dvs' if neutron_plugin_agent == 'vmware_dvs' else 'br-ex' }}"
+neutron_bridge_name: "{{ 'br-dvs' if neutron_plugin_agent == 'vmware_dvs' else 'br_dpdk' if enable_ovs_dpdk | bool else 'br-ex' }}"
 # Comma-separated type of enabled ml2 type drivers
 neutron_type_drivers: "flat,vlan,vxlan{% if neutron_plugin_agent == 'ovn' %},geneve{% endif %}"
 # Comma-separated types of tenant networks (should be listed in 'neutron_type_drivers')
@@ -1115,6 +1128,7 @@ enable_prometheus_mysqld_exporter: "{{ enable_mariadb | bool }}"
 enable_prometheus_node_exporter: "{{ enable_prometheus | bool }}"
 enable_prometheus_memcached_exporter: "{{ enable_memcached | bool }}"
 enable_prometheus_cadvisor: "{{ enable_prometheus | bool }}"
+enable_prometheus_fluentd_integration: "{{ enable_prometheus | bool and enable_fluentd | bool }}"
 enable_prometheus_alertmanager: "{{ enable_prometheus | bool }}"
 enable_prometheus_ceph_mgr_exporter: "no"
 enable_prometheus_openstack_exporter: "{{ enable_prometheus | bool }}"
