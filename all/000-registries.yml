@@ -1,6 +1,5 @@
 ---
 docker_registry_ansible: quay.io
-docker_registry_awx: quay.io
 docker_registry_cephclient: quay.io
 docker_registry_cgit: index.docker.io
 docker_registry_dnsdist: index.docker.io
