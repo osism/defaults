@@ -10,7 +10,6 @@ configure_sshconfig: true
 ##########################
 # cephclient
 
-cephclient_version: "{{ ceph_version|default('pacific') }}"
 cephclient_cluster_fsid: "{{ ceph_cluster_fsid | default('') }}"
 cephclient_groupname: cephclient
 cephclient_keyring: "{{ lookup('file', '{{ configuration_directory }}/environments/infrastructure/files/ceph/ceph.client.admin.keyring', rstrip=false) | default('', true) }}"
@@ -29,7 +28,6 @@ umc_web_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface
 ##########################
 # openstackclient
 
-openstackclient_version: "{{ openstack_version|default('wallaby') }}"
 openstackclient_configuration_directory: "{{ configuration_directory }}/environments/openstack"
 opentstackclient_groupname: openstackclient
 
