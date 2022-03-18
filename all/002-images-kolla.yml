@@ -393,7 +393,7 @@ prometheus_elasticsearch_exporter_image: "{{ docker_registry }}/{{ docker_namesp
 prometheus_elasticsearch_exporter_tag: "{{ prometheus_tag }}"
 prometheus_blackbox_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-blackbox-exporter"
 prometheus_blackbox_exporter_tag: "{{ prometheus_tag }}"
-prometheus_libvirt_exporter_image: "{{ docker_registry }}{{ docker_namespace }}/prometheus-libvirt-exporter"
+prometheus_libvirt_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-libvirt-exporter"
 prometheus_libvirt_exporter_tag: "{{ prometheus_tag }}"
 
 ##############################
