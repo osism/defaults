@@ -207,7 +207,7 @@ vmtp_tag: "{{ kolla_image_version }}"
 ##############################
 # role: mariadb
 
-mariadb_image: "{{ docker_registry }}/{{ docker_namespace }}/{{ 'mariadb' if kolla_image_version in ['victoria'] else 'mariadb-server'  }}"
+mariadb_image: "{{ docker_registry }}/{{ docker_namespace }}/{{ 'mariadb' if openstack_version in ['victoria'] else 'mariadb-server'  }}"
 mariadb_tag: "{{ kolla_image_version }}"
 mariadb_clustercheck_image: "{{ docker_registry }}/{{ docker_namespace }}/mariadb-clustercheck"
 mariadb_clustercheck_tag: "{{ mariadb_tag }}"
@@ -373,7 +373,7 @@ glance_tls_proxy_tag: "{{ glance_tag }}"
 # role: prometheus
 
 prometheus_tag: "{{ kolla_image_version }}"
-prometheus_server_image: "{{ docker_registry }}/{{ docker_namespace }}/{{ 'prometheus-server' if prometheus_use_v1|default(False) or kolla_image_version in ['victoria'] else 'prometheus-v2-server' }}"
+prometheus_server_image: "{{ docker_registry }}/{{ docker_namespace }}/{{ 'prometheus-server' if prometheus_use_v1|default(False) or openstack_version in ['victoria'] else 'prometheus-v2-server' }}"
 prometheus_server_tag: "{{ prometheus_tag }}"
 prometheus_haproxy_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-haproxy-exporter"
 prometheus_haproxy_exporter_tag: "{{ prometheus_tag }}"
