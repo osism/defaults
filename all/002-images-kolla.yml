@@ -356,7 +356,7 @@ watcher_applier_tag: "{{ watcher_tag }}"
 # role: elasticsearch
 
 elasticsearch_image: "{{ docker_registry }}/{{ docker_namespace }}/elasticsearch"
-elasticsearch_tag: "{{ kolla_elasticsearch_version||default(kolla_image_version) }}"
+elasticsearch_tag: "{{ kolla_elasticsearch_version|default(kolla_image_version) }}"
 elasticsearch_curator_image: "{{ docker_registry }}/{{ docker_namespace }}/elasticsearch-curator"
 elasticsearch_curator_tag: "{{ kolla_elasticsearch_curator_version|default(kolla_image_version) }}"
 
