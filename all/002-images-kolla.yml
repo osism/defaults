@@ -289,7 +289,7 @@ rabbitmq_tag: "{{ kolla_rabbitmq_version|default(kolla_image_version) }}"
 # role: nova-cell
 
 nova_libvirt_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-libvirt"
-nova_libvirt_tag: {{ kolla_nova_libvirt_version|default(kolla_image_version) }}"
+nova_libvirt_tag: "{{ kolla_nova_libvirt_version|default(kolla_image_version) }}"
 nova_ssh_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-ssh"
 nova_ssh_tag: "{{ nova_tag }}"
 nova_novncproxy_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-novncproxy"

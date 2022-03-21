@@ -755,12 +755,12 @@ enable_destroy_images: "no"
 ####################
 # Monasca options
 ####################
-monasca_enable_alerting_pipeline: True
+monasca_enable_alerting_pipeline: true
 
 # Send logs from the control plane to the Monasca API. Monasca will then persist
 # them in Elasticsearch. If this is disabled, control plane logs will be sent
 # directly to Elasticsearch.
-monasca_ingest_control_plane_logs: True
+monasca_ingest_control_plane_logs: true
 
 monasca_api_admin_base_endpoint: "{{ admin_protocol }}://{{ kolla_internal_fqdn  | put_address_in_context('url') }}:{{ monasca_api_port }}"
 monasca_api_internal_base_endpoint: "{{ internal_protocol }}://{{ kolla_internal_fqdn  | put_address_in_context('url') }}:{{ monasca_api_port }}"
@@ -1052,7 +1052,7 @@ murano_agent_rabbitmq_user: "muranoagent"
 # Horizon options
 #######################
 horizon_backend_database: "{{ enable_murano | bool }}"
-horizon_keystone_multidomain: False
+horizon_keystone_multidomain: false
 
 # Enable deploying custom horizon policy files for services that don't have a
 # horizon plugin but have a policy file. Override these when you have services
@@ -1221,7 +1221,7 @@ swift_public_endpoint: "{{ public_protocol }}://{{ swift_external_fqdn | put_add
 # Whether to run Kolla-Ansible's automatic configuration for Octavia.
 # NOTE: if you upgrade from Ussuri, you must set `octavia_auto_configure` to `no`
 # and keep your other Octavia config like before.
-octavia_auto_configure: yes
+octavia_auto_configure: "yes"
 
 # Octavia network type options are [ tenant, provider ]
 # * tenant indicates that we will create a tenant network and a network
