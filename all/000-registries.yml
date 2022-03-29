@@ -7,7 +7,7 @@ docker_registry_homer: quay.io
 docker_registry_keycloak: quay.io
 docker_registry_netbox: quay.io
 docker_registry_nexus: index.docker.io
-docker_registry_openpolicyagent: index.docker.io
+docker_registry_docker_openpolicyagent: index.docker.io
 docker_registry_openstackclient: quay.io
 docker_registry_patchman: quay.io
 docker_registry_traefik: index.docker.io
