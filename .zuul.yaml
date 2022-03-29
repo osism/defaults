@@ -1,7 +1,6 @@
 ---
 - project:
     default-branch: main
-    merge-mode: squash-merge
     check:
       jobs:
         - tox-linters
