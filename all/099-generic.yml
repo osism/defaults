@@ -101,12 +101,6 @@ fluentd_host: "{{ rsyslog_fluentd_host }}"
 rsyslog_fluentd_host: "{{ internal_address }}"
 
 ##########################
-# cockpit
-
-configure_cockpit: true
-cockpit_ssh_interface: "{{ console_interface | default('lo') }}"
-
-##########################
 # repository
 
 repository_keys: []
