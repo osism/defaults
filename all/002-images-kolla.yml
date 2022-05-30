@@ -211,7 +211,7 @@ mariadb_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/{{ 'mariadb' 
 mariadb_tag: "{{ kolla_mariadb_version|default(kolla_image_version) }}"
 mariadb_clustercheck_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/mariadb-clustercheck"
 mariadb_clustercheck_tag: "{{ mariadb_tag }}"
-mariabackup_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/mariabackup"
+mariabackup_image: "{{ mariadb_image }}"
 mariabackup_tag: "{{ mariadb_tag }}"
 
 ##############################

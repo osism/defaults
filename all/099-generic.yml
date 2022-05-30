@@ -168,3 +168,9 @@ security_sshd_allowed_macs: hmac-sha2-256,hmac-sha2-512,hmac-sha1
 # proxy
 
 proxy_proxies: {}
+
+##########################
+# cleanup
+
+cleanup_services_default:
+  - ModemManager.service
