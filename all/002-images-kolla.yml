@@ -5,67 +5,67 @@ docker_namespace: osism
 # role: ceilometer
 
 ceilometer_tag: "{{ kolla_ceilometer_version|default(kolla_image_version) }}"
-ceilometer_notification_image: "{{ docker_registry }}/{{ docker_namespace }}/ceilometer-notification"
+ceilometer_notification_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ceilometer-notification"
 ceilometer_notification_tag: "{{ ceilometer_tag }}"
-ceilometer_central_image: "{{ docker_registry }}/{{ docker_namespace }}/ceilometer-central"
+ceilometer_central_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ceilometer-central"
 ceilometer_central_tag: "{{ ceilometer_tag }}"
-ceilometer_compute_image: "{{ docker_registry }}/{{ docker_namespace }}/ceilometer-compute"
+ceilometer_compute_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ceilometer-compute"
 ceilometer_compute_tag: "{{ ceilometer_tag }}"
-ceilometer_ipmi_image: "{{ docker_registry }}/{{ docker_namespace }}/ceilometer-ipmi"
+ceilometer_ipmi_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ceilometer-ipmi"
 ceilometer_ipmi_tag: "{{ ceilometer_tag }}"
 
 ##############################
 # role: heat
 
 heat_tag: "{{ kolla_heat_version|default(kolla_image_version) }}"
-heat_api_image: "{{ docker_registry }}/{{ docker_namespace }}/heat-api"
+heat_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/heat-api"
 heat_api_tag: "{{ heat_tag }}"
-heat_api_cfn_image: "{{ docker_registry }}/{{ docker_namespace }}/heat-api-cfn"
+heat_api_cfn_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/heat-api-cfn"
 heat_api_cfn_tag: "{{ heat_tag }}"
-heat_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/heat-engine"
+heat_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/heat-engine"
 heat_engine_tag: "{{ heat_tag }}"
 
 ##############################
 # role: murano
 
 murano_tag: "{{ kolla_murano_version|default(kolla_image_version) }}"
-murano_api_image: "{{ docker_registry }}/{{ docker_namespace }}/murano-api"
+murano_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/murano-api"
 murano_api_tag: "{{ murano_tag }}"
-murano_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/murano-engine"
+murano_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/murano-engine"
 murano_engine_tag: "{{ murano_tag }}"
 
 ##############################
 # role: manila
 
 manila_tag: "{{ kolla_manila_version|default(kolla_image_version) }}"
-manila_share_image: "{{ docker_registry }}/{{ docker_namespace }}/manila-share"
+manila_share_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/manila-share"
 manila_share_tag: "{{ manila_tag }}"
-manila_scheduler_image: "{{ docker_registry }}/{{ docker_namespace }}/manila-scheduler"
+manila_scheduler_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/manila-scheduler"
 manila_scheduler_tag: "{{ manila_tag }}"
-manila_api_image: "{{ docker_registry }}/{{ docker_namespace }}/manila-api"
+manila_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/manila-api"
 manila_api_tag: "{{ manila_tag }}"
-manila_data_image: "{{ docker_registry }}/{{ docker_namespace }}/manila-data"
+manila_data_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/manila-data"
 manila_data_tag: "{{ manila_tag }}"
 
 ##############################
 # role: bifrost
 
 bifrost_tag: "{{ kolla_bifrost_version|default(kolla_image_version) }}"
-bifrost_deploy_image: "{{ docker_registry }}/{{ docker_namespace }}/bifrost-deploy"
+bifrost_deploy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/bifrost-deploy"
 bifrost_deploy_tag: "{{ bifrost_tag }}"
 
 ##############################
 # role: influxdb
 
-influxdb_image: "{{ docker_registry }}/{{ docker_namespace }}/influxdb"
+influxdb_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/influxdb"
 influxdb_tag: "{{ kolla_influxdb_version|default(kolla_image_version) }}"
 
 ##############################
 # role: redis
 
-redis_image: "{{ docker_registry }}/{{ docker_namespace }}/redis"
+redis_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/redis"
 redis_tag: "{{ kolla_redis_version|default(kolla_image_version) }}"
-redis_sentinel_image: "{{ docker_registry }}/{{ docker_namespace }}/redis-sentinel"
+redis_sentinel_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/redis-sentinel"
 redis_sentinel_tag: "{{ redis_tag }}"
 
 ##############################
@@ -76,140 +76,140 @@ redis_sentinel_tag: "{{ redis_tag }}"
 # role: monasca
 
 monasca_tag: "{{ kolla_monasca_version|default(kolla_image_version) }}"
-monasca_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/monasca-agent"
+monasca_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/monasca-agent"
 monasca_agent_tag: "{{ monasca_tag }}"
-monasca_api_image: "{{ docker_registry }}/{{ docker_namespace }}/monasca-api"
+monasca_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/monasca-api"
 monasca_api_tag: "{{ monasca_tag }}"
-monasca_logstash_image: "{{ docker_registry }}/{{ docker_namespace }}/logstash"
+monasca_logstash_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/logstash"
 monasca_logstash_tag: "{{ kolla_logstash_version|default(kolla_image_version) }}"
-monasca_thresh_image: "{{ docker_registry }}/{{ docker_namespace }}/monasca-thresh"
+monasca_thresh_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/monasca-thresh"
 monasca_thresh_tag: "{{ monasca_tag }}"
-monasca_notification_image: "{{ docker_registry }}/{{ docker_namespace }}/monasca-notification"
+monasca_notification_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/monasca-notification"
 monasca_notification_tag: "{{ monasca_tag }}"
-monasca_persister_image: "{{ docker_registry }}/{{ docker_namespace }}/monasca-persister"
+monasca_persister_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/monasca-persister"
 monasca_persister_tag: "{{ monasca_tag }}"
-monasca_grafana_image: "{{ docker_registry }}/{{ docker_namespace }}/monasca-grafana"
+monasca_grafana_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/monasca-grafana"
 monasca_grafana_tag: "{{ monasca_tag }}"
 
 ##############################
 # role: mistral
 
 mistral_tag: "{{ kolla_mistral_version|default(kolla_image_version) }}"
-mistral_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/mistral-engine"
+mistral_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/mistral-engine"
 mistral_engine_tag: "{{ mistral_tag }}"
-mistral_event_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/mistral-event-engine"
+mistral_event_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/mistral-event-engine"
 mistral_event_engine_tag: "{{ mistral_tag }}"
-mistral_executor_image: "{{ docker_registry }}/{{ docker_namespace }}/mistral-executor"
+mistral_executor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/mistral-executor"
 mistral_executor_tag: "{{ mistral_tag }}"
-mistral_api_image: "{{ docker_registry }}/{{ docker_namespace }}/mistral-api"
+mistral_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/mistral-api"
 mistral_api_tag: "{{ mistral_tag }}"
 
 ##############################
 # role: rally
 
-rally_image: "{{ docker_registry }}/{{ docker_namespace }}/rally"
+rally_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/rally"
 rally_tag: "{{ koll_rally_version|default(kolla_image_version) }}"
 
 ##############################
 # role: grafana
 
-grafana_image: "{{ docker_registry }}/{{ docker_namespace }}/grafana"
+grafana_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/grafana"
 grafana_tag: "{{ kolla_grafana_version|default(kolla_image_version) }}"
 
 ##############################
 # role: telegraf
 
-telegraf_image: "{{ docker_registry }}/{{ docker_namespace }}/telegraf"
+telegraf_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/telegraf"
 telegraf_tag: "{{ kolla_telegraf_version|default(kolla_image_version) }}"
 
 ##############################
 # role: zun
 
 zun_tag: "{{ kolla_zun_version|default(kolla_image_version) }}"
-zun_api_image: "{{ docker_registry }}/{{ docker_namespace }}/zun-api"
+zun_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/zun-api"
 zun_api_tag: "{{ zun_tag }}"
-zun_wsproxy_image: "{{ docker_registry }}/{{ docker_namespace }}/zun-wsproxy"
+zun_wsproxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/zun-wsproxy"
 zun_wsproxy_tag: "{{ zun_tag }}"
-zun_compute_image: "{{ docker_registry }}/{{ docker_namespace }}/zun-compute"
+zun_compute_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/zun-compute"
 zun_compute_tag: "{{ zun_tag }}"
-zun_cni_daemon_image: "{{ docker_registry }}/{{ docker_namespace }}/zun-cni-daemon"
+zun_cni_daemon_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/zun-cni-daemon"
 zun_cni_daemon_tag: "{{ zun_tag }}"
 
 ##############################
 # role: masakari
 
 masakari_tag: "{{ kolla_masakari_version|default(kolla_image_version) }}"
-masakari_api_image: "{{ docker_registry }}/{{ docker_namespace }}/masakari-api"
+masakari_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/masakari-api"
 masakari_api_tag: "{{ masakari_tag }}"
-masakari_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/masakari-engine"
+masakari_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/masakari-engine"
 masakari_engine_tag: "{{ masakari_tag }}"
-masakari_monitors_image: "{{ docker_registry }}/{{ docker_namespace }}/masakari-monitors"
+masakari_monitors_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/masakari-monitors"
 masakari_monitors_tag: "{{ masakari_tag }}"
 
 ##############################
 # role: solum
 
 solum_tag: "{{ kolla_solum_version|default(kolla_image_version) }}"
-solum_worker_image: "{{ docker_registry }}/{{ docker_namespace }}/solum-worker"
+solum_worker_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/solum-worker"
 solum_worker_tag: "{{ solum_tag }}"
-solum_deployer_image: "{{ docker_registry }}/{{ docker_namespace }}/solum-deployer"
+solum_deployer_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/solum-deployer"
 solum_deployer_tag: "{{ solum_tag }}"
-solum_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/solum-conductor"
+solum_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/solum-conductor"
 solum_conductor_tag: "{{ solum_tag }}"
-solum_api_image: "{{ docker_registry }}/{{ docker_namespace }}/solum-api"
+solum_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/solum-api"
 solum_api_tag: "{{ solum_tag }}"
 
 ##############################
 # role: senlin
 
 senlin_tag: "{{ kolla_senlin_version|default(kolla_image_version) }}"
-senlin_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/senlin-conductor"
+senlin_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/senlin-conductor"
 senlin_conductor_tag: "{{ senlin_tag }}"
-senlin_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/senlin-engine"
+senlin_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/senlin-engine"
 senlin_engine_tag: "{{ senlin_tag }}"
-senlin_health_manager_image: "{{ docker_registry }}/{{ docker_namespace }}/senlin-health-manager"
+senlin_health_manager_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/senlin-health-manager"
 senlin_health_manager_tag: "{{ senlin_tag }}"
-senlin_api_image: "{{ docker_registry }}/{{ docker_namespace }}/senlin-api"
+senlin_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/senlin-api"
 senlin_api_tag: "{{ senlin_tag }}"
 
 ##############################
 # role: keystone
 
 keystone_tag: "{{ kolla_keystone_version|default(kolla_image_version) }}"
-keystone_image: "{{ docker_registry }}/{{ docker_namespace }}/keystone"
+keystone_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/keystone"
 keystone_service_tag: "{{ keystone_tag }}"
-keystone_fernet_image: "{{ docker_registry }}/{{ docker_namespace }}/keystone-fernet"
+keystone_fernet_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/keystone-fernet"
 keystone_fernet_tag: "{{ keystone_tag }}"
-keystone_ssh_image: "{{ docker_registry }}/{{ docker_namespace }}/keystone-ssh"
+keystone_ssh_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/keystone-ssh"
 keystone_ssh_tag: "{{ keystone_tag }}"
 
 ##############################
 # role: vitrage
 
 vitrage_tag: "{{ kolla_vitrage_version|default(kolla_image_version) }}"
-vitrage_graph_image: "{{ docker_registry }}/{{ docker_namespace }}/vitrage-graph"
+vitrage_graph_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/vitrage-graph"
 vitrage_graph_tag: "{{ vitrage_tag }}"
-vitrage_api_image: "{{ docker_registry }}/{{ docker_namespace }}/vitrage-api"
+vitrage_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/vitrage-api"
 vitrage_api_tag: "{{ vitrage_tag }}"
-vitrage_notifier_image: "{{ docker_registry }}/{{ docker_namespace }}/vitrage-notifier"
+vitrage_notifier_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/vitrage-notifier"
 vitrage_notifier_tag: "{{ vitrage_tag }}"
-vitrage_ml_image: "{{ docker_registry }}/{{ docker_namespace }}/vitrage-ml"
+vitrage_ml_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/vitrage-ml"
 vitrage_ml_tag: "{{ vitrage_tag }}"
-vitrage_persistor_image: "{{ docker_registry }}/{{ docker_namespace }}/vitrage-persistor"
+vitrage_persistor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/vitrage-persistor"
 vitrage_persistor_tag: "{{ vitrage_tag }}"
 
 ##############################
 # role: vmtp
 
-vmtp_image: "{{ docker_registry }}/{{ docker_namespace }}/vmtp"
+vmtp_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/vmtp"
 vmtp_tag: "{{ kolla_vmtp_version|default(kolla_image_version) }}"
 
 ##############################
 # role: mariadb
 
-mariadb_image: "{{ docker_registry }}/{{ docker_namespace }}/{{ 'mariadb' if openstack_version in ['victoria'] else 'mariadb-server'  }}"
+mariadb_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/{{ 'mariadb' if openstack_version in ['victoria'] else 'mariadb-server'  }}"
 mariadb_tag: "{{ kolla_mariadb_version|default(kolla_image_version) }}"
-mariadb_clustercheck_image: "{{ docker_registry }}/{{ docker_namespace }}/mariadb-clustercheck"
+mariadb_clustercheck_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/mariadb-clustercheck"
 mariadb_clustercheck_tag: "{{ mariadb_tag }}"
 mariabackup_image: "{{ mariadb_image }}"
 mariabackup_tag: "{{ mariadb_tag }}"
@@ -218,123 +218,123 @@ mariabackup_tag: "{{ mariadb_tag }}"
 # role: openvswitch
 
 openvswitch_tag: "{{ kolla_openvswitch_version|default(kolla_image_version) }}"
-openvswitch_db_image: "{{ docker_registry }}/{{ docker_namespace }}/openvswitch-db-server"
+openvswitch_db_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/openvswitch-db-server"
 openvswitch_db_tag: "{{ openvswitch_tag }}"
-openvswitch_vswitchd_image: "{{ docker_registry }}/{{ docker_namespace }}/openvswitch-vswitchd"
+openvswitch_vswitchd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/openvswitch-vswitchd"
 openvswitch_vswitchd_tag: "{{ openvswitch_tag }}"
 
 ##############################
 # role: multipathd
 
-multipathd_image: "{{ docker_registry }}/{{ docker_namespace }}/multipathd"
+multipathd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/multipathd"
 multipathd_tag: "{{ kolla_multipathd_version|default(kolla_image_version) }}"
 
 ##############################
 # role: cinder
 
 cinder_tag: "{{ kolla_cinder_version|default(kolla_image_version) }}"
-cinder_volume_image: "{{ docker_registry }}/{{ docker_namespace }}/cinder-volume"
+cinder_volume_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cinder-volume"
 cinder_volume_tag: "{{ cinder_tag }}"
-cinder_scheduler_image: "{{ docker_registry }}/{{ docker_namespace }}/cinder-scheduler"
+cinder_scheduler_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cinder-scheduler"
 cinder_scheduler_tag: "{{ cinder_tag }}"
-cinder_backup_image: "{{ docker_registry }}/{{ docker_namespace }}/cinder-backup"
+cinder_backup_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cinder-backup"
 cinder_backup_tag: "{{ cinder_tag }}"
-cinder_api_image: "{{ docker_registry }}/{{ docker_namespace }}/cinder-api"
+cinder_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cinder-api"
 cinder_api_tag: "{{ cinder_tag }}"
 
 ##############################
 # role: freezer
 
 freezer_tag: "{{ kolla_freezer_version|default(kolla_image_version) }}"
-freezer_api_image: "{{ docker_registry }}/{{ docker_namespace }}/freezer-api"
+freezer_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/freezer-api"
 freezer_api_tag: "{{ freezer_tag }}"
-freezer_scheduler_image: "{{ docker_registry }}/{{ docker_namespace }}/freezer-scheduler"
+freezer_scheduler_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/freezer-scheduler"
 freezer_scheduler_tag: "{{ freezer_tag }}"
 
 ##############################
 # role: kibana
 
-kibana_image: "{{ docker_registry }}/{{ docker_namespace }}/kibana"
+kibana_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/kibana"
 kibana_tag: "{{ kolla_kibana_version|default(kolla_image_version) }}"
 
 ##############################
 # role: hacluster
 
 hacluster_tag: "{{ kolla_hacluster_version|default(kolla_image_version) }}"
-hacluster_corosync_image: "{{ docker_registry }}/{{ docker_namespace }}/hacluster-corosync"
+hacluster_corosync_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/hacluster-corosync"
 hacluster_corosync_tag: "{{ hacluster_tag }}"
-hacluster_pacemaker_image: "{{ docker_registry }}/{{ docker_namespace }}/hacluster-pacemaker"
+hacluster_pacemaker_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/hacluster-pacemaker"
 hacluster_pacemaker_tag: "{{ hacluster_tag }}"
-hacluster_pacemaker_remote_image: "{{ docker_registry }}/{{ docker_namespace }}/hacluster-pacemaker-remote"
+hacluster_pacemaker_remote_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/hacluster-pacemaker-remote"
 hacluster_pacemaker_remote_tag: "{{ hacluster_tag }}"
 
 ##############################
 # role: nova
 
 nova_tag: "{{ kolla_nova_version|default(kolla_image_version) }}"
-nova_super_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-super-conductor"
+nova_super_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-super-conductor"
 nova_super_conductor_tag: "{{ nova_tag }}"
-nova_scheduler_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-scheduler"
+nova_scheduler_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-scheduler"
 nova_scheduler_tag: "{{ nova_tag }}"
-nova_api_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-api"
+nova_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-api"
 nova_api_tag: "{{ nova_tag }}"
 
 ##############################
 # role: rabbitmq
 
-rabbitmq_image: "{{ docker_registry }}/{{ docker_namespace }}/rabbitmq"
+rabbitmq_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/rabbitmq"
 rabbitmq_tag: "{{ kolla_rabbitmq_version|default(kolla_image_version) }}"
 
 ##############################
 # role: nova-cell
 
-nova_libvirt_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-libvirt"
+nova_libvirt_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-libvirt"
 nova_libvirt_tag: "{{ kolla_nova_libvirt_version|default(kolla_image_version) }}"
-nova_ssh_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-ssh"
+nova_ssh_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-ssh"
 nova_ssh_tag: "{{ nova_tag }}"
-nova_novncproxy_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-novncproxy"
+nova_novncproxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-novncproxy"
 nova_novncproxy_tag: "{{ nova_tag }}"
-nova_spicehtml5proxy_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-spicehtml5proxy"
+nova_spicehtml5proxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-spicehtml5proxy"
 nova_spicehtml5proxy_tag: "{{ nova_tag }}"
-nova_serialproxy_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-serialproxy"
+nova_serialproxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-serialproxy"
 nova_serialproxy_tag: "{{ nova_tag }}"
-nova_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-conductor"
+nova_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-conductor"
 nova_conductor_tag: "{{ nova_tag }}"
-nova_compute_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-compute"
+nova_compute_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-compute"
 nova_compute_tag: "{{ nova_tag }}"
-nova_compute_ironic_image: "{{ docker_registry }}/{{ docker_namespace }}/nova-compute-ironic"
+nova_compute_ironic_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/nova-compute-ironic"
 nova_compute_ironic_tag: "{{ nova_tag }}"
 
 ##############################
 # role: magnum
 
 magnum_tag: "{{ kolla_magnum_version|default(kolla_image_version) }}"
-magnum_api_image: "{{ docker_registry }}/{{ docker_namespace }}/magnum-api"
+magnum_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/magnum-api"
 magnum_api_tag: "{{ magnum_tag }}"
-magnum_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/magnum-conductor"
+magnum_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/magnum-conductor"
 magnum_conductor_tag: "{{ magnum_tag }}"
 
 ##############################
 # role: sahara
 
 sahara_tag: "{{ kolla_sahara_version|default(kolla_image_version) }}"
-sahara_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/sahara-engine"
+sahara_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/sahara-engine"
 sahara_engine_tag: "{{ sahara_tag }}"
-sahara_api_image: "{{ docker_registry }}/{{ docker_namespace }}/sahara-api"
+sahara_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/sahara-api"
 sahara_api_tag: "{{ sahara_tag }}"
 
 ##############################
 # role: haproxy
 
-keepalived_image: "{{ docker_registry }}/{{ docker_namespace }}/keepalived"
+keepalived_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/keepalived"
 keepalived_tag: "{{ kolla_keepalived_version|default(kolla_image_version) }}"
-haproxy_image: "{{ docker_registry }}/{{ docker_namespace }}/haproxy"
+haproxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/haproxy"
 haproxy_tag: "{{ kolla_haproxy_version|default(kolla_image_version) }}"
 
 ##############################
 # role: zookeeper
 
-zookeeper_image: "{{ docker_registry }}/{{ docker_namespace }}/zookeeper"
+zookeeper_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/zookeeper"
 zookeeper_tag: "{{ kolla_zookeeper_version|default(kolla_image_version) }}"
 
 ##############################
@@ -345,170 +345,170 @@ zookeeper_tag: "{{ kolla_zookeeper_version|default(kolla_image_version) }}"
 # role: watcher
 
 watcher_tag: "{{ kolla_watcher_version|default(kolla_image_version) }}"
-watcher_engine_image: "{{ docker_registry }}/{{ docker_namespace }}/watcher-engine"
+watcher_engine_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/watcher-engine"
 watcher_engine_tag: "{{ watcher_tag }}"
-watcher_api_image: "{{ docker_registry }}/{{ docker_namespace }}/watcher-api"
+watcher_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/watcher-api"
 watcher_api_tag: "{{ watcher_tag }}"
-watcher_applier_image: "{{ docker_registry }}/{{ docker_namespace }}/watcher-applier"
+watcher_applier_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/watcher-applier"
 watcher_applier_tag: "{{ watcher_tag }}"
 
 ##############################
 # role: elasticsearch
 
-elasticsearch_image: "{{ docker_registry }}/{{ docker_namespace }}/elasticsearch"
+elasticsearch_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/elasticsearch"
 elasticsearch_tag: "{{ kolla_elasticsearch_version|default(kolla_image_version) }}"
-elasticsearch_curator_image: "{{ docker_registry }}/{{ docker_namespace }}/elasticsearch-curator"
+elasticsearch_curator_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/elasticsearch-curator"
 elasticsearch_curator_tag: "{{ kolla_elasticsearch_curator_version|default(kolla_image_version) }}"
 
 ##############################
 # role: glance
 
 glance_tag: "{{ kolla_glance_version|default(kolla_image_version) }}"
-glance_api_image: "{{ docker_registry }}/{{ docker_namespace }}/glance-api"
+glance_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/glance-api"
 glance_api_tag: "{{ glance_tag }}"
-glance_tls_proxy_image: "{{ docker_registry }}/{{ docker_namespace }}/glance-tls-proxy"
+glance_tls_proxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/glance-tls-proxy"
 glance_tls_proxy_tag: "{{ glance_tag }}"
 
 ##############################
 # role: prometheus
 
 prometheus_tag: "{{ kolla_prometheus_version|default(kolla_image_version) }}"
-prometheus_server_image: "{{ docker_registry }}/{{ docker_namespace }}/{{ 'prometheus-server' if prometheus_use_v1|default(False) or openstack_version in ['victoria'] else 'prometheus-v2-server' }}"
+prometheus_server_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/{{ 'prometheus-server' if prometheus_use_v1|default(False) or openstack_version in ['victoria'] else 'prometheus-v2-server' }}"
 prometheus_server_tag: "{{ prometheus_tag }}"
-prometheus_haproxy_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-haproxy-exporter"
+prometheus_haproxy_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-haproxy-exporter"
 prometheus_haproxy_exporter_tag: "{{ kolla_prometheus_haproxy_exporter_version|default(prometheus_tag) }}"
-prometheus_mysqld_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-mysqld-exporter"
+prometheus_mysqld_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-mysqld-exporter"
 prometheus_mysqld_exporter_tag: "{{ kolla_prometheus_mysqld_exporter_version|default(prometheus_tag) }}"
-prometheus_node_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-node-exporter"
+prometheus_node_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-node-exporter"
 prometheus_node_exporter_tag: "{{ kolla_prometheus_node_exporter_version|default(prometheus_tag) }}"
-prometheus_memcached_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-memcached-exporter"
+prometheus_memcached_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-memcached-exporter"
 prometheus_memcached_exporter_tag: "{{ kolla_prometheus_memcached_exporter_version|default(prometheus_tag) }}"
-prometheus_cadvisor_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-cadvisor"
+prometheus_cadvisor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-cadvisor"
 prometheus_cadvisor_tag: "{{ kolla_prometheus_cadvisor_version|default(prometheus_tag) }}"
-prometheus_alertmanager_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-alertmanager"
+prometheus_alertmanager_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-alertmanager"
 prometheus_alertmanager_tag: "{{ kolla_prometheus_alertmanager_version|default(prometheus_tag) }}"
-prometheus_openstack_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-openstack-exporter"
+prometheus_openstack_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-openstack-exporter"
 prometheus_openstack_exporter_tag: "{{ kolla_prometheus_openstack_exporter_version|default(prometheus_tag) }}"
-prometheus_elasticsearch_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-elasticsearch-exporter"
+prometheus_elasticsearch_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-elasticsearch-exporter"
 prometheus_elasticsearch_exporter_tag: "{{ kolla_prometheus_elasticsearch_exporter_version|default(prometheus_tag) }}"
-prometheus_blackbox_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-blackbox-exporter"
+prometheus_blackbox_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-blackbox-exporter"
 prometheus_blackbox_exporter_tag: "{{ kolla_prometheus_blackbox_exporter_version|default(prometheus_tag) }}"
-prometheus_libvirt_exporter_image: "{{ docker_registry }}/{{ docker_namespace }}/prometheus-libvirt-exporter"
+prometheus_libvirt_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-libvirt-exporter"
 prometheus_libvirt_exporter_tag: "{{ kolla_prometheus_libvirt_exporter_version|default(prometheus_tag) }}"
 
 ##############################
 # role: designate
 
 designate_tag: "{{ kolla_designate_version|default(kolla_image_version) }}"
-designate_central_image: "{{ docker_registry }}/{{ docker_namespace }}/designate-central"
+designate_central_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/designate-central"
 designate_central_tag: "{{ designate_tag }}"
-designate_producer_image: "{{ docker_registry }}/{{ docker_namespace }}/designate-producer"
+designate_producer_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/designate-producer"
 designate_producer_tag: "{{ designate_tag }}"
-designate_api_image: "{{ docker_registry }}/{{ docker_namespace }}/designate-api"
+designate_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/designate-api"
 designate_api_tag: "{{ designate_tag }}"
-designate_backend_bind9_image: "{{ docker_registry }}/{{ docker_namespace }}/designate-backend-bind9"
+designate_backend_bind9_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/designate-backend-bind9"
 designate_backend_bind9_tag: "{{ designate_tag }}"
-designate_mdns_image: "{{ docker_registry }}/{{ docker_namespace }}/designate-mdns"
+designate_mdns_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/designate-mdns"
 designate_mdns_tag: "{{ designate_tag }}"
-designate_sink_image: "{{ docker_registry }}/{{ docker_namespace }}/designate-sink"
+designate_sink_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/designate-sink"
 designate_sink_tag: "{{ designate_tag }}"
-designate_worker_image: "{{ docker_registry }}/{{ docker_namespace }}/designate-worker"
+designate_worker_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/designate-worker"
 designate_worker_tag: "{{ designate_tag }}"
 
 ##############################
 # role: cyborg
 
 cyborg_tag: "{{ kolla_cyborg_version|default(kolla_image_version) }}"
-cyborg_api_image: "{{ docker_registry }}/{{ docker_namespace }}/cyborg-api"
+cyborg_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cyborg-api"
 cyborg_api_tag: "{{ cyborg_tag }}"
-cyborg_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/cyborg-agent"
+cyborg_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cyborg-agent"
 cyborg_agent_tag: "{{ cyborg_tag }}"
-cyborg_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/cyborg-conductor"
+cyborg_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cyborg-conductor"
 cyborg_conductor_tag: "{{ cyborg_tag }}"
 
 ##############################
 # role: tacker
 
 tacker_tag: "{{ kolla_tacker_version|default(kolla_image_version) }}"
-tacker_server_image: "{{ docker_registry }}/{{ docker_namespace }}/tacker-server"
+tacker_server_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/tacker-server"
 tacker_server_tag: "{{ tacker_tag }}"
-tacker_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/tacker-conductor"
+tacker_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/tacker-conductor"
 tacker_conductor_tag: "{{ tacker_tag }}"
 
 ##############################
 # role: kafka
 
-kafka_image: "{{ docker_registry }}/{{ docker_namespace }}/kafka"
+kafka_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/kafka"
 kafka_tag: "{{ kolla_kafka_version|default(kolla_image_version) }}"
 
 ##############################
 # role: storm
 
-storm_image: "{{ docker_registry }}/{{ docker_namespace }}/storm"
+storm_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/storm"
 storm_tag: "{{ kolla_storm_version|default(kolla_image_version) }}"
 
 ##############################
 # role: kuryr
 
-kuryr_image: "{{ docker_registry }}/{{ docker_namespace }}/kuryr-libnetwork"
+kuryr_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/kuryr-libnetwork"
 kuryr_tag: "{{ kolla_kuryr_version|default(kolla_image_version) }}"
 
 ##############################
 # role: swift
 
 swift_tag: "{{ kolla_swift_version|default(kolla_image_version) }}"
-swift_proxy_server_image: "{{ docker_registry }}/{{ docker_namespace }}/swift-proxy-server"
+swift_proxy_server_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/swift-proxy-server"
 swift_proxy_server_tag: "{{ swift_tag }}"
-swift_account_image: "{{ docker_registry }}/{{ docker_namespace }}/swift-account"
+swift_account_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/swift-account"
 swift_account_tag: "{{ swift_tag }}"
-swift_container_image: "{{ docker_registry }}/{{ docker_namespace }}/swift-container"
+swift_container_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/swift-container"
 swift_container_tag: "{{ swift_tag }}"
-swift_object_image: "{{ docker_registry }}/{{ docker_namespace }}/swift-object"
+swift_object_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/swift-object"
 swift_object_tag: "{{ swift_tag }}"
-swift_object_expirer_image: "{{ docker_registry }}/{{ docker_namespace }}/swift-object-expirer"
+swift_object_expirer_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/swift-object-expirer"
 swift_object_expirer_tag: "{{ swift_tag }}"
-swift_rsyncd_image: "{{ docker_registry }}/{{ docker_namespace }}/swift-rsyncd"
+swift_rsyncd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/swift-rsyncd"
 swift_rsyncd_tag: "{{ swift_tag }}"
 
 ##############################
 # role: collectd
 
-collectd_image: "{{ docker_registry }}/{{ docker_namespace }}/collectd"
+collectd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/collectd"
 collectd_tag: "{{ kolla_collectd_version|default(kolla_image_version) }}"
 
 ##############################
 # role: trove
 
 trove_tag: "{{ kolla_trove_version|default(kolla_image_version) }}"
-trove_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/trove-conductor"
+trove_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/trove-conductor"
 trove_conductor_tag: "{{ trove_tag }}"
-trove_api_image: "{{ docker_registry }}/{{ docker_namespace }}/trove-api"
+trove_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/trove-api"
 trove_api_tag: "{{ trove_tag }}"
-trove_taskmanager_image: "{{ docker_registry }}/{{ docker_namespace }}/trove-taskmanager"
+trove_taskmanager_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/trove-taskmanager"
 trove_taskmanager_tag: "{{ trove_tag }}"
 
 ##############################
 # role: cloudkitty
 
 cloudkitty_tag: "{{ kolla_cloudkitty_version|default(kolla_image_version) }}"
-cloudkitty_api_image: "{{ docker_registry }}/{{ docker_namespace }}/cloudkitty-api"
+cloudkitty_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cloudkitty-api"
 cloudkitty_api_tag: "{{ cloudkitty_tag }}"
-cloudkitty_processor_image: "{{ docker_registry }}/{{ docker_namespace }}/cloudkitty-processor"
+cloudkitty_processor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cloudkitty-processor"
 cloudkitty_processor_tag: "{{ cloudkitty_tag }}"
 
 ##############################
 # role: octavia
 
 octavia_tag: "{{ kolla_octavia_version|default(kolla_image_version) }}"
-octavia_api_image: "{{ docker_registry }}/{{ docker_namespace }}/octavia-api"
+octavia_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/octavia-api"
 octavia_api_tag: "{{ octavia_tag }}"
-octavia_driver_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/octavia-driver-agent"
+octavia_driver_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/octavia-driver-agent"
 octavia_driver_agent_tag: "{{ octavia_tag }}"
-octavia_health_manager_image: "{{ docker_registry }}/{{ docker_namespace }}/octavia-health-manager"
+octavia_health_manager_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/octavia-health-manager"
 octavia_health_manager_tag: "{{ octavia_tag }}"
-octavia_housekeeping_image: "{{ docker_registry }}/{{ docker_namespace }}/octavia-housekeeping"
+octavia_housekeeping_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/octavia-housekeeping"
 octavia_housekeeping_tag: "{{ octavia_tag }}"
-octavia_worker_image: "{{ docker_registry }}/{{ docker_namespace }}/octavia-worker"
+octavia_worker_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/octavia-worker"
 octavia_worker_tag: "{{ octavia_tag }}"
 octavia_amp_image_tag: "{{ octavia_tag }}"
 
@@ -516,24 +516,24 @@ octavia_amp_image_tag: "{{ octavia_tag }}"
 # role: gnocchi
 
 gnocchi_tag: "{{ kolla_gnocchi_version|default(kolla_image_version) }}"
-gnocchi_api_image: "{{ docker_registry }}/{{ docker_namespace }}/gnocchi-api"
+gnocchi_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/gnocchi-api"
 gnocchi_api_tag: "{{ gnocchi_tag }}"
-gnocchi_statsd_image: "{{ docker_registry }}/{{ docker_namespace }}/gnocchi-statsd"
+gnocchi_statsd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/gnocchi-statsd"
 gnocchi_statsd_tag: "{{ gnocchi_tag }}"
-gnocchi_metricd_image: "{{ docker_registry }}/{{ docker_namespace }}/gnocchi-metricd"
+gnocchi_metricd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/gnocchi-metricd"
 gnocchi_metricd_tag: "{{ gnocchi_tag }}"
 
 ##############################
 # role: panko
 
 panko_tag: "{{ kolla_panko_version|default(kolla_image_version) }}"
-panko_api_image: "{{ docker_registry }}/{{ docker_namespace }}/panko-api"
+panko_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/panko-api"
 panko_api_tag: "{{ panko_tag }}"
 
 ##############################
 # role: etcd
 
-etcd_image: "{{ docker_registry }}/{{ docker_namespace }}/etcd"
+etcd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/etcd"
 etcd_tag: "{{ kolla_etcd_version|default(kolla_image_version) }}"
 
 ##############################
@@ -544,170 +544,170 @@ etcd_tag: "{{ kolla_etcd_version|default(kolla_image_version) }}"
 # role: common
 
 common_tag: "{{ kolla_common_version|default(kolla_image_version) }}"
-kolla_toolbox_image: "{{ docker_registry }}/{{ docker_namespace }}/kolla-toolbox"
+kolla_toolbox_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/kolla-toolbox"
 kolla_toolbox_tag: "{{ common_tag }}"
-cron_image: "{{ docker_registry }}/{{ docker_namespace }}/cron"
+cron_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/cron"
 cron_tag: "{{ kolla_cron_version|default(kolla_image_version) }}"
-fluentd_image: "{{ docker_registry }}/{{ docker_namespace }}/fluentd"
+fluentd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/fluentd"
 fluentd_tag: "{{ kolla_fluentd_version|default(kolla_image_version) }}"
 
 ##############################
 # role: chrony
 
-chrony_image: "{{ docker_registry }}/{{ docker_namespace }}/chrony"
+chrony_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/chrony"
 chrony_tag: "{{ kolla_chrony_version|default(kolla_image_version) }}"
 
 ##############################
 # role: placement
 
 placement_tag: "{{ kolla_placement_version|default(kolla_image_version) }}"
-placement_api_image: "{{ docker_registry }}/{{ docker_namespace }}/placement-api"
+placement_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/placement-api"
 placement_api_tag: "{{ placement_tag }}"
 
 ##############################
 # role: horizon
 
-horizon_image: "{{ docker_registry }}/{{ docker_namespace }}/horizon"
+horizon_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/horizon"
 horizon_tag: "{{ kolla_horizon_version|default(kolla_image_version) }}"
 
 ##############################
 # role: blazar
 
 blazar_tag: "{{ kolla_blazar_version|default(kolla_image_version) }}"
-blazar_manager_image: "{{ docker_registry }}/{{ docker_namespace }}/blazar-manager"
+blazar_manager_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/blazar-manager"
 blazar_manager_tag: "{{ blazar_tag }}"
-blazar_api_image: "{{ docker_registry }}/{{ docker_namespace }}/blazar-api"
+blazar_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/blazar-api"
 blazar_api_tag: "{{ blazar_tag }}"
 
 ##############################
 # role: aodh
 
 aodh_tag: "{{ kolla_aodh_version|default(kolla_image_version) }}"
-aodh_api_image: "{{ docker_registry }}/{{ docker_namespace }}/aodh-api"
+aodh_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/aodh-api"
 aodh_api_tag: "{{ aodh_tag }}"
-aodh_evaluator_image: "{{ docker_registry }}/{{ docker_namespace }}/aodh-evaluator"
+aodh_evaluator_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/aodh-evaluator"
 aodh_evaluator_tag: "{{ aodh_tag }}"
-aodh_listener_image: "{{ docker_registry }}/{{ docker_namespace }}/aodh-listener"
+aodh_listener_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/aodh-listener"
 aodh_listener_tag: "{{ aodh_tag }}"
-aodh_notifier_image: "{{ docker_registry }}/{{ docker_namespace }}/aodh-notifier"
+aodh_notifier_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/aodh-notifier"
 aodh_notifier_tag: "{{ aodh_tag }}"
 
 ##############################
 # role: memcached
 
-memcached_image: "{{ docker_registry }}/{{ docker_namespace }}/memcached"
+memcached_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/memcached"
 memcached_tag: "{{ kolla_memcached_version|default(kolla_image_version) }}"
 
 ##############################
 # role: ovsdpdk
 
 ovsdpdk_tag: "{{ kolla_ovsdpdk_version|default(kolla_image_version) }}"
-ovsdpdk_db_image: "{{ docker_registry }}/{{ docker_namespace }}/ovsdpdk-db"
+ovsdpdk_db_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovsdpdk-db"
 ovsdpdk_db_tag: "{{ ovsdpdk_tag }}"
-ovsdpdk_vswitchd_image: "{{ docker_registry }}/{{ docker_namespace }}/ovsdpdk-vswitchd"
+ovsdpdk_vswitchd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovsdpdk-vswitchd"
 ovsdpdk_vswitchd_tag: "{{ ovsdpdk_tag }}"
 
 ##############################
 # role: qdrouterd
 
-qdrouterd_image: "{{ docker_registry }}/{{ docker_namespace }}/qdrouterd"
+qdrouterd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/qdrouterd"
 qdrouterd_tag: "{{ kolla_qdrouterd_version|default(kolla_image_version) }}"
 
 ##############################
 # role: ovn
 
 ovn_tag: "{{ kolla_ovn_version|default(kolla_image_version) }}"
-ovn_controller_image: "{{ docker_registry }}/{{ docker_namespace }}/ovn-controller"
+ovn_controller_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-controller"
 ovn_controller_tag: "{{ ovn_tag }}"
-ovn_northd_image: "{{ docker_registry }}/{{ docker_namespace }}/ovn-northd"
+ovn_northd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-northd"
 ovn_northd_tag: "{{ ovn_tag }}"
-ovn_nb_db_image: "{{ docker_registry }}/{{ docker_namespace }}/ovn-nb-db-server"
+ovn_nb_db_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-nb-db-server"
 ovn_nb_db_tag: "{{ ovn_tag }}"
-ovn_sb_db_image: "{{ docker_registry }}/{{ docker_namespace }}/ovn-sb-db-server"
+ovn_sb_db_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-sb-db-server"
 ovn_sb_db_tag: "{{ ovn_tag }}"
 
 ##############################
 # role: neutron
 
 neutron_tag: "{{ kolla_neutron_version|default(kolla_image_version) }}"
-neutron_dhcp_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-dhcp-agent"
+neutron_dhcp_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-dhcp-agent"
 neutron_dhcp_agent_tag: "{{ neutron_tag }}"
-neutron_l3_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-l3-agent"
+neutron_l3_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-l3-agent"
 neutron_l3_agent_tag: "{{ neutron_tag }}"
-neutron_sriov_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-sriov-agent"
+neutron_sriov_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-sriov-agent"
 neutron_sriov_agent_tag: "{{ neutron_tag }}"
-neutron_mlnx_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-mlnx-agent"
+neutron_mlnx_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-mlnx-agent"
 neutron_mlnx_agent_tag: "{{ neutron_tag }}"
-neutron_eswitchd_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-eswitchd"
+neutron_eswitchd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-eswitchd"
 neutron_eswitchd_tag: "{{ neutron_tag }}"
-neutron_linuxbridge_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-linuxbridge-agent"
+neutron_linuxbridge_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-linuxbridge-agent"
 neutron_linuxbridge_agent_tag: "{{ neutron_tag }}"
-neutron_metadata_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-metadata-agent"
+neutron_metadata_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-metadata-agent"
 neutron_metadata_agent_tag: "{{ neutron_tag }}"
-neutron_ovn_metadata_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-metadata-agent"
+neutron_ovn_metadata_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-metadata-agent"
 neutron_ovn_metadata_agent_tag: "{{ neutron_tag }}"
-neutron_openvswitch_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-openvswitch-agent"
+neutron_openvswitch_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-openvswitch-agent"
 neutron_openvswitch_agent_tag: "{{ neutron_tag }}"
-neutron_server_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-server"
+neutron_server_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-server"
 neutron_server_tag: "{{ neutron_tag }}"
-neutron_bgp_dragent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-bgp-dragent"
+neutron_bgp_dragent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-bgp-dragent"
 neutron_bgp_dragent_tag: "{{ neutron_tag }}"
-neutron_infoblox_ipam_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-infoblox-ipam-agent"
+neutron_infoblox_ipam_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-infoblox-ipam-agent"
 neutron_infoblox_ipam_agent_tag: "{{ neutron_tag }}"
-neutron_metering_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-metering-agent"
+neutron_metering_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-metering-agent"
 neutron_metering_agent_tag: "{{ neutron_tag }}"
-ironic_neutron_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/ironic-neutron-agent"
+ironic_neutron_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-neutron-agent"
 ironic_neutron_agent_tag: "{{ neutron_tag }}"
-neutron_tls_proxy_image: "{{ docker_registry }}/{{ docker_namespace }}/neutron-tls-proxy"
+neutron_tls_proxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/neutron-tls-proxy"
 neutron_tls_proxy_tag: "{{ neutron_tag }}"
 
 ##############################
 # role: ironic
 
 ironic_tag: "{{ kolla_ironic_version|default(kolla_image_version) }}"
-ironic_api_image: "{{ docker_registry }}/{{ docker_namespace }}/ironic-api"
+ironic_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-api"
 ironic_api_tag: "{{ ironic_tag }}"
-ironic_conductor_image: "{{ docker_registry }}/{{ docker_namespace }}/ironic-conductor"
+ironic_conductor_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-conductor"
 ironic_conductor_tag: "{{ ironic_tag }}"
-ironic_pxe_image: "{{ docker_registry }}/{{ docker_namespace }}/ironic-pxe"
+ironic_pxe_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-pxe"
 ironic_pxe_tag: "{{ ironic_tag }}"
-ironic_inspector_image: "{{ docker_registry }}/{{ docker_namespace }}/ironic-inspector"
+ironic_inspector_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-inspector"
 ironic_inspector_tag: "{{ ironic_tag }}"
-ironic_dnsmasq_image: "{{ docker_registry }}/{{ docker_namespace }}/dnsmasq"
+ironic_dnsmasq_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/dnsmasq"
 ironic_dnsmasq_tag: "{{ kolla_dnsmasq_version|default(kolla_image_version) }}"
 
 ##############################
 # role: skydive
 
 skydive_tag: "{{ kolla_skydive_version|default(kolla_image_version) }}"
-skydive_analyzer_image: "{{ docker_registry }}/{{ docker_namespace }}/skydive-analyzer"
+skydive_analyzer_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/skydive-analyzer"
 skydive_analyzer_tag: "{{ skydive_tag }}"
-skydive_agent_image: "{{ docker_registry }}/{{ docker_namespace }}/skydive-agent"
+skydive_agent_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/skydive-agent"
 skydive_agent_tag: "{{ skydive_tag }}"
 
 ##############################
 # role: iscsi
 
 iscsi_tag: "{{ kolla_iscsid_version|default(kolla_image_version) }}"
-iscsid_image: "{{ docker_registry }}/{{ docker_namespace }}/iscsid"
+iscsid_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/iscsid"
 iscsid_tag: "{{ iscsi_tag }}"
 
-tgtd_image: "{{ docker_registry }}/{{ docker_namespace }}/tgtd"
+tgtd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/tgtd"
 tgtd_tag: "{{ kolla_tgtd_version|default(kolla_image_version) }}"
 
 ##############################
 # role: barbican
 
 barbican_tag: "{{ kolla_barbican_version|default(kolla_image_version) }}"
-barbican_api_image: "{{ docker_registry }}/{{ docker_namespace }}/barbican-api"
+barbican_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/barbican-api"
 barbican_api_tag: "{{ barbican_tag }}"
-barbican_keystone_listener_image: "{{ docker_registry }}/{{ docker_namespace }}/barbican-keystone-listener"
+barbican_keystone_listener_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/barbican-keystone-listener"
 barbican_keystone_listener_tag: "{{ barbican_tag }}"
-barbican_worker_image: "{{ docker_registry }}/{{ docker_namespace }}/barbican-worker"
+barbican_worker_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/barbican-worker"
 barbican_worker_tag: "{{ barbican_tag }}"
 
 ##############################
 # role: tempest
 
-tempest_image: "{{ docker_registry }}/{{ docker_namespace }}/tempest"
+tempest_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/tempest"
 tempest_tag: "{{ kolla_tempest_version|default(kolla_image_version) }}"
