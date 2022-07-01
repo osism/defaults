@@ -672,7 +672,7 @@ ironic_conductor_tag: "{{ ironic_tag }}"
 ironic_pxe_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-pxe"
 ironic_pxe_tag: "{{ ironic_tag }}"
 ironic_inspector_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-inspector"
-ironic_inspector_tag: "{{ ironic_tag }}"
+ironic_inspector_tag: "{{ kolla_ironic_inspector_version|default(kolla_image_version) }}"
 ironic_dnsmasq_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/dnsmasq"
 ironic_dnsmasq_tag: "{{ kolla_dnsmasq_version|default(kolla_image_version) }}"
 
