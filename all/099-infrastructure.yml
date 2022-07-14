@@ -81,3 +81,8 @@ dnsdist_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface
 # cgit
 
 cgit_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# squid
+
+squid_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
