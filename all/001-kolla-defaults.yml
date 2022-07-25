@@ -10,7 +10,7 @@ container_config_directory: "/var/lib/kolla/config_files"
 node_config: "{{ CONFIG_DIR | default('/etc/kolla') }}"
 
 # The directory to merge custom config files the kolla's config files
-node_custom_config: "/etc/kolla/config"
+node_custom_config: "{{ node_config }}/config"
 
 # The directory to store the config files on the destination node
 node_config_directory: "/etc/kolla"
@@ -45,7 +45,7 @@ config_strategy: "COPY_ALWAYS"
 # Valid options are ['centos', 'debian', 'rhel', 'ubuntu']
 kolla_base_distro: "centos"
 # Valid options are [ binary, source ]
-kolla_install_type: "binary"
+kolla_install_type: "source"
 
 kolla_internal_vip_address: "{{ kolla_internal_address | default('') }}"
 kolla_internal_fqdn: "{{ kolla_internal_vip_address }}"
@@ -85,15 +85,6 @@ container_proxy:
 # to the api_interface.  Allow the bind address to be an override.
 api_interface_address: "{{ 'api' | kolla_address }}"
 
-################
-# Chrony options
-################
-# A list contains ntp servers
-external_ntp_servers:
-  - 0.pool.ntp.org
-  - 1.pool.ntp.org
-  - 2.pool.ntp.org
-  - 3.pool.ntp.org
 
 ####################
 # Database options
@@ -109,15 +100,9 @@ database_max_pool_size: 1
 # Docker options
 ####################
 docker_registry_email:
-
-# NOTE: This value differs from the defaults and is explicitly commented here.
-# docker_registry:
-
-# NOTE: This value differs from the defaults and is explicitly commented here.
-# docker_namespace: "kolla"
-
 docker_registry_username:
-docker_registry_insecure: "{{ 'yes' if docker_registry else 'no' }}"
+# Please read the docs carefully before applying docker_registry_insecure.
+docker_registry_insecure: "no"
 docker_runtime_directory: ""
 # Docker client timeout in seconds.
 docker_client_timeout: 120
@@ -203,7 +188,6 @@ keepalived_virtual_router_id: "51"
 #######################
 # Elasticsearch Options
 #######################
-es_heap_size: "1G"
 elasticsearch_datadir_volume: "elasticsearch"
 
 elasticsearch_internal_endpoint: "{{ internal_protocol }}://{{ elasticsearch_address | put_address_in_context('url') }}:{{ elasticsearch_port }}"
@@ -243,6 +227,7 @@ network_interface: "eth0"
 neutron_external_interface: "eth1"
 kolla_external_vip_interface: "{{ network_interface }}"
 api_interface: "{{ network_interface }}"
+# NOTE: storage_interface is deprecated, please set swift_storage_interface directly instead
 storage_interface: "{{ network_interface }}"
 swift_storage_interface: "{{ storage_interface }}"
 swift_replication_interface: "{{ swift_storage_interface }}"
@@ -272,7 +257,7 @@ tunnel_interface_address: "{{ 'tunnel' | kolla_address }}"
 octavia_network_interface_address: "{{ 'octavia_network' | kolla_address }}"
 dpdk_tunnel_interface_address: "{{ 'dpdk_tunnel' | kolla_address }}"
 
-# Valid options are [ openvswitch, ovn, linuxbridge, vmware_nsxv, vmware_nsxv3, vmware_dvs ]
+# Valid options are [ openvswitch, ovn, linuxbridge, vmware_nsxv, vmware_nsxv3, vmware_nsxp, vmware_dvs ]
 neutron_plugin_agent: "openvswitch"
 
 # Valid options are [ internal, infoblox ]
@@ -365,7 +350,7 @@ ironic_inspector_internal_fqdn: "{{ kolla_internal_fqdn }}"
 ironic_inspector_external_fqdn: "{{ kolla_external_fqdn }}"
 ironic_inspector_port: "5050"
 ironic_inspector_listen_port: "{{ ironic_inspector_port }}"
-ironic_ipxe_port: "8089"
+ironic_http_port: "8089"
 
 iscsi_port: "3260"
 
@@ -408,7 +393,6 @@ monasca_api_port: "8070"
 monasca_log_api_port: "{{ monasca_api_port }}"
 monasca_agent_forwarder_port: "17123"
 monasca_agent_statsd_port: "8125"
-monasca_grafana_server_port: "3001"
 
 murano_api_port: "8082"
 
@@ -454,8 +438,6 @@ outward_rabbitmq_prometheus_port: "15694"
 
 ovsdb_port: "6640"
 
-panko_api_port: "8977"
-
 placement_internal_fqdn: "{{ kolla_internal_fqdn }}"
 placement_external_fqdn: "{{ kolla_external_fqdn }}"
 # Default Placement API port of 8778 already in use
@@ -472,6 +454,7 @@ prometheus_rabbitmq_exporter_port: "{{ rabbitmq_prometheus_port }}"
 prometheus_cadvisor_port: "18080"
 prometheus_fluentd_integration_port: "24231"
 prometheus_libvirt_exporter_port: "9177"
+prometheus_etcd_integration_port: "{{ etcd_client_port }}"
 
 # Prometheus alertmanager ports
 prometheus_alertmanager_port: "9093"
@@ -552,16 +535,12 @@ admin_protocol: "{{ 'https' if kolla_enable_tls_internal | bool else 'http' }}"
 ####################
 # OpenStack options
 ####################
-openstack_release: "wallaby"
 # Docker image tag used by default.
 openstack_tag: "{{ openstack_release ~ openstack_tag_suffix }}"
 openstack_tag_suffix: ""
 openstack_logging_debug: "False"
 
 openstack_region_name: "RegionOne"
-
-# Variable defined the pin_release_version, apply for rolling upgrade process
-openstack_previous_release_name: "victoria"
 
 # A list of policy file formats that are supported by Oslo.policy
 supported_policy_format_list:
@@ -593,7 +572,7 @@ openstack_cacert: ""
 # glance, keystone, neutron, nova, heat, and horizon.
 enable_openstack_core: "yes"
 
-# These roles are required for Kolla to be operational, however a savvy deployer
+# These roles are required for Kolla to be operation, however a savvy deployer
 # could disable some of these required roles and run their own services.
 enable_glance: "{{ enable_openstack_core | bool }}"
 enable_haproxy: "yes"
@@ -619,11 +598,11 @@ enable_barbican: "no"
 enable_blazar: "no"
 enable_ceilometer: "no"
 enable_ceilometer_ipmi: "no"
+enable_ceilometer_prometheus_pushgateway: "no"
 enable_cells: "no"
 enable_central_logging: "no"
 enable_ceph_rgw: "no"
 enable_ceph_rgw_loadbalancer: "{{ enable_ceph_rgw | bool }}"
-enable_chrony: "no"
 enable_cinder: "no"
 enable_cinder_backup: "yes"
 enable_cinder_backend_hnas_nfs: "no"
@@ -668,10 +647,10 @@ enable_horizon_watcher: "{{ enable_watcher | bool }}"
 enable_horizon_zun: "{{ enable_zun | bool }}"
 enable_influxdb: "{{ enable_monasca | bool or (enable_cloudkitty | bool and cloudkitty_storage_backend == 'influxdb') }}"
 enable_ironic: "no"
-enable_ironic_ipxe: "no"
 enable_ironic_neutron_agent: "{{ enable_neutron | bool and enable_ironic | bool }}"
+# TODO(yoctozepto): Remove the deprecated enable_ironic_pxe_uefi in Zed.
 enable_ironic_pxe_uefi: "no"
-enable_iscsid: "{{ (enable_cinder | bool and enable_cinder_backend_iscsi | bool) or enable_ironic | bool }}"
+enable_iscsid: "{{ enable_cinder | bool and enable_cinder_backend_iscsi | bool }}"
 enable_kafka: "{{ enable_monasca | bool }}"
 enable_kuryr: "no"
 enable_magnum: "no"
@@ -683,6 +662,8 @@ enable_manila_backend_cephfs_nfs: "no"
 enable_manila_backend_glusterfs_nfs: "no"
 enable_mariabackup: "no"
 enable_masakari: "no"
+enable_masakari_instancemonitor: "{{ enable_masakari | bool }}"
+enable_masakari_hostmonitor: "{{ enable_masakari | bool }}"
 enable_mistral: "no"
 enable_monasca: "no"
 enable_multipathd: "no"
@@ -702,6 +683,7 @@ enable_neutron_trunk: "no"
 enable_neutron_metering: "no"
 enable_neutron_infoblox_ipam_agent: "no"
 enable_neutron_port_forwarding: "no"
+enable_nova_libvirt_container: "{{ nova_compute_virt_type in ['kvm', 'qemu'] }}"
 enable_nova_serialconsole_proxy: "no"
 enable_nova_ssh: "yes"
 enable_octavia: "no"
@@ -710,11 +692,9 @@ enable_openvswitch: "{{ enable_neutron | bool and neutron_plugin_agent != 'linux
 enable_ovn: "{{ enable_neutron | bool and neutron_plugin_agent == 'ovn' }}"
 enable_ovs_dpdk: "no"
 enable_osprofiler: "no"
-enable_panko: "no"
 enable_placement: "{{ enable_nova | bool or enable_zun | bool }}"
 enable_prometheus: "no"
 enable_qdrouterd: "{{ 'yes' if om_rpc_transport == 'amqp' else 'no' }}"
-enable_rally: "no"
 enable_redis: "no"
 enable_sahara: "no"
 enable_senlin: "no"
@@ -726,11 +706,9 @@ enable_swift_s3api: "no"
 enable_swift_recon: "no"
 enable_tacker: "no"
 enable_telegraf: "no"
-enable_tempest: "no"
 enable_trove: "no"
 enable_trove_singletenant: "no"
 enable_vitrage: "no"
-enable_vmtp: "no"
 enable_watcher: "no"
 enable_zookeeper: "{{ enable_kafka | bool or enable_storm | bool }}"
 enable_zun: "no"
@@ -762,11 +740,9 @@ monasca_enable_alerting_pipeline: true
 # directly to Elasticsearch.
 monasca_ingest_control_plane_logs: true
 
-monasca_api_admin_base_endpoint: "{{ admin_protocol }}://{{ kolla_internal_fqdn  | put_address_in_context('url') }}:{{ monasca_api_port }}"
 monasca_api_internal_base_endpoint: "{{ internal_protocol }}://{{ kolla_internal_fqdn  | put_address_in_context('url') }}:{{ monasca_api_port }}"
 monasca_api_public_base_endpoint: "{{ public_protocol }}://{{ kolla_external_fqdn  | put_address_in_context('url') }}:{{ monasca_api_port }}"
 
-monasca_log_api_admin_endpoint: "{{ admin_protocol }}://{{ kolla_internal_fqdn  | put_address_in_context('url') }}:{{ monasca_log_api_port }}"
 monasca_log_api_internal_endpoint: "{{ internal_protocol }}://{{ kolla_internal_fqdn  | put_address_in_context('url') }}:{{ monasca_log_api_port }}"
 monasca_log_api_public_endpoint: "{{ public_protocol }}://{{ kolla_external_fqdn  | put_address_in_context('url') }}:{{ monasca_log_api_port }}"
 
@@ -804,7 +780,8 @@ enable_kibana: "{{ 'yes' if enable_central_logging | bool or enable_monasca | bo
 ####################
 # Redis options
 ####################
-redis_connection_string: "redis://{% for host in groups['redis'] %}{% if host == groups['redis'][0] %}admin:{{ redis_master_password }}@{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ redis_sentinel_port }}?sentinel=kolla{% else %}&sentinel_fallback={{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ redis_sentinel_port }}{% endif %}{% endfor %}&db=0&socket_timeout=60&retry_on_timeout=yes"
+redis_connection_string: "redis://{% for host in groups['redis'] %}{% if host == groups['redis'][0] %}admin:{{ redis_master_password }}@{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ redis_sentinel_port }}?sentinel=kolla{% else %}&sentinel_fallback={{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ redis_sentinel_port }}{% endif %}{% endfor %}{{ redis_connection_string_extras }}"
+redis_connection_string_extras: "&db=0&socket_timeout=60&retry_on_timeout=yes"
 
 ####################
 # Osprofiler options
@@ -928,7 +905,6 @@ glance_api_hosts: "{{ [groups['glance-api']|first] if glance_backend_file | bool
 # NOTE(mnasiadka): For use in common role
 glance_enable_tls_backend: "{{ kolla_enable_tls_backend }}"
 
-glance_admin_endpoint: "{{ admin_protocol }}://{{ glance_internal_fqdn | put_address_in_context('url') }}:{{ glance_api_port }}"
 glance_internal_endpoint: "{{ internal_protocol }}://{{ glance_internal_fqdn | put_address_in_context('url') }}:{{ glance_api_port }}"
 glance_public_endpoint: "{{ public_protocol }}://{{ glance_external_fqdn | put_address_in_context('url') }}:{{ glance_api_port }}"
 
@@ -939,7 +915,6 @@ glance_public_endpoint: "{{ public_protocol }}://{{ glance_external_fqdn | put_a
 barbican_crypto_plugin: "simple_crypto"
 barbican_library_path: "/usr/lib/libCryptoki2_64.so"
 
-barbican_admin_endpoint: "{{ admin_protocol }}://{{ barbican_internal_fqdn | put_address_in_context('url') }}:{{ barbican_api_port }}"
 barbican_internal_endpoint: "{{ internal_protocol }}://{{ barbican_internal_fqdn | put_address_in_context('url') }}:{{ barbican_api_port }}"
 barbican_public_endpoint: "{{ public_protocol }}://{{ barbican_external_fqdn | put_address_in_context('url') }}:{{ barbican_api_port }}"
 
@@ -958,6 +933,7 @@ gnocchi_metric_datadir_volume: "gnocchi"
 #################################
 cinder_backend_ceph: "no"
 cinder_backend_vmwarevc_vmdk: "no"
+cinder_backend_vmware_vstorage_object: "no"
 cinder_volume_group: "cinder-volumes"
 cinder_target_helper: "{{ 'lioadm' if ansible_facts.os_family == 'RedHat' else 'tgtadm' }}"
 # Valid options are [ '', redis, etcd ]
@@ -971,8 +947,6 @@ cinder_backup_mount_options_nfs: ""
 #######################
 # Cloudkitty options
 #######################
-# Valid option is gnocchi
-cloudkitty_collector_backend: "gnocchi"
 # Valid options are 'sqlalchemy' or 'influxdb'. The default value is
 # 'influxdb', which matches the default in Cloudkitty since the Stein release.
 # When the backend is "influxdb", we also enable Influxdb.
@@ -985,15 +959,18 @@ cloudkitty_storage_backend: "influxdb"
 #######################
 # Valid options are [ bind9, infoblox ]
 designate_backend: "bind9"
-designate_ns_record: "sample.openstack.org"
+designate_ns_record:
+  - "ns1.example.org"
 designate_backend_external: "no"
 designate_backend_external_bind9_nameservers: ""
 # Valid options are [ '', redis ]
 designate_coordination_backend: "{{ 'redis' if enable_redis|bool else '' }}"
 
-designate_admin_endpoint: "{{ admin_protocol }}://{{ designate_internal_fqdn | put_address_in_context('url') }}:{{ designate_api_port }}"
 designate_internal_endpoint: "{{ internal_protocol }}://{{ designate_internal_fqdn | put_address_in_context('url') }}:{{ designate_api_port }}"
 designate_public_endpoint: "{{ public_protocol }}://{{ designate_external_fqdn | put_address_in_context('url') }}:{{ designate_api_port }}"
+
+designate_enable_notifications_sink: "yes"
+designate_notifications_topic_name: "notifications_designate"
 
 #######################
 # Neutron options
@@ -1019,7 +996,6 @@ neutron_legacy_iptables: "no"
 # Enable distributed floating ip for OVN deployments
 neutron_ovn_distributed_fip: "no"
 
-neutron_admin_endpoint: "{{ admin_protocol }}://{{ neutron_internal_fqdn | put_address_in_context('url') }}:{{ neutron_server_port }}"
 neutron_internal_endpoint: "{{ internal_protocol }}://{{ neutron_internal_fqdn | put_address_in_context('url') }}:{{ neutron_server_port }}"
 neutron_public_endpoint: "{{ public_protocol }}://{{ neutron_external_fqdn | put_address_in_context('url') }}:{{ neutron_server_port }}"
 
@@ -1036,7 +1012,7 @@ nova_backend_ceph: "no"
 nova_backend: "{{ 'rbd' if nova_backend_ceph | bool else 'default' }}"
 # Valid options are [ kvm, qemu, vmware ]
 nova_compute_virt_type: "kvm"
-nova_instance_datadir_volume: "nova_compute"
+nova_instance_datadir_volume: "{{ 'nova_compute' if enable_nova_libvirt_container | bool else '/var/lib/nova' }}"
 nova_safety_upgrade: "no"
 # Valid options are [ none, novnc, spice ]
 nova_console: "novnc"
@@ -1136,15 +1112,16 @@ enable_prometheus_elasticsearch_exporter: "{{ enable_prometheus | bool and enabl
 enable_prometheus_blackbox_exporter: "{{ enable_prometheus | bool }}"
 enable_prometheus_rabbitmq_exporter: "{{ enable_prometheus | bool and enable_rabbitmq | bool }}"
 enable_prometheus_libvirt_exporter: "{{ enable_prometheus | bool and enable_nova | bool and nova_compute_virt_type in ['kvm', 'qemu'] }}"
+enable_prometheus_etcd_integration: "{{ enable_prometheus | bool and enable_etcd | bool }}"
 
 prometheus_alertmanager_user: "admin"
 prometheus_openstack_exporter_interval: "60s"
-prometheus_openstack_exporter_timeout: "10s"
+prometheus_openstack_exporter_timeout: "45s"
 prometheus_elasticsearch_exporter_interval: "60s"
 prometheus_cmdline_extras:
 prometheus_ceph_mgr_exporter_endpoints: []
 prometheus_openstack_exporter_endpoint_type: "internal"
-prometheus_openstack_exporter_compute_api_version: "latest"
+prometheus_openstack_exporter_compute_api_version: "2.1"
 prometheus_libvirt_exporter_interval: "60s"
 
 ############
@@ -1190,7 +1167,6 @@ distro_python_version: "{{ distro_python_version_map[kolla_base_distro] }}"
 # telemetry data.
 telegraf_enable_docker_input: "no"
 
-vitrage_admin_endpoint: "{{ admin_protocol }}://{{ kolla_internal_fqdn | put_address_in_context('url') }}:{{ vitrage_api_port }}"
 vitrage_internal_endpoint: "{{ internal_protocol }}://{{ kolla_internal_fqdn | put_address_in_context('url') }}:{{ vitrage_api_port }}"
 vitrage_public_endpoint: "{{ public_protocol }}://{{ kolla_external_fqdn | put_address_in_context('url') }}:{{ vitrage_api_port }}"
 
@@ -1203,7 +1179,6 @@ grafana_public_endpoint: "{{ public_protocol }}://{{ kolla_external_fqdn | put_a
 #############
 # Ironic
 #############
-ironic_admin_endpoint: "{{ admin_protocol }}://{{ ironic_internal_fqdn | put_address_in_context('url') }}:{{ ironic_api_port }}"
 ironic_internal_endpoint: "{{ internal_protocol }}://{{ ironic_internal_fqdn | put_address_in_context('url') }}:{{ ironic_api_port }}"
 ironic_public_endpoint: "{{ public_protocol }}://{{ ironic_external_fqdn | put_address_in_context('url') }}:{{ ironic_api_port }}"
 
@@ -1212,7 +1187,6 @@ ironic_public_endpoint: "{{ public_protocol }}://{{ ironic_external_fqdn | put_a
 ########
 swift_internal_base_endpoint: "{{ internal_protocol }}://{{ swift_internal_fqdn | put_address_in_context('url') }}:{{ swift_proxy_server_port }}"
 
-swift_admin_endpoint: "{{ admin_protocol }}://{{ swift_internal_fqdn | put_address_in_context('url') }}:{{ swift_proxy_server_port }}/v1"
 swift_internal_endpoint: "{{ swift_internal_base_endpoint }}/v1/AUTH_%(tenant_id)s"
 swift_public_endpoint: "{{ public_protocol }}://{{ swift_external_fqdn | put_address_in_context('url') }}:{{ swift_proxy_server_port }}/v1/AUTH_%(tenant_id)s"
 
@@ -1222,7 +1196,7 @@ swift_public_endpoint: "{{ public_protocol }}://{{ swift_external_fqdn | put_add
 # Whether to run Kolla-Ansible's automatic configuration for Octavia.
 # NOTE: if you upgrade from Ussuri, you must set `octavia_auto_configure` to `no`
 # and keep your other Octavia config like before.
-octavia_auto_configure: "yes"
+octavia_auto_configure: true
 
 # Octavia network type options are [ tenant, provider ]
 # * tenant indicates that we will create a tenant network and a network
@@ -1232,7 +1206,6 @@ octavia_auto_configure: "yes"
 #   on the Octavia woker nodes on the same provider network.
 octavia_network_type: "provider"
 
-octavia_admin_endpoint: "{{ admin_protocol }}://{{ octavia_internal_fqdn | put_address_in_context('url') }}:{{ octavia_api_port }}"
 octavia_internal_endpoint: "{{ internal_protocol }}://{{ octavia_internal_fqdn | put_address_in_context('url') }}:{{ octavia_api_port }}"
 octavia_public_endpoint: "{{ public_protocol }}://{{ octavia_external_fqdn | put_address_in_context('url') }}:{{ octavia_api_port }}"
 
@@ -1284,3 +1257,16 @@ keystone_identity_mappings: []
 
 # this is UDP port
 hacluster_corosync_port: 5405
+
+# NOTE: Subsequent parameters were removed with Yoga and are kept as backward compatibility.
+
+ironic_ipxe_port: "8089"
+monasca_grafana_server_port: "3001"
+panko_api_port: "8977"
+
+enable_panko: "no"
+enable_rally: "no"
+enable_tempest: "no"
+enable_vmtp: "no"
+
+cloudkitty_collector_backend: "gnocchi"
