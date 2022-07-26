@@ -1270,3 +1270,12 @@ enable_tempest: "no"
 enable_vmtp: "no"
 
 cloudkitty_collector_backend: "gnocchi"
+
+barbican_admin_endpoint: "{{ admin_protocol }}://{{ barbican_internal_fqdn | put_address_in_context('url') }}:{{ barbican_api_port }}"
+designate_admin_endpoint: "{{ admin_protocol }}://{{ designate_internal_fqdn | put_address_in_context('url') }}:{{ designate_api_port }}"
+glance_admin_endpoint: "{{ admin_protocol }}://{{ glance_internal_fqdn | put_address_in_context('url') }}:{{ glance_api_port }}"
+ironic_admin_endpoint: "{{ admin_protocol }}://{{ ironic_internal_fqdn | put_address_in_context('url') }}:{{ ironic_api_port }}"
+neutron_admin_endpoint: "{{ admin_protocol }}://{{ neutron_internal_fqdn | put_address_in_context('url') }}:{{ neutron_server_port }}"
+octavia_admin_endpoint: "{{ admin_protocol }}://{{ octavia_internal_fqdn | put_address_in_context('url') }}:{{ octavia_api_port }}"
+swift_admin_endpoint: "{{ admin_protocol }}://{{ swift_internal_fqdn | put_address_in_context('url') }}:{{ swift_proxy_server_port }}/v1"
+vitrage_admin_endpoint: "{{ admin_protocol }}://{{ kolla_internal_fqdn | put_address_in_context('url') }}:{{ vitrage_api_port }}"
