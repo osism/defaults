@@ -84,3 +84,9 @@ es_java_opts: "-Dlog4j2.formatMsgNoLookups=true {% if es_heap_size %}-Xms{{ es_h
 
 # rolling upgrades
 glance_enable_rolling_upgrade: "yes"
+
+##########################################################
+# Bugfixes
+
+# NOTE: https://github.com/osism/issues/issues/231
+ceilometer_central_enable_healthchecks: "no"
