@@ -777,6 +777,7 @@ enable_elasticsearch: "{{ 'yes' if enable_central_logging | bool or enable_ospro
 enable_elasticsearch_curator: "no"
 
 enable_kibana: "{{ 'yes' if enable_central_logging | bool or enable_monasca | bool else 'no' }}"
+enable_kibana_external: "{{ enable_kibana | bool }}"
 
 ####################
 # Redis options
