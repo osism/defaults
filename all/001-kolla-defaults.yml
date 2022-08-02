@@ -1263,6 +1263,7 @@ hacluster_corosync_port: 5405
 
 # NOTE: Subsequent parameters were removed with Yoga and are kept as backward compatibility.
 
+enable_ironic_ipxe: "no"
 ironic_ipxe_port: "8089"
 monasca_grafana_server_port: "3001"
 panko_api_port: "8977"
