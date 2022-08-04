@@ -18,6 +18,8 @@ enable_grafana: "yes"
 # openstack
 
 enable_cinder: "yes"
+enable_designate: "yes"
+enable_octavia: "yes"
 
 ##########################################################
 # Set default configuartions
