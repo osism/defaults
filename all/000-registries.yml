@@ -15,6 +15,7 @@ docker_registry_nexus: index.docker.io
 docker_registry_openstack_health_monitor: quay.io
 docker_registry_openstackclient: quay.io
 docker_registry_patchman: quay.io
+docker_registry_phpmyadmin: index.docker.io
 docker_registry_service: index.docker.io
 docker_registry_squid: index.docker.io
 docker_registry_traefik: index.docker.io
