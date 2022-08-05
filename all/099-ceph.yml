@@ -1,10 +1,5 @@
 ---
 ##########################
-# docker
-
-docker_registry: quay.io
-
-##########################
 # generic
 
 ceph_share_directory: /share
