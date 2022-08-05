@@ -7,6 +7,7 @@ docker_registry: quay.io
 ##########################
 # generic
 
+ceph_share_directory: /share
 containerized_deployment: true
 fetch_directory: /share
 generate_fsid: false
