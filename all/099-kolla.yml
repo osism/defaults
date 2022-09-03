@@ -96,3 +96,6 @@ glance_enable_rolling_upgrade: "yes"
 
 # NOTE: https://github.com/osism/issues/issues/231
 ceilometer_central_enable_healthchecks: "no"
+
+# NOTE: https://github.com/osism/issues/issues/288
+gnocchi_statsd_enable_healthchecks: "no"
