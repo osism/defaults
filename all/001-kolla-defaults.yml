@@ -1077,6 +1077,9 @@ ceph_gnocchi_keyring: "ceph.client.gnocchi.keyring"
 ceph_manila_keyring: "ceph.client.manila.keyring"
 ceph_nova_keyring: "{{ ceph_cinder_keyring }}"
 
+# Copy the Cinder keyring in Nova independent of values in nova_backend or cinder_backend_ceph
+external_ceph_always_copy_cinder_keyring: "no"
+
 #####################
 # VMware support
 ######################
