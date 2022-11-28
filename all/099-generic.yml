@@ -57,6 +57,7 @@ required_packages_default:
   - pciutils
   - pstack
   - pv
+  - python-is-python3
   - rsyslog
   - selinux-utils
   - socat
