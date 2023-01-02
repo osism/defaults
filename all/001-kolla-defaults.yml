@@ -97,6 +97,11 @@ database_max_pool_size: 1
 
 
 ####################
+# Container engine options
+####################
+kolla_container_engine: "docker"
+
+####################
 # Docker options
 ####################
 docker_registry_email:
@@ -192,6 +197,15 @@ elasticsearch_datadir_volume: "elasticsearch"
 
 elasticsearch_internal_endpoint: "{{ internal_protocol }}://{{ elasticsearch_address | put_address_in_context('url') }}:{{ elasticsearch_port }}"
 
+#####################
+## Opensearch Options
+#####################
+opensearch_datadir_volume: "opensearch"
+
+opensearch_internal_endpoint: "{{ internal_protocol }}://{{ opensearch_address | put_address_in_context('url') }}:{{ opensearch_port }}"
+opensearch_dashboards_user: "opensearch"
+opensearch_log_index_prefix: "{{ kibana_log_prefix if kibana_log_prefix is defined else 'flog' }}"
+
 ###################
 # Messaging options
 ###################
@@ -227,9 +241,7 @@ network_interface: "eth0"
 neutron_external_interface: "eth1"
 kolla_external_vip_interface: "{{ network_interface }}"
 api_interface: "{{ network_interface }}"
-# NOTE: storage_interface is deprecated, please set swift_storage_interface directly instead
-storage_interface: "{{ network_interface }}"
-swift_storage_interface: "{{ storage_interface }}"
+swift_storage_interface: "{{ network_interface }}"
 swift_replication_interface: "{{ swift_storage_interface }}"
 migration_interface: "{{ api_interface }}"
 tunnel_interface: "{{ network_interface }}"
@@ -237,6 +249,7 @@ octavia_network_interface: "{{ 'o-hm0' if octavia_network_type == 'tenant' else 
 bifrost_network_interface: "{{ network_interface }}"
 dns_interface: "{{ network_interface }}"
 dpdk_tunnel_interface: "{{ neutron_external_interface }}"
+ironic_http_interface: "{{ api_interface }}"
 
 # Configure the address family (AF) per network.
 # Valid options are [ ipv4, ipv6 ]
@@ -251,13 +264,17 @@ octavia_network_address_family: "{{ api_address_family }}"
 bifrost_network_address_family: "{{ network_address_family }}"
 dns_address_family: "{{ network_address_family }}"
 dpdk_tunnel_address_family: "{{ network_address_family }}"
+ironic_http_address_family: "{{ api_address_family }}"
 
 migration_interface_address: "{{ 'migration' | kolla_address }}"
 tunnel_interface_address: "{{ 'tunnel' | kolla_address }}"
 octavia_network_interface_address: "{{ 'octavia_network' | kolla_address }}"
 dpdk_tunnel_interface_address: "{{ 'dpdk_tunnel' | kolla_address }}"
+ironic_http_interface_address: "{{ 'ironic_http' | kolla_address }}"
 
 # Valid options are [ openvswitch, ovn, linuxbridge, vmware_nsxv, vmware_nsxv3, vmware_nsxp, vmware_dvs ]
+# Do note linuxbridge is *EXPERIMENTAL* in Neutron since Zed and it requires extra tweaks to config to be usable.
+# For details, see: https://docs.openstack.org/neutron/latest/admin/config-experimental-framework.html
 neutron_plugin_agent: "openvswitch"
 
 # Valid options are [ internal, infoblox ]
@@ -381,7 +398,10 @@ mariadb_default_database_shard_hosts: "{% set default_shard = [] %}{% for host i
 mariadb_shard_id: "{{ mariadb_default_database_shard_id }}"
 mariadb_shard_name: "shard_{{ mariadb_shard_id }}"
 mariadb_shard_group: "mariadb_{{ mariadb_shard_name }}"
-mariadb_loadbalancer: "haproxy"
+mariadb_loadbalancer: "{{ 'proxysql' if enable_proxysql | bool else 'haproxy' }}"
+mariadb_shard_root_user_prefix: "root_shard_"
+mariadb_shard_backup_user_prefix: "backup_shard_"
+mariadb_shards_info: "{{ groups['mariadb'] | database_shards_info() }}"
 
 masakari_api_port: "15868"
 
@@ -425,6 +445,13 @@ octavia_api_port: "9876"
 octavia_api_listen_port: "{{ octavia_api_port }}"
 octavia_health_manager_port: "5555"
 
+# NOTE: If an external ElasticSearch cluster port is specified,
+# we default to using that port in services with ElasticSearch
+# endpoints. This is for backwards compatibility.
+opensearch_port: "{{ elasticsearch_port | default('9200') }}"
+opensearch_dashboards_port: "5601"
+opensearch_dashboards_port_external: "{{ opensearch_dashboards_port }}"
+
 ovn_nb_db_port: "6641"
 ovn_sb_db_port: "6642"
 ovn_nb_connection: "{% for host in groups['ovn-nb-db'] %}tcp:{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ ovn_nb_db_port }}{% if not loop.last %},{% endif %}{% endfor %}"
@@ -460,6 +487,9 @@ prometheus_etcd_integration_port: "{{ etcd_client_port }}"
 prometheus_alertmanager_port: "9093"
 prometheus_alertmanager_cluster_port: "9094"
 
+# Prometheus MSTeams port
+prometheus_msteams_port: "9095"
+
 # Prometheus openstack-exporter ports
 prometheus_openstack_exporter_port: "9198"
 prometheus_elasticsearch_exporter_port: "9108"
@@ -467,6 +497,7 @@ prometheus_elasticsearch_exporter_port: "9108"
 # Prometheus blackbox-exporter ports
 prometheus_blackbox_exporter_port: "9115"
 
+proxysql_admin_port: "6032"
 qdrouterd_port: "31459"
 
 rabbitmq_port: "{{ '5671' if rabbitmq_enable_tls | bool else '5672' }}"
@@ -517,6 +548,8 @@ trove_api_port: "8779"
 
 watcher_api_port: "9322"
 
+venus_api_port: "10010"
+
 zookeeper_client_port: "2181"
 zookeeper_peer_port: "2888"
 zookeeper_quorum_port: "3888"
@@ -530,7 +563,14 @@ vitrage_api_port: "8999"
 
 public_protocol: "{{ 'https' if kolla_enable_tls_external | bool else 'http' }}"
 internal_protocol: "{{ 'https' if kolla_enable_tls_internal | bool else 'http' }}"
-admin_protocol: "{{ 'https' if kolla_enable_tls_internal | bool else 'http' }}"
+# TODO(yoctozepto): Remove after Zed. Kept for compatibility only.
+admin_protocol: "{{ internal_protocol }}"
+
+##################
+# Firewall options
+##################
+enable_external_api_firewalld: "false"
+external_api_firewalld_zone: "public"
 
 ####################
 # OpenStack options
@@ -610,6 +650,9 @@ enable_cinder_backend_iscsi: "{{ enable_cinder_backend_lvm | bool }}"
 enable_cinder_backend_lvm: "no"
 enable_cinder_backend_nfs: "no"
 enable_cinder_backend_quobyte: "no"
+enable_cinder_backend_pure_iscsi: "no"
+enable_cinder_backend_pure_fc: "no"
+enable_cinder_backend_pure_roce: "no"
 enable_cloudkitty: "no"
 enable_collectd: "no"
 enable_cyborg: "no"
@@ -619,7 +662,7 @@ enable_fluentd: "yes"
 enable_freezer: "no"
 enable_gnocchi: "no"
 enable_gnocchi_statsd: "no"
-enable_grafana: "{{ enable_monasca | bool }}"
+enable_grafana: "no"
 enable_grafana_external: "{{ enable_grafana | bool }}"
 enable_hacluster: "no"
 enable_heat: "{{ enable_openstack_core | bool }}"
@@ -695,6 +738,7 @@ enable_ovs_dpdk: "no"
 enable_osprofiler: "no"
 enable_placement: "{{ enable_nova | bool or enable_zun | bool }}"
 enable_prometheus: "no"
+enable_proxysql: "no"
 enable_qdrouterd: "{{ 'yes' if om_rpc_transport == 'amqp' else 'no' }}"
 enable_redis: "no"
 enable_sahara: "no"
@@ -709,6 +753,7 @@ enable_tacker: "no"
 enable_telegraf: "no"
 enable_trove: "no"
 enable_trove_singletenant: "no"
+enable_venus: "no"
 enable_vitrage: "no"
 enable_watcher: "no"
 enable_zookeeper: "{{ enable_kafka | bool or enable_storm | bool }}"
@@ -778,6 +823,14 @@ enable_elasticsearch_curator: "no"
 
 enable_kibana: "{{ 'yes' if enable_central_logging | bool or enable_monasca | bool else 'no' }}"
 enable_kibana_external: "{{ enable_kibana | bool }}"
+
+# NOTE: If an external ElasticSearch cluster address is configured, all
+# services with ElasticSearch endpoints should be configured to log
+# to the external cluster by default. This is for backwards compatibility.
+opensearch_address: "{{ elasticsearch_address if elasticsearch_address is defined else kolla_internal_fqdn }}"
+enable_opensearch: "{{ enable_central_logging | bool or enable_osprofiler | bool or enable_skydive | bool or (enable_cloudkitty | bool and cloudkitty_storage_backend == 'elasticsearch') }}"
+enable_opensearch_dashboards: "{{ enable_opensearch | bool }}"
+enable_opensearch_dashboards_external: "{{ enable_opensearch_dashboards | bool }}"
 
 ####################
 # Redis options
@@ -855,7 +908,8 @@ kibana_log_prefix: "flog"
 keystone_internal_fqdn: "{{ kolla_internal_fqdn }}"
 keystone_external_fqdn: "{{ kolla_external_fqdn }}"
 
-keystone_admin_url: "{{ admin_protocol }}://{{ keystone_internal_fqdn | put_address_in_context('url') }}:{{ keystone_admin_port }}"
+# TODO(yoctozepto): Remove after Zed. Kept for compatibility only.
+keystone_admin_url: "{{ keystone_internal_url }}"
 keystone_internal_url: "{{ internal_protocol }}://{{ keystone_internal_fqdn | put_address_in_context('url') }}:{{ keystone_public_port }}"
 keystone_public_url: "{{ public_protocol }}://{{ keystone_external_fqdn | put_address_in_context('url') }}:{{ keystone_public_port }}"
 
@@ -885,7 +939,7 @@ keystone_default_user_role: "_member_"
 # OpenStack authentication string. You should only need to override these if you
 # are changing the admin tenant/project or user.
 openstack_auth:
-  auth_url: "{{ keystone_admin_url }}"
+  auth_url: "{{ keystone_internal_url }}"
   username: "{{ keystone_admin_user }}"
   password: "{{ keystone_admin_password }}"
   user_domain_name: "{{ default_user_domain_name }}"
@@ -971,7 +1025,7 @@ designate_coordination_backend: "{{ 'redis' if enable_redis|bool else '' }}"
 designate_internal_endpoint: "{{ internal_protocol }}://{{ designate_internal_fqdn | put_address_in_context('url') }}:{{ designate_api_port }}"
 designate_public_endpoint: "{{ public_protocol }}://{{ designate_external_fqdn | put_address_in_context('url') }}:{{ designate_api_port }}"
 
-designate_enable_notifications_sink: "yes"
+designate_enable_notifications_sink: "{{ enable_designate | bool }}"
 designate_notifications_topic_name: "notifications_designate"
 
 #######################
@@ -1018,6 +1072,11 @@ nova_instance_datadir_volume: "{{ 'nova_compute' if enable_nova_libvirt_containe
 nova_safety_upgrade: "no"
 # Valid options are [ none, novnc, spice ]
 nova_console: "novnc"
+
+#######################
+# Nova Database
+#######################
+nova_database_shard_id: "{{ mariadb_default_database_shard_id | int }}"
 
 #######################
 # Murano options
@@ -1114,7 +1173,8 @@ enable_prometheus_alertmanager: "{{ enable_prometheus | bool }}"
 enable_prometheus_alertmanager_external: "{{ enable_prometheus_alertmanager | bool }}"
 enable_prometheus_ceph_mgr_exporter: "no"
 enable_prometheus_openstack_exporter: "{{ enable_prometheus | bool }}"
-enable_prometheus_elasticsearch_exporter: "{{ enable_prometheus | bool and enable_elasticsearch | bool }}"
+enable_prometheus_openstack_exporter_external: "no"
+enable_prometheus_elasticsearch_exporter: "{{ enable_prometheus | bool and enable_opensearch | bool }}"
 enable_prometheus_blackbox_exporter: "{{ enable_prometheus | bool }}"
 enable_prometheus_rabbitmq_exporter: "{{ enable_prometheus | bool and enable_rabbitmq | bool }}"
 enable_prometheus_libvirt_exporter: "{{ enable_prometheus | bool and enable_nova | bool and nova_compute_virt_type in ['kvm', 'qemu'] }}"
@@ -1122,14 +1182,16 @@ enable_prometheus_etcd_integration: "{{ enable_prometheus | bool and enable_etcd
 enable_prometheus_msteams: "no"
 
 prometheus_alertmanager_user: "admin"
-prometheus_openstack_exporter_interval: "60s"
+prometheus_scrape_interval: "60s"
+prometheus_openstack_exporter_interval: "{{ prometheus_scrape_interval }}"
 prometheus_openstack_exporter_timeout: "45s"
-prometheus_elasticsearch_exporter_interval: "60s"
+prometheus_elasticsearch_exporter_interval: "{{ prometheus_scrape_interval }}"
 prometheus_cmdline_extras:
 prometheus_ceph_mgr_exporter_endpoints: []
 prometheus_openstack_exporter_endpoint_type: "internal"
-prometheus_openstack_exporter_compute_api_version: "2.1"
+prometheus_openstack_exporter_compute_api_version: "latest"
 prometheus_libvirt_exporter_interval: "60s"
+prometheus_msteams_webhook_url:
 
 ############
 # Vitrage
@@ -1143,7 +1205,7 @@ enable_vitrage_prometheus_datasource: "{{ enable_prometheus | bool }}"
 influxdb_address: "{{ kolla_internal_fqdn }}"
 influxdb_datadir_volume: "influxdb"
 
-infuxdb_internal_endpoint: "{{ internal_protocol }}://{{ kolla_internal_fqdn | put_address_in_context('url') }}:{{ influxdb_http_port }}"
+influxdb_internal_endpoint: "{{ internal_protocol }}://{{ kolla_internal_fqdn | put_address_in_context('url') }}:{{ influxdb_http_port }}"
 
 #################
 # Kafka options
@@ -1159,13 +1221,22 @@ kafka_broker_count: "{{ groups['kafka'] | length }}"
 # Internal Image options
 #########################
 distro_python_version_map: {
-  "centos": "3.6",
+  "centos": "3.9",
   "debian": "3.9",
   "rhel": "3.6",
-  "ubuntu": "3.8"
+  "ubuntu": "3.10"
+}
+
+kolla_base_distro_version_default_map: {
+  "centos": "stream9",
+  "debian": "bullseye",
+  "rocky": "9",
+  "ubuntu": "jammy",
 }
 
 distro_python_version: "{{ distro_python_version_map[kolla_base_distro] }}"
+
+kolla_base_distro_version: "{{ kolla_base_distro_version_default_map[kolla_base_distro] }}"
 
 ##########
 # Telegraf
@@ -1189,6 +1260,9 @@ grafana_public_endpoint: "{{ public_protocol }}://{{ kolla_external_fqdn | put_a
 ironic_internal_endpoint: "{{ internal_protocol }}://{{ ironic_internal_fqdn | put_address_in_context('url') }}:{{ ironic_api_port }}"
 ironic_public_endpoint: "{{ public_protocol }}://{{ ironic_external_fqdn | put_address_in_context('url') }}:{{ ironic_api_port }}"
 
+# Valid options are [ '', redis, etcd ]
+ironic_coordination_backend: "{{ 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
+
 ########
 # Swift
 ########
@@ -1203,7 +1277,7 @@ swift_public_endpoint: "{{ public_protocol }}://{{ swift_external_fqdn | put_add
 # Whether to run Kolla-Ansible's automatic configuration for Octavia.
 # NOTE: if you upgrade from Ussuri, you must set `octavia_auto_configure` to `no`
 # and keep your other Octavia config like before.
-octavia_auto_configure: true
+octavia_auto_configure: "{{ 'amphora' in octavia_provider_drivers }}"
 
 # Octavia network type options are [ tenant, provider ]
 # * tenant indicates that we will create a tenant network and a network
