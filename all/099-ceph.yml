@@ -35,6 +35,7 @@ osd_group_name: ceph-osd
 rbdmirror_group_name: ceph-rbdmirror
 restapi_group_name: ceph-restapi
 rgw_group_name: ceph-rgw
+rgwloadbalancer_group_name: rgwloadbalancers
 
 ##########################
 # grafana
@@ -236,3 +237,16 @@ rgw_create_pools:
     pg_num: "{{ rgw_pool_default_pg_num }}"
     size: "{{ rgw_pool_default_size }}"
     type: replicated
+
+##########################
+# ceph-validate
+
+# NOTE: The following parameters are set to make the ceph-validate role happy.
+# These are not necessarily best practices, as some of the parameters are
+# directly dependent on the hardware used.
+
+ceph_docker_registry_auth: false
+ceph_origin: dummy
+ceph_repository: dummy
+journal_size: 5120
+radosgw_frontend_type: beast
