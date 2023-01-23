@@ -711,3 +711,11 @@ barbican_worker_tag: "{{ barbican_tag }}"
 
 tempest_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/tempest"
 tempest_tag: "{{ kolla_tempest_version|default(kolla_image_version) }}"
+
+##############################
+# role: opensearch
+
+opensearch_tag: "{{ kolla_opensearch_version|default(kolla_image_version) }}"
+opensearch_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/opensearch"
+opensearch_dashboards_tag: "{{ opensearch_tag }}"
+opensearch_dashboards_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/opensearch-dashboards"
