@@ -5,7 +5,7 @@ docker_registry: index.docker.io
 docker_registry_ansible: quay.io
 docker_registry_cephclient: quay.io
 docker_registry_cgit: quay.io
-docker_registry_dnsdist: index.docker.io
+docker_registry_dnsdist: quay.io
 docker_registry_docker_openpolicyagent: index.docker.io
 docker_registry_homer: quay.io
 docker_registry_keycloak: quay.io
