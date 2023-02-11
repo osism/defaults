@@ -395,6 +395,7 @@ mariadb_ist_port: "4568"
 mariadb_sst_port: "4444"
 mariadb_clustercheck_port: "4569"
 mariadb_monitor_user: "haproxy"
+mariadb_datadir_volume: "mariadb"
 mariadb_default_database_shard_id: 0
 mariadb_default_database_shard_hosts: "{% set default_shard = [] %}{% for host in groups['mariadb'] %}{% if hostvars[host]['mariadb_shard_id'] is not defined or hostvars[host]['mariadb_shard_id'] == mariadb_default_database_shard_id %}{{ default_shard.append(host) }}{% endif %}{% endfor %}{{ default_shard }}"
 mariadb_shard_id: "{{ mariadb_default_database_shard_id }}"
@@ -866,6 +867,7 @@ outward_rabbitmq_user: "openstack"
 rabbitmq_enable_tls: "no"
 # CA certificate bundle in RabbitMQ container.
 rabbitmq_cacert: "/etc/ssl/certs/{{ 'ca-certificates.crt' if kolla_base_distro in ['debian', 'ubuntu'] else 'ca-bundle.trust.crt' }}"
+rabbitmq_datadir_volume: "rabbitmq"
 
 ####################
 # Qdrouterd options
