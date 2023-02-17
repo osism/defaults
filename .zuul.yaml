@@ -1,9 +1,10 @@
 ---
 - project:
+    merge-mode: squash-merge
     default-branch: main
     check:
       jobs:
-        - tox-linters
+        - yamllint
     gate:
       jobs:
-        - tox-linters
+        - yamllint
