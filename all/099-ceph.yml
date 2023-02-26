@@ -24,6 +24,8 @@ osd_scenario: lvm
 ##########################
 # group names
 
+ceph_group_name: ceph
+
 client_group_name: ceph-client
 grafana_server_group_name: ceph-grafana-server
 iscsi_gw_group_name: ceph-iscsigw
