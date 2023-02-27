@@ -35,7 +35,7 @@ config_strategy: COPY_ALWAYS
 node_custom_config: "{{ configuration_directory }}/environments/kolla/files/overlays"
 
 docker_namespace: osism
-docker_registry_kolla: quay.io
+docker_registry_kolla: registry.airgap.services.osism.tech
 docker_restart_policy_retry: 0
 
 openstack_logging_debug: "False"  # NOTE: This has to be "False", not "false"!
