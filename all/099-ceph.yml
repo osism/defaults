@@ -32,6 +32,7 @@ iscsi_gw_group_name: ceph-iscsigw
 mds_group_name: ceph-mds
 mgr_group_name: ceph-mgr
 mon_group_name: ceph-mon
+monitoring_group_name: ceph-monitoring
 nfs_group_name: ceph-nfs
 osd_group_name: ceph-osd
 rbdmirror_group_name: ceph-rbdmirror
