@@ -54,6 +54,7 @@ horizon_backend_database: "yes"
 
 # keystone
 keystone_token_provider: "fernet"
+keystone_federation_oidc_response_type: "code"   # NOTE: use authorization code in keystone instead of default upstream
 
 # neutron
 
