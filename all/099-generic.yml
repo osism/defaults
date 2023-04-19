@@ -59,6 +59,7 @@ required_packages_default:
   - pv
   - python-is-python3
   - rsyslog
+  - "{{ 'rng-tools-debian' if ansible_distribution == 'ubuntu' and ansible_distribution_version == '22.04'  else 'rng-tools' }}"
   - selinux-utils
   - socat
   - ssh
