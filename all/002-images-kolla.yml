@@ -728,3 +728,15 @@ skyline_apiserver_tag: "{{ skyline_tag }}"
 skyline_apiserver_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/skyline-apiserver"
 skyline_console_tag: "{{ skyline_tag }}"
 skyline_console_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/skyline-console"
+
+##############################
+# role: dcap
+
+# NOTE: This are special images. There are not built by container-images-kolla,
+#       but used within kolla-ansible.
+
+dcap_tag: latest
+dcap_server_image_tag: "{{ dcap_tag }}"
+dcap_server_image_full: "{{ docker_registry_dcap|default(docker_registry_kolla) }}/{{ docker_namespace_dcap|default(docker_namespace) }}/dcap-server:{{ dcap_server_image_tag }}"
+dcap_register_image_tag: "{{ dcap_tag }}"
+dcap_register_image_full: "{{ docker_registry_dcap|default(docker_registry_kolla) }}/{{ docker_namespace_dcap|default(docker_namespace) }}/dcap-register:{{ dcap_register_image_tag }}"
