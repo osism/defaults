@@ -827,21 +827,11 @@ skip_stop_containers: []
 # Logging options
 ####################
 
-elasticsearch_address: "{{ kolla_internal_fqdn }}"
-enable_elasticsearch: "{{ 'yes' if enable_central_logging | bool or enable_osprofiler | bool or enable_skydive | bool or enable_monasca | bool or (enable_cloudkitty | bool and cloudkitty_storage_backend == 'elasticsearch') else 'no' }}"
-
-# If using Curator an actions file will need to be defined. Please see
-# the documentation.
-enable_elasticsearch_curator: "no"
-
-enable_kibana: "{{ 'yes' if enable_central_logging | bool or enable_monasca | bool else 'no' }}"
-enable_kibana_external: "{{ enable_kibana | bool }}"
-
 # NOTE: If an external ElasticSearch cluster address is configured, all
 # services with ElasticSearch endpoints should be configured to log
 # to the external cluster by default. This is for backwards compatibility.
 opensearch_address: "{{ elasticsearch_address if elasticsearch_address is defined else kolla_internal_fqdn }}"
-enable_opensearch: "{{ enable_central_logging | bool or enable_osprofiler | bool or enable_skydive | bool or (enable_cloudkitty | bool and cloudkitty_storage_backend == 'elasticsearch') }}"
+enable_opensearch: "{{ enable_central_logging | bool or enable_osprofiler | bool or (enable_cloudkitty | bool and cloudkitty_storage_backend == 'elasticsearch') }}"
 enable_opensearch_dashboards: "{{ enable_opensearch | bool }}"
 enable_opensearch_dashboards_external: "{{ enable_opensearch_dashboards | bool }}"
 
@@ -909,12 +899,6 @@ kolla_tls_backend_key: "{{ kolla_certificates_dir }}/backend-key.pem"
 # ACME client options
 #####################
 acme_client_servers: []
-
-####################
-# Kibana options
-####################
-kibana_user: "kibana"
-kibana_log_prefix: "flog"
 
 ####################
 # Keystone options
