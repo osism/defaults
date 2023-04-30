@@ -84,14 +84,6 @@ enable_gnocchi_statsd: "no"
 # NOTE: https://github.com/osism/issues/issues/3
 fluentd_enable_watch_timer: "true"
 
-# elasticsearch
-# NOTE: Mitigating the log4j Vulnerability (CVE-2021-44228/CVE-2021-45046)
-es_java_opts: "-Dlog4j2.formatMsgNoLookups=true {% if es_heap_size %}-Xms{{ es_heap_size }} -Xmx{{ es_heap_size }}{%endif%}"
-
-enable_elasticsearch_curator: "yes"
-elasticsearch_curator_soft_retention_period_days: 5
-elasticsearch_curator_hard_retention_period_days: 7
-
 # rolling upgrades
 glance_enable_rolling_upgrade: "yes"
 
