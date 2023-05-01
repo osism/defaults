@@ -84,9 +84,6 @@ enable_gnocchi_statsd: "no"
 # NOTE: https://github.com/osism/issues/issues/3
 fluentd_enable_watch_timer: "true"
 
-# osprofiler
-osprofiler_backend: "redis"
-
 # rolling upgrades
 glance_enable_rolling_upgrade: "yes"
 
