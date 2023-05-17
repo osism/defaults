@@ -86,3 +86,8 @@ cgit_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['
 # squid
 
 squid_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
+
+##########################
+# scaphandre
+
+scaphandre_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
