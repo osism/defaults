@@ -114,6 +114,8 @@ zabbix_agent_configure_repository: true
 ##########################
 # chrony
 
+enable_chrony: true
+hosts_chrony: all
 chrony_servers:
   - 1.de.pool.ntp.org
   - 2.de.pool.ntp.org
