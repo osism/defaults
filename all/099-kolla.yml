@@ -1,11 +1,5 @@
 ---
 ##########################################################
-# NOTE: The Chrony integrated in Kolla is not used. The
-#       osism.chrony role is used.
-
-enable_chrony: "no"
-
-##########################################################
 # Enable default set of services
 
 enable_common: "yes"
