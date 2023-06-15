@@ -717,7 +717,7 @@ tempest_tag: "{{ kolla_tempest_version|default(kolla_image_version) }}"
 
 opensearch_tag: "{{ kolla_opensearch_version|default(kolla_image_version) }}"
 opensearch_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/opensearch"
-opensearch_dashboards_tag: "{{ opensearch_tag }}"
+opensearch_dashboards_tag: "{{ kolla_opensearch_dashboards_version|default(kolla_opensearch_version)|default(kolla_image_version) }}"
 opensearch_dashboards_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/opensearch-dashboards"
 
 ##############################
