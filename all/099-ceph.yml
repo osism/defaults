@@ -172,6 +172,12 @@ openstack_keys_defaults:
       mon: "profile rbd"
       osd: "profile rbd pool={{ openstack_glance_pool.name }}, profile rbd pool={{ openstack_nova_pool.name }}, profile rbd pool={{ openstack_cinder_pool.name }}, profile rbd pool={{ openstack_cinder_backup_pool.name }}"
     mode: "0600"
+  - name: client.manila
+    caps:
+      mon: "allow r"
+      mgr: "allow rw"
+      osd: "allow rw pool={{ cephfs_data_pool.name }}"
+    mode: "0600"
 openstack_keys_extra: []
 openstack_keys: "{{ openstack_keys_defaults + openstack_keys_extra }}"
 
