@@ -32,3 +32,6 @@ tunnel_address_family: "{{ network_address_family }}"
 
 console_interface: "{{ internal_interface|default(eth0) }}"
 management_interface: "{{ internal_interface|default(eth0) }}"
+
+# NOTE: default interfaces as used in k3s-ansible
+k3s_interface: "{{ internal_interface|default(eth0) }}"
