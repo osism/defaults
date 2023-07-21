@@ -1,0 +1,48 @@
+---
+group_name_master: k3s_master
+
+# versions
+k3s_version: v1.27.3+k3s1
+kube_vip_tag_version: "v0.5.12"
+metal_lb_controller_tag_version: "v0.13.9"
+metal_lb_speaker_tag_version: "v0.13.9"
+
+# apiserver_endpoint is virtual ip-address which will be configured on each master
+# This default refers to the OSISM testbed and must always be adjusted when using K3s.
+apiserver_endpoint: "192.168.16.8"
+
+# metallb ip range for load balancer
+# This default refers to the OSISM testbed and must always be adjusted when using K3s.
+metal_lb_ip_range: "192.168.16.100-192.168.16.200"
+
+# this is the user that has ssh access to these machines
+systemd_dir: /etc/systemd/system
+
+# The IP on which the node is reachable in the cluster.
+# Here, a sensible default is provided, you can still override
+# it for each of your hosts, though.
+k3s_node_ip: '{{ ansible_facts[k3s_interface]["ipv4"]["address"] }}'
+
+# Disable the taint manually by setting: k3s_master_taint = false
+k3s_master_taint: "{{ true if groups['k3s_node'] | default([]) | length >= 1 else false }}"
+
+# these arguments are recommended for servers as well as agents:
+extra_args: >-
+  --flannel-iface={{ k3s_interface }}
+  --node-ip={{ k3s_node_ip }}
+
+# change these to your liking, the only required are: --disable servicelb, --tls-san {{ apiserver_endpoint }}
+extra_server_args: >-
+  {{ extra_args }}
+  {{ '--node-taint node-role.kubernetes.io/master=true:NoSchedule' if k3s_master_taint else '' }}
+  --tls-san {{ apiserver_endpoint }}
+  --disable servicelb
+  --disable traefik
+extra_agent_args: >-
+  {{ extra_args }}
+
+# metallb type frr or native
+metal_lb_type: "native"
+
+# metallb mode layer2 or bgp
+metal_lb_mode: "layer2"
