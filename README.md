@@ -1,4 +1,5 @@
-# ansible-defaults
+# defaults
 
-All Ansible defaults for the individual Ansible container images
-are stored in this repository.
+All defaults for the individual Ansible container images
+and the inventory reconciler image are stored in this
+repository.
