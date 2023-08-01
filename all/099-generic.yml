@@ -162,3 +162,8 @@ proxy_proxies: {}
 
 cleanup_services_default:
   - ModemManager.service
+
+##########################
+# services
+
+enable_auditd: false
