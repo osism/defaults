@@ -66,6 +66,8 @@ required_packages_default:
   - tmux
   - tree
   - whois
+  - nvme-cli
+  - lsscsi
 
 ##########################
 # network
