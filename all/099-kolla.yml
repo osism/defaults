@@ -88,3 +88,6 @@ ceilometer_central_enable_healthchecks: "no"
 
 # NOTE: https://github.com/osism/issues/issues/288
 gnocchi_statsd_enable_healthchecks: "no"
+
+# required to be backward compatible
+enable_skydive: "no"
