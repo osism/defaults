@@ -81,6 +81,11 @@ fluentd_enable_watch_timer: "true"
 glance_enable_rolling_upgrade: "yes"
 
 ##########################################################
+# Custom features
+
+rabbitmq_datadir_volume: "rabbitmq"
+
+##########################################################
 # Bugfixes
 
 # NOTE: https://github.com/osism/issues/issues/231
