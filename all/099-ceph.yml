@@ -259,3 +259,17 @@ ceph_origin: dummy
 ceph_repository: dummy
 journal_size: 5120
 radosgw_frontend_type: beast
+
+##########################
+# tuning
+
+ceph_tuning_fs_file_max: 26234859
+ceph_tuning_vm_zone_reclaim_mode: 0
+ceph_tuning_vm_swappiness: 10
+ceph_tuning_vm_min_free_kbytes: "{{ vm_min_free_kbytes }}"
+
+os_tuning_params:
+  - { name: fs.file-max, value: "{{ ceph_tuning_fs_file_max }} "}
+  - { name: vm.zone_reclaim_mode, value: "{{ ceph_tuning_vm_zone_reclaim_mode }}" }
+  - { name: vm.swappiness, value: "{{ ceph_tuning_vm_swappiness }} "}
+  - { name: vm.min_free_kbytes, value: "{{ ceph_tuning_vm_min_free_kbytes }}" }
