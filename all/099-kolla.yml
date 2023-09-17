@@ -51,8 +51,8 @@ keystone_token_provider: "fernet"
 keystone_federation_oidc_response_type: "code"
 keystone_oidc_forward_header: "X-Forwarded-Proto"
 
-enable_keystone_federation: "no"
-keystone_enable_federation_openid: "no"
+enable_keystone_federation: false         # Must be a boolean
+keystone_enable_federation_openid: false  # Must be a boolean
 
 # neutron
 
