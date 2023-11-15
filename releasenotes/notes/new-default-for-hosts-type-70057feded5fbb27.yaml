@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The default value for `hosts_type` is now `template`.
