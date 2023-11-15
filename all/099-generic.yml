@@ -169,3 +169,8 @@ cleanup_services_default:
 # services
 
 enable_auditd: false
+
+##########################
+# hosts
+
+hosts_type: template
