@@ -324,12 +324,16 @@ sahara_api_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/sahara-api
 sahara_api_tag: "{{ sahara_tag }}"
 
 ##############################
-# role: haproxy
+# role: loadbalancer
 
 keepalived_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/keepalived"
 keepalived_tag: "{{ kolla_keepalived_version|default(kolla_image_version) }}"
 haproxy_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/haproxy"
 haproxy_tag: "{{ kolla_haproxy_version|default(kolla_image_version) }}"
+haproxy_ssh_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/haproxy-ssh"
+haproxy_ssh_tag: "{{ kolla_haproxy_ssh_version|default(kolla_image_version) }}"
+proxysql_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/proxysql"
+proxysql_tag: "{{ kolla_proxysql_version|default(kolla_image_version) }}"
 
 ##############################
 # role: zookeeper
