@@ -2,10 +2,10 @@
 group_name_master: k3s_master
 
 # versions
-k3s_version: v1.27.3+k3s1
-kube_vip_tag_version: "v0.5.12"
-metal_lb_controller_tag_version: "v0.13.9"
-metal_lb_speaker_tag_version: "v0.13.9"
+k3s_version: v1.29.0+k3s1
+kube_vip_tag_version: "v0.6.4"
+metal_lb_controller_tag_version: "v0.13.12"
+metal_lb_speaker_tag_version: "v0.13.12"
 
 # apiserver_endpoint is virtual ip-address which will be configured on each master
 # This default refers to the OSISM testbed and must always be adjusted when using K3s.
