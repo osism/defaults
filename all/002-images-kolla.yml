@@ -679,6 +679,8 @@ ironic_inspector_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/iron
 ironic_inspector_tag: "{{ kolla_ironic_inspector_version|default(kolla_image_version) }}"
 ironic_dnsmasq_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/dnsmasq"
 ironic_dnsmasq_tag: "{{ kolla_dnsmasq_version|default(kolla_image_version) }}"
+ironic_prometheus_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ironic-prometheus-exporter"
+ironic_prometheus_exporter_tag: "{{ kolla_ironic_prometheus_exporter_version|default(kolla_image_version) }}"
 
 ##############################
 # role: skydive
