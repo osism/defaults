@@ -67,10 +67,6 @@ octavia_loadbalancer_topology: "ACTIVE_STANDBY"
 octavia_amp_image_tag: amphora
 octavia_certs_work_dir: /share
 
-# ceph
-ceph_cinder_keyring: "ceph.client.cinder.keyring"
-ceph_nova_keyring: "ceph.client.nova.keyring"
-
 # rabbitmq
 rabbitmq_monitoring_user: monitoring
 
