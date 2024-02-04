@@ -162,6 +162,12 @@ proxy_proxies: {}
 ##########################
 # cleanup
 
+cleanup_packages_default:
+  - lxc
+  - lxd-agent-loader
+  - pastebinit
+  - telnet
+
 cleanup_services_default:
   - ModemManager.service
 
