@@ -732,7 +732,7 @@ opensearch_dashboards_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}
 skyline_tag: "{{ kolla_skyline_version|default(kolla_image_version) }}"
 skyline_apiserver_tag: "{{ skyline_tag }}"
 skyline_apiserver_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/skyline-apiserver"
-skyline_console_tag: "{{ skyline_tag }}"
+skyline_console_tag: "{{ kolla_skyline_console_version|default(kolla_image_version) }}"
 skyline_console_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/skyline-console"
 
 ##############################
