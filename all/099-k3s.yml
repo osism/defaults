@@ -7,6 +7,9 @@ kube_vip_tag_version: "v0.6.4"
 metal_lb_controller_tag_version: "v0.13.12"
 metal_lb_speaker_tag_version: "v0.13.12"
 
+# features
+cilium_bgp: false
+
 # apiserver_endpoint is virtual ip-address which will be configured on each master
 # This default refers to the OSISM testbed and must always be adjusted when using K3s.
 apiserver_endpoint: "192.168.16.8"
