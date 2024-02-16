@@ -26,6 +26,14 @@
           scWtg5C9jtLmrN8uNe2xTSakNX1fK79k02wVx2Ab3KNPoFqV+Rx1tRUe4cD/xE=
 
 - job:
+    name: defaults-container-image-inventory-reconciler-push
+    parent: abstract-container-image-inventory-reconciler-push
+    secrets:
+      - name: secret
+        secret: SECRET_DEFAULTS
+        pass-to-parent: true
+
+- job:
     name: defaults-container-image-osism-ansible-push
     parent: abstract-container-image-osism-ansible-push
     secrets:
@@ -47,5 +55,7 @@
         - yamllint
     post:
       jobs:
+        - defaults-container-image-inventory-reconciler-push:
+            branches: main
         - defaults-container-image-osism-ansible-push:
             branches: main
