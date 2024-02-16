@@ -1,4 +1,38 @@
 ---
+- secret:
+    name: SECRET_DEFAULTS
+    data:
+      DOCKER_USERNAME: !encrypted/pkcs1-oaep
+        - kqM6o70BeSUpfXR5hNxGp7X0amS0tLXibDg/BpL5xn1lS8h6/CFjDzAomXxTl4owS9bHk
+          /c8dGjt/xl7ijpjgw8sdOSw6gtqlj/PJ6sN8LuQBtMVPyumcoONX5cfasU5qIcZRRJogW
+          6FGbPRHLHTVXupTExAUohSL9n9bjc295JwVTRJiG97NlG6vZY5pI/7OVm5uebVz9059sp
+          bvOBpnB+tnhBIz2D+xEXnlUZFeUc6enNe4bjX8j7tT1SBIo1bkCUHpNYm1ISFXtc+3eih
+          gQaZ2wnMStpjakIQED9hjLwFhGDaA7EcIR5n+x0GuFH5wEq0/5UcRer8QcPAQDgpIn2AI
+          Doybb3MIhfEsuhJnKQoVcUJxl06t6zEM9f9ABYGVddCurwJssFkjiPxNgLUYmyjVVyUad
+          UWZnMWTEiDwLMcGI3AIB2dWyovKkpDMKg+//uLl2Y/Gjm4fe13gbEvxjJOi2u/7quV/hm
+          RyliUVHgGbKrb5/Zb0aLbLFbAXM3xWO8oChC+SOVyZn8dj7LfHcnOHMYTuEFmg3JiGAzQ
+          /349QSH66lt8T8sAqKRd2EJYLHgt5xfSwE1ilhZRmJrfrWnnOYTyzyOJCQmGPk8F7zxmt
+          kPYrFISCekrQQCnXuM3j/qHjpnvPHnXviU1kO4fujrritRm64jmgAVG7SrjGEs=
+      DOCKER_PASSWORD: !encrypted/pkcs1-oaep
+        - C5wXb7zbgU3NQK8U7t+W2NiJimYmLTemtZGYPOw/rWiOU/2B8cJlgVaEYLrx1zvZU+vdp
+          iVDAMOv2URESLVYQ54zOqvxXMvWUtx3gT7k3XuH9F3ThkkqU3Kv9Zrnein+IusKLRuhQk
+          mvCdpTXp1OpZUdzpOSGC6s2ut+YUWU90TlrW3fCIhHtAZzvD+tVz0bktqPN10iWwqdlNy
+          JnGQWZr74f5k34+1EqNGyijQupNeUPMC9tDw2Jb+hfOyK7oHrjdGsRrzG8X7PtxI4IlDi
+          WbzGCfO8aQGoNOtpEi20c+v0gwuJOkTMH+DN3LKQHfs46Wc1TGYOEVMMGVmUI3H1JuAed
+          CJURbFVMevfMSB5lXqRt+1HMtLW4dEMfS0/PO5xZjpQDN1ZMt2hHDBeyjl39pIGZFdYYs
+          zYkqGXfArWVNkqwK3p3fWg2TYBnngdIQVUA4qr2dOMmChb2kWUAsGlJODcTDeSwGXk7ai
+          WxCjm8KVnjac3yG6unTZr3KCl4XCp9tC59I8Vkm/OchBJ/DI1a9up2duXOnZZ3pKlNzrE
+          JIQR63pgoFD4gPRrbVeJ8yGBbdA+R2fqqgML1Mr66jFsIZmXDJZqJsbI32chu6GhLRN43
+          scWtg5C9jtLmrN8uNe2xTSakNX1fK79k02wVx2Ab3KNPoFqV+Rx1tRUe4cD/xE=
+
+- job:
+    name: defaults-container-image-osism-ansible-push
+    parent: abstract-container-image-osism-ansible-push
+    secrets:
+      - name: secret
+        secret: SECRET_DEFAULTS
+        pass-to-parent: true
+
 - project:
     merge-mode: squash-merge
     default-branch: main
@@ -11,3 +45,7 @@
     periodic-daily:
       jobs:
         - yamllint
+    post:
+      jobs:
+        - defaults-container-image-osism-ansible-push:
+            branches: main
