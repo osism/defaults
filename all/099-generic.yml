@@ -180,3 +180,12 @@ enable_auditd: false
 # hosts
 
 hosts_type: template
+
+##########################
+# dotfiles
+
+dotfiles_repo: "https://github.com/osism/dotfiles.git"
+dotfiles_repo_version: main
+dotfiles_repo_local_destination: "~/dotfiles"
+dotfiles_files:
+  - .tmux.conf
