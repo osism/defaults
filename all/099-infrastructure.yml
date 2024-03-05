@@ -16,16 +16,6 @@ cephclient_keyring: "{{ lookup('file', '{{ configuration_directory }}/environmen
 cephclient_keyring_name: client.admin
 
 ##########################
-# openldap
-
-openldap_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
-
-udm_rest_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
-umc_gateway_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
-umc_server_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
-umc_web_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
-
-##########################
 # openstackclient
 
 openstackclient_configuration_directory: "{{ configuration_directory }}/environments/openstack"
