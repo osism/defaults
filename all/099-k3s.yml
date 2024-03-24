@@ -2,10 +2,12 @@
 group_name_master: k3s_master
 
 # versions
-k3s_version: v1.29.0+k3s1
-kube_vip_tag_version: "v0.6.4"
-metal_lb_controller_tag_version: "v0.13.12"
-metal_lb_speaker_tag_version: "v0.13.12"
+k3s_version: v1.29.2+k3s1
+kube_vip_tag_version: "v0.7.2"
+metal_lb_speaker_tag_version: "v0.14.3"
+metal_lb_controller_tag_version: "v0.14.3"
+calico_tag: "v3.27.2"
+cilium_tag: "v1.15.2"
 
 # features
 cilium_bgp: false
