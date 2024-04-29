@@ -110,18 +110,6 @@ security_sshd_allowed_macs: hmac-sha2-256,hmac-sha2-512,hmac-sha1
 proxy_proxies: {}
 
 ##########################
-# cleanup
-
-cleanup_packages_default:
-  - lxc
-  - lxd-agent-loader
-  - pastebinit
-  - telnet
-
-cleanup_services_default:
-  - ModemManager.service
-
-##########################
 # services
 
 enable_auditd: false
