@@ -39,6 +39,8 @@ kolla_enable_tls_external: "yes"
 haproxy_client_timeout: 5m
 haproxy_server_timeout: 5m
 
+openstack_cacert: "/etc/ssl/certs/ca-certificates.crt"
+
 # mariadb
 enable_mariabackup: "yes"
 
@@ -55,7 +57,6 @@ enable_keystone_federation: false         # Must be a boolean
 keystone_enable_federation_openid: false  # Must be a boolean
 
 # neutron
-
 enable_neutron_port_forwarding: "yes"
 enable_neutron_qos: "yes"
 
