@@ -33,6 +33,7 @@ k3s_master_taint: "{{ true if groups['k3s_node'] | default([]) | length >= 1 els
 
 # monitoring
 k3s_monitoring: true
+k3s_monitoring_bind_address: "0.0.0.0"
 k3s_monitoring_scheduler_port: "10259"
 k3s_monitoring_controller_manage_port: "10257"
 
@@ -44,11 +45,11 @@ extra_args: >-
 # monitoring arguments instruct k3s servers to expose control plane metrics:
 monitoring_args: >-
   --etcd-expose-metrics
-  --kube-proxy-arg "metrics-bind-address=0.0.0.0"
-  --kube-scheduler-arg "bind-address=0.0.0.0"
+  --kube-proxy-arg "metrics-bind-address={{ k3s_monitoring_bind_address }}"
+  --kube-scheduler-arg "bind-address={{ k3s_monitoring_bind_address }}"
   --kube-scheduler-arg "secure-port={{ k3s_monitoring_scheduler_port }}"
   --kube-scheduler-arg "authorization-always-allow-paths=/healthz,/readyz,/livez,/metrics"
-  --kube-controller-manager-arg "bind-address=0.0.0.0"
+  --kube-controller-manager-arg "bind-address={{ k3s_monitoring_bind_address }}"
   --kube-controller-manager-arg "secure-port={{ k3s_monitoring_controller_manage_port }}"
   --kube-controller-manager-arg "authorization-always-allow-paths=/healthz,/readyz,/livez,/metrics"
 
