@@ -259,3 +259,9 @@ ceph_origin: dummy
 ceph_repository: dummy
 journal_size: 5120
 radosgw_frontend_type: beast
+
+##########################
+# dashboard
+
+ceph_dashboard_standby_behaviour: error
+ceph_dashboard_standby_error_status_code: 404
