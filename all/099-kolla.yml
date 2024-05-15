@@ -95,6 +95,53 @@ glance_enable_rolling_upgrade: "yes"
 
 rabbitmq_datadir_volume: "rabbitmq"
 
+enable_kolla_operations: "yes"
+prometheus_custom_alert_paths: "{{
+  (['/operations/prometheus'] if enable_kolla_operations | bool else [])
+  +
+  [node_custom_config + '/prometheus']
+}}"
+
+prometheus_common_config_overrides_paths: "{{
+  (['/operations/prometheus/prometheus.yml.d'] if enable_kolla_operations | bool else [])
+  +
+  [node_custom_config + '/prometheus/prometheus.yml.d']
+}}"
+
+grafana_custom_extra_config_paths: "{{
+  (['/operations/prometheus/grafana'] if enable_kolla_operations | bool else [])
+  +
+  [node_custom_config + '/grafana']
+}}"
+
+grafana_prometheus_config_paths: "{{
+  [
+    node_custom_config + '/grafana/' + inventory_hostname + '/prometheus.yaml',
+    node_custom_config + '/grafana/prometheus.yaml'
+  ]
+  +
+  (['/operations/grafana/prometheus.yml'] if enable_kolla_operations | bool else [])
+  +
+  ['prometheus.yaml.j2']
+}}"
+
+grafana_provisioning_config_paths: "{{
+  [
+    node_custom_config + '/grafana/' + inventory_hostname + '/provisioning.yaml',
+    node_custom_config + '/grafana/provisioning.yaml'
+  ]
+  +
+  (['/operations/grafana/provisioning.yaml'] if enable_kolla_operations | bool else [])
+  +
+  ['provisioning.yaml.j2']
+}}"
+
+grafana_custom_dashboards_paths: "{{
+  (['/operations/grafana/dashboards'] if enable_kolla_operations | bool else [])
+  +
+  [node_custom_config + '/grafana/dashboards']
+}}"
+
 ##########################################################
 # Bugfixes
 
