@@ -1,4 +1,0 @@
----
-features:
-  - |
-    Add new `om_enable_rabbitmq_quorum_queues` kolla default parameter.

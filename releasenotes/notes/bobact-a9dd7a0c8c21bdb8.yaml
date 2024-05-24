@@ -1,4 +1,0 @@
----
-features:
-  - |
-    Sync `all/001-kolla-defaults.yml` with defaults of `stable/2023.2`.
