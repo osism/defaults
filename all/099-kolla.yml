@@ -26,7 +26,7 @@ kolla_base_distro: ubuntu
 kolla_install_type: source
 
 config_strategy: COPY_ALWAYS
-node_custom_config: "{{ configuration_directory }}/environments/kolla/files/overlays"
+node_custom_config: "{{ node_config }}/files/overlays"
 
 docker_namespace: osism
 docker_registry_kolla: quay.io
