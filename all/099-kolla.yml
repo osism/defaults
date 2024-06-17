@@ -41,6 +41,8 @@ haproxy_server_timeout: 5m
 
 openstack_cacert: "/etc/ssl/certs/ca-certificates.crt"
 
+haproxy_socket_level_admin: "yes"
+
 # mariadb
 enable_mariabackup: "yes"
 
