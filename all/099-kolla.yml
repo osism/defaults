@@ -34,6 +34,7 @@ docker_registry_kolla: quay.io
 openstack_logging_debug: "False"  # NOTE: This has to be "False", not "false"!
 
 # haproxy
+kolla_enable_tls_internal: "yes"
 kolla_enable_tls_external: "yes"
 
 haproxy_client_timeout: 5m
