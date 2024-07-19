@@ -84,6 +84,9 @@ rabbitmq_monitoring_user: monitoring
 # gnocchi
 enable_gnocchi_statsd: "no"
 
+# designate
+designate_enable_notifications_sink: "{{ enable_designate | bool }}"
+
 # fluentd
 
 # NOTE: https://github.com/osism/issues/issues/3
