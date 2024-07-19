@@ -1129,7 +1129,7 @@ nova_database_shard_id: "{{ mariadb_default_database_shard_id | int }}"
 # Horizon options
 #######################
 horizon_backend_database: false
-horizon_keystone_multidomain: False
+horizon_keystone_multidomain: false
 
 # Enable deploying custom horizon policy files for services that don't have a
 # horizon plugin but have a policy file. Override these when you have services
