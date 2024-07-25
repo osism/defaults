@@ -89,9 +89,6 @@ enable_gnocchi_statsd: "no"
 # NOTE: https://github.com/osism/issues/issues/3
 fluentd_enable_watch_timer: "true"
 
-# proemtheus
-enable_ceilometer_prometheus_pushgateway: "yes"
-
 # rolling upgrades
 glance_enable_rolling_upgrade: "yes"
 
