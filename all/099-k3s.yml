@@ -6,18 +6,12 @@ k3s_version: v1.29.2+k3s1
 kube_vip_tag_version: "v0.7.2"
 metal_lb_speaker_tag_version: "v0.14.3"
 metal_lb_controller_tag_version: "v0.14.3"
-calico_tag: "v3.27.2"
 cilium_tag: "v1.15.2"
 
-# features
-cilium_bgp: false
-
 # apiserver_endpoint is virtual ip-address which will be configured on each master
-# This default refers to the OSISM testbed and must always be adjusted when using K3s.
 apiserver_endpoint: "192.168.16.8"
 
 # metallb ip range for load balancer
-# This default refers to the OSISM testbed and must always be adjusted when using K3s.
 metal_lb_ip_range: "192.168.16.100-192.168.16.200"
 
 # this is the user that has ssh access to these machines
@@ -37,9 +31,18 @@ k3s_monitoring_bind_address: "0.0.0.0"
 k3s_monitoring_scheduler_port: "10259"
 k3s_monitoring_controller_manage_port: "10257"
 
+# cilium
+cilium_mode: "native"
+cilium_hubble: true
+
+cilium_bgp: false
+cilium_bgp_my_asn: "64513"
+cilium_bgp_peer_asn: "64512"
+cilium_bgp_peer_address: "192.168.30.1"
+cilium_bgp_lb_cidr: "192.168.31.0/24"
+
 # these arguments are recommended for servers as well as agents:
 extra_args: >-
-  --flannel-iface={{ k3s_interface }}
   --node-ip={{ k3s_node_ip }}
 
 # monitoring arguments instruct k3s servers to expose control plane metrics:
@@ -58,9 +61,13 @@ extra_server_args: >-
   {{ extra_args }}
   {{ monitoring_args if k3s_monitoring else '' }}
   {{ '--node-taint node-role.kubernetes.io/master=true:NoSchedule' if k3s_master_taint else '' }}
+  --flannel-backend=none
+  --disable-network-policy
+  --cluster-cidr={{ cluster_cidr | default('10.52.0.0/16') }}
   --tls-san {{ apiserver_endpoint }}
   --disable servicelb
   --disable traefik
+
 extra_agent_args: >-
   {{ extra_args }}
 
@@ -69,3 +76,6 @@ metal_lb_type: "native"
 
 # metallb mode layer2 or bgp
 metal_lb_mode: "layer2"
+
+# custom registries
+custom_registries: false

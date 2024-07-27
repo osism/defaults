@@ -1,5 +1,5 @@
 ---
-# NOTE: default interfaces as defined in kolla-ansible
+# default interfaces as defined in kolla-ansible
 
 network_interface: "eth0"
 
@@ -14,7 +14,7 @@ swift_replication_interface: "{{ swift_storage_interface }}"
 swift_storage_interface: "{{ storage_interface }}"
 tunnel_interface: "{{ network_interface }}"
 
-# NOTE: default address families as defined in kolla-ansible
+# default address families as defined in kolla-ansible
 
 network_address_family: "ipv4"
 
@@ -28,9 +28,13 @@ swift_replication_address_family: "{{ swift_storage_address_family }}"
 swift_storage_address_family: "{{ storage_address_family }}"
 tunnel_address_family: "{{ network_address_family }}"
 
-# NOTE: default interfaces as used in OSISM playbooks + roles
+# default interfaces as used in OSISM playbooks + roles
 
 console_interface: "{{ internal_interface|default(eth0) }}"
 hosts_interface: "{{ internal_interface|default(eth0) }}"
-k3s_interface: "{{ internal_interface|default(eth0) }}"
 management_interface: "{{ internal_interface|default(eth0) }}"
+
+# default interfaces as defined in k3s-ansible
+
+k3s_interface: "{{ internal_interface|default(eth0) }}"
+cilium_iface: "{{ k3s_interface }}"
