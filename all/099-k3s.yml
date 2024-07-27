@@ -3,16 +3,10 @@ group_name_master: k3s_master
 
 # versions
 k3s_version: v1.29.2+k3s1
-kube_vip_tag_version: "v0.7.2"
-metal_lb_speaker_tag_version: "v0.14.3"
-metal_lb_controller_tag_version: "v0.14.3"
 cilium_tag: "v1.15.2"
 
 # apiserver_endpoint is virtual ip-address which will be configured on each master
 apiserver_endpoint: "192.168.16.8"
-
-# metallb ip range for load balancer
-metal_lb_ip_range: "192.168.16.100-192.168.16.200"
 
 # this is the user that has ssh access to these machines
 systemd_dir: /etc/systemd/system
@@ -70,12 +64,6 @@ extra_server_args: >-
 
 extra_agent_args: >-
   {{ extra_args }}
-
-# metallb type frr or native
-metal_lb_type: "native"
-
-# metallb mode layer2 or bgp
-metal_lb_mode: "layer2"
 
 # custom registries
 custom_registries: false
