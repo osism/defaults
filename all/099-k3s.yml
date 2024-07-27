@@ -78,4 +78,4 @@ metal_lb_type: "native"
 metal_lb_mode: "layer2"
 
 # custom registries
-custom_registries: false
+k3s_custom_registries: false
