@@ -35,6 +35,8 @@ cilium_bgp_peer_asn: "64512"
 cilium_bgp_peer_address: "192.168.30.1"
 cilium_bgp_lb_cidr: "192.168.31.0/24"
 
+cluster_cidr: "10.52.0.0/16"
+
 # these arguments are recommended for servers as well as agents:
 extra_args: >-
   --node-ip={{ k3s_node_ip }}
