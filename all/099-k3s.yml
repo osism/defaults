@@ -28,7 +28,7 @@ k3s_monitoring_controller_manage_port: "10257"
 
 # cilium
 cilium_mode: "native"
-cilium_hubble: true
+cilium_hubble: false
 
 cilium_bgp: false
 cilium_bgp_my_asn: "64513"
