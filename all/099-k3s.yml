@@ -2,9 +2,11 @@
 group_name_master: k3s_master
 
 # versions
-k3s_version: v1.29.2+k3s1
-cilium_tag: "v1.15.2"
-kube_vip_tag_version: "v0.7.2"
+cilium_tag: "v1.16.0"
+k3s_version: v1.30.2+k3s2
+kube_vip_tag_version: "v0.8.2"
+metal_lb_controller_tag_version: "v0.14.8"
+metal_lb_speaker_tag_version: "v0.14.8"
 
 # apiserver_endpoint is virtual ip-address which will be configured on each master
 apiserver_endpoint: "192.168.16.8"
@@ -15,7 +17,7 @@ systemd_dir: /etc/systemd/system
 # The IP on which the node is reachable in the cluster.
 # Here, a sensible default is provided, you can still override
 # it for each of your hosts, though.
-k3s_node_ip: '{{ ansible_facts[k3s_interface]["ipv4"]["address"] }}'
+k3s_node_ip: "{{ ansible_facts[k3s_interface]['ipv4']['address'] | default('127.0.0.1') }}"
 
 # Disable the taint manually by setting: k3s_master_taint = false
 k3s_master_taint: "{{ true if groups['k3s_node'] | default([]) | length >= 1 else false }}"
@@ -29,14 +31,26 @@ k3s_monitoring_controller_manage_port: "10257"
 # cilium
 cilium_mode: "native"
 cilium_hubble: false
-
 cilium_bgp: false
+
 cilium_bgp_my_asn: "64513"
-cilium_bgp_peer_asn: "64512"
-cilium_bgp_peer_address: "192.168.30.1"
-cilium_bgp_lb_cidr: "192.168.31.0/24"
+cilium_bgp_peer_asn: "{{ frr_local_as | default('64512') }}"
+cilium_bgp_peer_address: "{{ frr_loopback_v4 | default('127.0.0.1') }}"
+cilium_bgp_lb_cidr: "172.31.252.0/23"
 
 cluster_cidr: "10.52.0.0/16"
+
+# metallb
+
+metal_lb_type: "native"
+metal_lb_mode: "layer2"
+
+metal_lb_ip_range: "172.31.252.10-172.31.253.250"
+
+# bgp options
+# metal_lb_bgp_my_asn: "64513"
+# metal_lb_bgp_peer_asn: "{{ frr_local_as | default('64512') }}"
+# metal_lb_bgp_peer_address: "{{ frr_loopback_v4 | default('127.0.0.1') }}"
 
 # these arguments are recommended for servers as well as agents:
 extra_args: >-
