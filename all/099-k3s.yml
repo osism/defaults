@@ -48,9 +48,9 @@ metal_lb_mode: "layer2"
 metal_lb_ip_range: "172.31.252.10-172.31.253.250"
 
 # bgp options
-# metal_lb_bgp_my_asn: "64513"
-# metal_lb_bgp_peer_asn: "{{ frr_local_as | default('64512') }}"
-# metal_lb_bgp_peer_address: "{{ frr_loopback_v4 | default('127.0.0.1') }}"
+metal_lb_bgp_my_asn: "64513"
+metal_lb_bgp_peer_asn: "{{ frr_local_as | default('64512') }}"
+metal_lb_bgp_peer_address: "{{ frr_loopback_v4 | default('127.0.0.1') }}"
 
 # these arguments are recommended for servers as well as agents:
 extra_args: >-
