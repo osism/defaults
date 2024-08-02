@@ -42,6 +42,13 @@ cluster_cidr: "10.42.0.0/16"
 
 kube_proxy_replacement: true
 
+# kube-vip
+
+kube_vip_bgp_routerid: "{{ ansible_facts[k3s_interface]['ipv4']['address'] | default('127.0.0.1') }}"
+kube_vip_bgp_as: "64513"
+kube_vip_bgp_peeraddress: "{{ frr_loopback_v4 | default('127.0.0.1') }}"
+kube_vip_bgp_peeras: "{{ frr_local_as | default('64512') }}"
+
 # metallb
 
 metal_lb_type: "native"
