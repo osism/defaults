@@ -40,6 +40,8 @@ cilium_bgp_lb_cidr: "172.31.252.0/23"
 
 cluster_cidr: "10.42.0.0/16"
 
+kube_proxy_replacement: true
+
 # metallb
 
 metal_lb_type: "native"
