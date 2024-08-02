@@ -38,7 +38,7 @@ cilium_bgp_peer_asn: "{{ frr_local_as | default('64512') }}"
 cilium_bgp_peer_address: "{{ frr_loopback_v4 | default('127.0.0.1') }}"
 cilium_bgp_lb_cidr: "172.31.252.0/23"
 
-cluster_cidr: "10.52.0.0/16"
+cluster_cidr: "10.42.0.0/16"
 
 # metallb
 
@@ -75,7 +75,7 @@ extra_server_args: >-
   {% if calico_iface is defined or cilium_iface is defined %}
   --flannel-backend=none
   --disable-network-policy
-  --cluster-cidr={{ cluster_cidr | default('10.52.0.0/16') }}
+  --cluster-cidr={{ cluster_cidr | default('10.42.0.0/16') }}
   {% endif %}
   --tls-san {{ apiserver_endpoint }}
   --disable servicelb
