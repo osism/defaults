@@ -24,7 +24,7 @@ k3s_master_taint: "{{ true if groups['k3s_node'] | default([]) | length >= 1 els
 
 # monitoring
 k3s_monitoring: true
-k3s_monitoring_bind_address: "0.0.0.0"
+k3s_monitoring_bind_address: "{{ k3s_node_ip }}"
 k3s_monitoring_scheduler_port: "10259"
 k3s_monitoring_controller_manage_port: "10257"
 
