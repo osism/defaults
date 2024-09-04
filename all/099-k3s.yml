@@ -2,8 +2,8 @@
 group_name_master: k3s_master
 
 # versions
-cilium_tag: "v1.16.0"
-k3s_version: v1.30.3+k3s1
+cilium_tag: "v1.16.1"
+k3s_version: v1.30.4+k3s1
 kube_vip_tag_version: "v0.8.2"
 metal_lb_controller_tag_version: "v0.14.8"
 metal_lb_speaker_tag_version: "v0.14.8"
