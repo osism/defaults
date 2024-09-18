@@ -14,6 +14,7 @@ docker_registry_netbox: quay.io
 docker_registry_nexus: quay.io
 docker_registry_openstackclient: quay.io
 docker_registry_patchman: quay.io
+docker_registry_pgautoupgrade: index.docker.io
 docker_registry_phpmyadmin: index.docker.io
 docker_registry_service: index.docker.io
 docker_registry_squid: index.docker.io
