@@ -1,0 +1,3 @@
+---
+k3s_add_labels_compute:
+  - node-role.osism.tech/compute-plane=true
