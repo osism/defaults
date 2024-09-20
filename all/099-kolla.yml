@@ -1,6 +1,6 @@
 ---
 ##########################################################
-# Enable default set of services
+# Enable services
 
 enable_common: "yes"
 
@@ -16,6 +16,13 @@ enable_grafana: "yes"
 enable_cinder: "yes"
 enable_designate: "yes"
 enable_octavia: "yes"
+
+##########################################################
+# Disable services
+
+# The OpenStack Exporter generates a high load on the APIs and often
+# leads to high memory consumption. Therefore, it is not enabled by default.
+enable_prometheus_openstack_exporter: "no"
 
 ##########################################################
 # Set default configuartions
