@@ -38,3 +38,8 @@ management_interface: "{{ internal_interface|default(eth0) }}"
 
 k3s_interface: "{{ internal_interface|default(eth0) }}"
 kube_vip_iface: "{{ k3s_interface }}"
+
+# default interfaces as defined in ceph-ansible
+
+monitor_interface: "{{ network_interface }}"
+radosgw_interface: "{{ network_interface }}"
