@@ -61,6 +61,7 @@ ceph_mgr_modules: "{{ ceph_mgr_modules_defaults + ceph_mgr_modules_extra }}"
 # rgw
 
 radosgw_frontend_port: 8081
+rgw_multisite: false
 
 ##########################
 # openstack pools
