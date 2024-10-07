@@ -7,5 +7,5 @@ vault_host: "{{ hostvars[inventory_hostname]['ansible_' + internal_interface|def
 netbox_url: http://netbox-nginx:8080/
 netbox_token: 11111111-1111-1111-1111-111111111111
 
-k3s_add_labels_manager:
+k3s_add_labels__manager:
   - node-role.osism.tech/management-plane=true
