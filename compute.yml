@@ -1,3 +1,6 @@
 ---
 k3s_add_labels__compute:
   - node-role.osism.tech/compute-plane=true
+
+k3s_add_labels__yaook_compute:
+  - compute.yaook.cloud/hypervisor=true
