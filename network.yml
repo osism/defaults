@@ -1,3 +1,7 @@
 ---
 k3s_add_labels__network:
   - node-role.osism.tech/network-plane=true
+
+k3s_add_labels__yaook_network:
+  - network.yaook.cloud/any=true
+  - network.yaook.cloud/neutron-ovn-agent=true

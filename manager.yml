@@ -9,3 +9,6 @@ netbox_token: 11111111-1111-1111-1111-111111111111
 
 k3s_add_labels__manager:
   - node-role.osism.tech/management-plane=true
+
+k3s_add_labels__yaook_manager:
+  - operator.yaook.cloud/any=true

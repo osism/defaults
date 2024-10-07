@@ -1,3 +1,11 @@
 ---
 k3s_add_labels__control:
   - node-role.osism.tech/control-plane=true
+
+k3s_add_labels__yaook_control:
+  - any.yaook.cloud/api=true
+  - infra.yaook.cloud/any=true
+  - infra.yaook.cloud/caching=true
+  - compute.yaook.cloud/nova-any-service=true
+  - ceilometer.yaook.cloud/ceilometer-any-service=true
+  - block-storage.yaook.cloud/cinder-any-service=true
