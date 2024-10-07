@@ -1,0 +1,3 @@
+---
+k3s_add_labels__rook_mgr:
+  - node-role.osism.tech/rook-mgr=true
