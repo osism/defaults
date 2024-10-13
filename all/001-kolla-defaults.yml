@@ -268,9 +268,10 @@ om_enable_rabbitmq_tls: "{{ rabbitmq_enable_tls | bool }}"
 # CA certificate bundle in containers using oslo.messaging with RabbitMQ TLS.
 om_rabbitmq_cacert: "{{ rabbitmq_cacert }}"
 
+# When quorum queues are enabled by om_enable_rabbitmq_quorum_queues,
+# om_enable_rabbitmq_high_availability needs to be disabled
 om_enable_rabbitmq_high_availability: false
-# Only enable quorum queues if you disable om_enable_rabbitmq_high_availability
-om_enable_rabbitmq_quorum_queues: false
+om_enable_rabbitmq_quorum_queues: true
 
 ####################
 # Networking options
