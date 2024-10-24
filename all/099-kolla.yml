@@ -74,6 +74,8 @@ keystone_enable_federation_openid: false  # Must be a boolean
 enable_neutron_port_forwarding: "yes"
 enable_neutron_qos: "yes"
 
+neutron_plugin_agent: "ovn"
+
 # nova
 nova_console: novnc
 
