@@ -37,7 +37,6 @@ nfs_group_name: ceph-nfs
 osd_group_name: ceph-osd
 rbdmirror_group_name: ceph-rbdmirror
 restapi_group_name: ceph-restapi
-rgw_multisite: false
 rgw_group_name: ceph-rgw
 rgwloadbalancer_group_name: rgwloadbalancers
 
