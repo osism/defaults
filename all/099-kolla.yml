@@ -103,6 +103,11 @@ fluentd_enable_watch_timer: "true"
 # rolling upgrades
 glance_enable_rolling_upgrade: "yes"
 
+# prometheus node-exporter
+# add /var/lib/kubelet/pods to the default for excluded mountpoints
+# k8s volumes should be monitored inside the cluster and not by the node-exporter
+prometheus_node_exporter_cmdline_extras: "--collector.filesystem.mount-points-exclude=^/(dev|proc|run/credentials/.+|sys|var/lib/docker/.+|var/lib/containers/storage/.+|var/lib/kubelet/pods/.+)($|/)"
+
 ##########################################################
 # Custom features
 
