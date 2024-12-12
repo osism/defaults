@@ -60,6 +60,7 @@ horizon_backend_database: "yes"
 
 # ironic
 ironic_agent_files_directory: /share/ironic
+enable_ironic_prometheus_exporter: false
 
 # keystone
 keystone_token_provider: "fernet"
