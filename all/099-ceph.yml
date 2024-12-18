@@ -69,6 +69,7 @@ rgw_multisite: false
 openstack_pool_default_size: 3
 openstack_pool_default_min_size: 0
 openstack_pool_default_pg_num: 64
+openstack_pool_default_pg_autoscale_mode: false
 
 openstack_cinder_backup_pool:
   name: "backups"
@@ -81,7 +82,7 @@ openstack_cinder_backup_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: false
+  pg_autoscale_mode: "{{ openstack_pool_default_pg_autoscale_mode }}"
 
 openstack_cinder_pool:
   name: "volumes"
@@ -94,7 +95,7 @@ openstack_cinder_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: false
+  pg_autoscale_mode: "{{ openstack_pool_default_pg_autoscale_mode }}"
 
 openstack_glance_pool:
   name: "images"
@@ -107,7 +108,7 @@ openstack_glance_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: false
+  pg_autoscale_mode: "{{ openstack_pool_default_pg_autoscale_mode }}"
 
 openstack_gnocchi_pool:
   name: "metrics"
@@ -120,7 +121,7 @@ openstack_gnocchi_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: false
+  pg_autoscale_mode: "{{ openstack_pool_default_pg_autoscale_mode }}"
 
 openstack_nova_pool:
   name: "vms"
@@ -133,7 +134,7 @@ openstack_nova_pool:
   application: "rbd"
   size: "{{ openstack_pool_default_size }}"
   min_size: "{{ openstack_pool_default_min_size }}"
-  pg_autoscale_mode: false
+  pg_autoscale_mode: "{{ openstack_pool_default_pg_autoscale_mode }}"
 
 openstack_pools_defaults:
   - "{{ openstack_cinder_backup_pool }}"
