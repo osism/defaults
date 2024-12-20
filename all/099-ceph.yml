@@ -66,16 +66,17 @@ rgw_multisite: false
 ##########################
 # openstack pools
 
-openstack_pool_default_size: 3
 openstack_pool_default_min_size: 0
-openstack_pool_default_pg_num: 64
 openstack_pool_default_pg_autoscale_mode: false
+openstack_pool_default_pg_num: 64
+openstack_pool_default_rule_name: replicated_rule
+openstack_pool_default_size: 3
 
 openstack_cinder_backup_pool:
   name: "backups"
   pg_num: "{{ openstack_pool_default_pg_num }}"
   pgp_num: "{{ openstack_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
+  rule_name: "{{ openstack_pool_default_rule_name }}"
   type: 1
   erasure_profile: ""
   expected_num_objects: ""
@@ -88,7 +89,7 @@ openstack_cinder_pool:
   name: "volumes"
   pg_num: "{{ openstack_pool_default_pg_num }}"
   pgp_num: "{{ openstack_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
+  rule_name: "{{ openstack_pool_default_rule_name }}"
   type: 1
   erasure_profile: ""
   expected_num_objects: ""
@@ -101,7 +102,7 @@ openstack_glance_pool:
   name: "images"
   pg_num: "{{ openstack_pool_default_pg_num }}"
   pgp_num: "{{ openstack_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
+  rule_name: "{{ openstack_pool_default_rule_name }}"
   type: 1
   erasure_profile: ""
   expected_num_objects: ""
@@ -114,7 +115,7 @@ openstack_gnocchi_pool:
   name: "metrics"
   pg_num: "{{ openstack_pool_default_pg_num }}"
   pgp_num: "{{ openstack_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
+  rule_name: "{{ openstack_pool_default_rule_name }}"
   type: 1
   erasure_profile: ""
   expected_num_objects: ""
@@ -127,7 +128,7 @@ openstack_nova_pool:
   name: "vms"
   pg_num: "{{ openstack_pool_default_pg_num }}"
   pgp_num: "{{ openstack_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
+  rule_name: "{{ openstack_pool_default_rule_name }}"
   type: 1
   erasure_profile: ""
   expected_num_objects: ""
@@ -186,15 +187,16 @@ openstack_keys: "{{ openstack_keys_defaults + openstack_keys_extra }}"
 ##########################
 # cephfs pools
 
-cephfs_pool_default_size: 3
 cephfs_pool_default_min_size: 0
 cephfs_pool_default_pg_num: 16
+cephfs_pool_default_rule_name: replicated_rule
+cephfs_pool_default_size: 3
 
 cephfs_data_pool:
   name: "cephfs_data"
   pg_num: "{{ cephfs_pool_default_pg_num }}"
   pgp_num: "{{ cephfs_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
+  rule_name: "{{ cephfs_pool_default_rule_name }}"
   type: 1
   erasure_profile: ""
   expected_num_objects: ""
@@ -206,7 +208,7 @@ cephfs_metadata_pool:
   name: "cephfs_metadata"
   pg_num: "{{ cephfs_pool_default_pg_num }}"
   pgp_num: "{{ cephfs_pool_default_pg_num }}"
-  rule_name: "replicated_rule"
+  rule_name: "{{ cephfs_pool_default_rule_name }}"
   type: 1
   erasure_profile: ""
   expected_num_objects: ""
