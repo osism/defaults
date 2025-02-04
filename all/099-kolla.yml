@@ -201,3 +201,5 @@ senlin_external_fqdn: "{{ kolla_external_fqdn }}"
 senlin_api_port: "8778"
 senlin_api_listen_port: "{{ senlin_api_port }}"
 senlin_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else senlin_api_port }}"
+
+enable_prometheus_msteams: "no"
