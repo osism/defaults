@@ -19,3 +19,5 @@ docker_registry_traefik: index.docker.io
 docker_registry_vault: index.docker.io
 docker_registry_zookeeper: index.docker.io
 docker_registry_zuul: quay.io
+
+dnsmasq_docker_registry: quay.io
