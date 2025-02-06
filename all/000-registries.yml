@@ -21,3 +21,4 @@ docker_registry_zookeeper: index.docker.io
 docker_registry_zuul: quay.io
 
 dnsmasq_docker_registry: quay.io
+httpd_docker_registry: index.docker.io
