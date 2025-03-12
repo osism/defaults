@@ -24,6 +24,9 @@ enable_octavia: "yes"
 # leads to high memory consumption. Therefore, it is not enabled by default.
 enable_prometheus_openstack_exporter: "no"
 
+# We don't usually use heat anywhere. Enable it explicitly if required.
+enable_heat: "no"
+
 ##########################################################
 # Set default configuartions
 
