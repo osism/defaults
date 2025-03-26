@@ -2,11 +2,11 @@
 group_name_master: k3s_master
 
 # versions
-cilium_tag: "v1.16.4"
-k3s_version: v1.30.10+k3s1
-kube_vip_tag_version: "v0.8.7"
-metal_lb_controller_tag_version: "v0.14.8"
-metal_lb_speaker_tag_version: "v0.14.8"
+cilium_tag: "v1.17.2"
+k3s_version: v1.31.6+k3s1
+kube_vip_tag_version: "v0.8.9"
+metal_lb_controller_tag_version: "v0.14.9"
+metal_lb_speaker_tag_version: "v0.14.9"
 
 # apiserver_endpoint is virtual ip-address which will be configured on each master
 apiserver_endpoint: "192.168.16.8"
