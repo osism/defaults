@@ -37,6 +37,7 @@ management_interface: "{{ internal_interface|default(eth0) }}"
 # default interfaces as defined in k3s-ansible
 
 k3s_interface: "{{ internal_interface|default(eth0) }}"
+cilium_iface: "{{ k3s_interface }}"
 kube_vip_iface: "{{ k3s_interface }}"
 
 # default interfaces as defined in ceph-ansible
