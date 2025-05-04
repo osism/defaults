@@ -17,7 +17,7 @@ systemd_dir: /etc/systemd/system
 # The IP on which the node is reachable in the cluster.
 # Here, a sensible default is provided, you can still override
 # it for each of your hosts, though.
-k3s_node_ip: "{{ ansible_facts[k3s_interface]['ipv4']['address'] | default('127.0.0.1') }}"
+k3s_node_ip: "{{ hostvars[inventory_hostname]['ansible_' + k3s_interface|default(internal_interface)]['ipv4']['address'] }}"
 
 # Disable the taint manually by setting: k3s_master_taint = false
 k3s_master_taint: "{{ true if groups['k3s_node'] | default([]) | length >= 1 else false }}"
@@ -44,7 +44,7 @@ kube_proxy_replacement: true
 
 # kube-vip
 
-kube_vip_bgp_routerid: "{{ ansible_facts[k3s_interface]['ipv4']['address'] | default('127.0.0.1') }}"
+kube_vip_bgp_routerid: "{{ k3s_node_ip }}"
 kube_vip_bgp_as: "64513"
 kube_vip_bgp_peeraddress: "{{ frr_loopback_v4 | default('127.0.0.1') }}"
 kube_vip_bgp_peeras: "{{ frr_local_as | default('64512') }}"
