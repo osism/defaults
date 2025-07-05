@@ -86,6 +86,7 @@ extra_server_args: >-
   --disable-network-policy
   --cluster-cidr={{ cluster_cidr | default('10.42.0.0/16') }}
   {% endif %}
+  --embedded-registry
   --tls-san {{ apiserver_endpoint }}
   --disable servicelb
   --disable traefik
@@ -94,7 +95,10 @@ extra_agent_args: >-
   {{ extra_args }}
 
 # custom registries
-k3s_custom_registries: false
+k3s_custom_registries: true
+custom_registries_yaml:
+  mirrors:
+    "*":
 
 # other
 k3s_create_kubectl_symlink: false
