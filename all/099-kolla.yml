@@ -46,6 +46,7 @@ openstack_logging_debug: "False"  # NOTE: This has to be "False", not "false"!
 kolla_disable_python_deprecation_warnings: "yes"
 
 # haproxy
+kolla_enable_tls_internal: "yes"
 kolla_enable_tls_external: "yes"
 
 haproxy_client_timeout: 5m
