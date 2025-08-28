@@ -293,7 +293,7 @@ om_enable_rabbitmq_stream_fanout: "{{ om_enable_rabbitmq_quorum_queues | bool an
 ####################
 # Networking options
 ####################
-network_interface: "eth0"
+network_interface: "loopback0"
 neutron_external_interface: "eth1"
 kolla_external_vip_interface: "{{ network_interface }}"
 api_interface: "{{ network_interface }}"
