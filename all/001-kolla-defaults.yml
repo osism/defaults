@@ -36,13 +36,11 @@ kolla_ansible_setup_filter: "{{ omit }}"
 # By default, we do not provide a gather subset.
 kolla_ansible_setup_gather_subset: "{{ omit }}"
 
-# This variable is used as "any_errors_fatal" setting for the setup (gather
-# facts) plays.
-# This is useful for weeding out failing hosts early to avoid late failures
-# due to missing facts (especially cross-host).
-# Do note this still supports host fact caching and it will not affect
-# scenarios with all facts cached (as there is no task to fail).
-kolla_ansible_setup_any_errors_fatal: false
+# This variable determines which hosts require facts when using --limit. Facts
+# will be gathered using delegation for hosts in this list that are not
+# included in the limit.
+# By default, this list includes all hosts.
+kolla_ansible_delegate_facts_hosts: "{{ groups['all'] }}"
 
 ###################
 # Kolla options
@@ -94,7 +92,7 @@ database_port: "3306"
 database_connection_recycle_time: 10
 database_max_pool_size: 1
 database_enable_tls_backend: "{{ 'yes' if ((kolla_enable_tls_backend | bool ) and ( enable_proxysql | bool)) else 'no' }}"
-database_enable_tls_internal: "{{ 'yes' if ((kolla_enable_tls_backend | bool ) and ( enable_proxysql | bool)) else 'no' }}"
+database_enable_tls_internal: "{{ 'yes' if ((kolla_enable_tls_internal | bool ) and ( enable_proxysql | bool)) else 'no' }}"
 
 ####################
 # Container engine options
@@ -275,30 +273,15 @@ om_enable_rabbitmq_tls: "{{ rabbitmq_enable_tls | bool }}"
 om_rabbitmq_cacert: "{{ rabbitmq_cacert }}"
 om_rabbitmq_qos_prefetch_count: "1"
 
-om_enable_rabbitmq_high_availability: false
-# Only enable quorum queues if you disable om_enable_rabbitmq_high_availability
-om_enable_rabbitmq_quorum_queues: true
-om_enable_queue_manager: false
-# Enabling om_enable_rabbitmq_transient_quorum_queue will have no effect
-# without also enabling om_enable_rabbitmq_quorum_queues.
-# om_enable_rabbitmq_transient_quorum_queue should only be used in conjunction
-# with om_enable_queue_manager.
-om_enable_rabbitmq_transient_quorum_queue: "{{ om_enable_rabbitmq_quorum_queues | bool and om_enable_queue_manager | bool }}"
-# Enabling om_enable_rabbitmq_stream_fanout will have no effect without also
-# enabling om_enable_rabbitmq_quorum_queues.
-# om_enable_rabbitmq_stream_fanout must be used in conjunction with
-# om_enable_rabbitmq_transient_quorum_queue.
-om_enable_rabbitmq_stream_fanout: "{{ om_enable_rabbitmq_quorum_queues | bool and om_enable_rabbitmq_transient_quorum_queue | bool }}"
+om_enable_rabbitmq_stream_fanout: true
 
 ####################
 # Networking options
 ####################
-network_interface: "loopback0"
+network_interface: "eth0"
 neutron_external_interface: "eth1"
 kolla_external_vip_interface: "{{ network_interface }}"
 api_interface: "{{ network_interface }}"
-swift_storage_interface: "{{ network_interface }}"
-swift_replication_interface: "{{ swift_storage_interface }}"
 migration_interface: "{{ api_interface }}"
 tunnel_interface: "{{ network_interface }}"
 octavia_network_interface: "{{ 'o-hm0' if octavia_network_type == 'tenant' else api_interface }}"
@@ -313,8 +296,6 @@ ironic_tftp_interface: "{{ api_interface }}"
 network_address_family: "ipv4"
 api_address_family: "{{ network_address_family }}"
 storage_address_family: "{{ network_address_family }}"
-swift_storage_address_family: "{{ storage_address_family }}"
-swift_replication_address_family: "{{ swift_storage_address_family }}"
 migration_address_family: "{{ api_address_family }}"
 tunnel_address_family: "{{ network_address_family }}"
 octavia_network_address_family: "{{ api_address_family }}"
@@ -390,7 +371,11 @@ cloudkitty_api_listen_port: "{{ cloudkitty_api_port }}"
 
 collectd_udp_port: "25826"
 
+cyborg_internal_fqdn: "{{ kolla_internal_fqdn }}"
+cyborg_external_fqdn: "{{ kolla_external_fqdn }}"
 cyborg_api_port: "6666"
+cyborg_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else cyborg_api_port }}"
+cyborg_api_listen_port: "{{ cyborg_api_port }}"
 
 designate_internal_fqdn: "{{ kolla_internal_fqdn }}"
 designate_external_fqdn: "{{ kolla_external_fqdn }}"
@@ -515,6 +500,9 @@ keystone_ssh_port: "8023"
 kuryr_port: "23750"
 
 letsencrypt_webserver_port: "8081"
+letsencrypt_managed_certs: "{{ '' if not enable_letsencrypt | bool else ('internal' if letsencrypt_internal_cert_server != '' and kolla_same_external_internal_vip | bool else ('internal,external' if letsencrypt_internal_cert_server != '' and letsencrypt_external_cert_server != '' else ('internal' if letsencrypt_internal_cert_server != '' else ('external' if letsencrypt_external_cert_server != '' and not kolla_same_external_internal_vip | bool else '')))) }}"
+letsencrypt_external_cert_server: "https://acme-v02.api.letsencrypt.org/directory"
+letsencrypt_internal_cert_server: ""
 
 magnum_internal_fqdn: "{{ kolla_internal_fqdn }}"
 magnum_external_fqdn: "{{ kolla_external_fqdn }}"
@@ -537,29 +525,9 @@ mariadb_wsrep_port: "4567"
 mariadb_ist_port: "4568"
 mariadb_sst_port: "4444"
 mariadb_clustercheck_port: "4569"
+mariadb_enable_tls_backend: "{{ database_enable_tls_backend }}"
 
 mariadb_monitor_user: "{{ 'monitor' if enable_proxysql | bool else 'haproxy' }}"
-mariadb_monitor_connect_interval: "2000"
-mariadb_monitor_galera_healthcheck_interval: "4000"
-mariadb_monitor_galera_healthcheck_timeout: "1000"
-mariadb_monitor_galera_healthcheck_max_timeout_count: "2"
-mariadb_monitor_ping_interval: "3000"
-mariadb_monitor_ping_timeout: "2000"
-mariadb_monitor_ping_max_failures: "2"
-#
-# Defaults preserved for multinode setup
-# Tweaked for single-node
-#
-# ProxySQL shuns servers on MySQL errors, which can cause failures
-# during upgrades or restarts. In single-node setups, ProxySQL can't reroute
-# traffic, leading to "Max connect timeout" errors. To avoid this in CI and
-# signle-node environments, delay error responses to clients by 10 seconds,
-# giving the backend time to recover without immediate failures.
-#
-# See ProxySQL docs for more: https://proxysql.com/documentation/global-variables/mysql-variables/#mysql-shun_on_failures
-mariadb_shun_on_failures: "{{ '10' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '5' }}"
-mariadb_connect_retries_delay: "{{ '1000' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '1' }}"
-mariadb_connect_retries_on_failure: "{{ '20' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '10' }}"
 
 mariadb_datadir_volume: "mariadb"
 
@@ -647,8 +615,16 @@ opensearch_dashboards_listen_port: "{{ opensearch_dashboards_port }}"
 
 ovn_nb_db_port: "6641"
 ovn_sb_db_port: "6642"
+# OVN SB Relay related variables
+ovn_sb_db_relay_count: "{{ ((groups['ovn-controller'] | length) / ovn_sb_db_relay_compute_per_relay | int) | round(0, 'ceil') | int }}"
+ovn_sb_db_relay_compute_per_relay: "50"
+ovn_sb_db_relay_port_prefix: "1664"
+ovn_sb_db_relay_port: "{{ ovn_sb_db_relay_port_prefix ~ ovn_sb_db_relay_client_group_id }}"
+ovn_sb_db_relay_client_group_id: "{{ range(1, ovn_sb_db_relay_count | int + 1) | random(seed=inventory_hostname) }}"
 ovn_nb_connection: "{% for host in groups['ovn-nb-db'] %}tcp:{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ ovn_nb_db_port }}{% if not loop.last %},{% endif %}{% endfor %}"
-ovn_sb_connection: "{% for host in groups['ovn-sb-db'] %}tcp:{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ ovn_sb_db_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+ovn_sb_connection: "{{ ovn_sb_connection_relay if enable_ovn_sb_db_relay | bool else ovn_sb_connection_no_relay }}"
+ovn_sb_connection_no_relay: "{% for host in groups['ovn-sb-db'] %}tcp:{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ ovn_sb_db_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+ovn_sb_connection_relay: "{% for host in groups['ovn-sb-db-relay'] %}tcp:{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ ovn_sb_db_relay_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 ovsdb_port: "6640"
 
@@ -726,17 +702,6 @@ skyline_console_port: "9999"
 skyline_console_listen_port: "{{ skyline_console_port }}"
 skyline_console_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else skyline_console_port }}"
 skyline_enable_sso: "{{ enable_keystone_federation | bool and keystone_identity_providers | selectattr('protocol', 'equalto', 'openid') | list | count > 0 }}"
-
-swift_internal_fqdn: "{{ kolla_internal_fqdn }}"
-swift_external_fqdn: "{{ kolla_external_fqdn }}"
-swift_internal_base_endpoint: "{{ swift_internal_fqdn | kolla_url(internal_protocol, swift_proxy_server_port) }}"
-swift_public_base_endpoint: "{{ swift_external_fqdn | kolla_url(public_protocol, swift_proxy_server_port) }}"
-swift_proxy_server_port: "8080"
-swift_proxy_server_listen_port: "{{ swift_proxy_server_port }}"
-swift_object_server_port: "6000"
-swift_account_server_port: "6001"
-swift_container_server_port: "6002"
-swift_rsync_port: "10873"
 
 syslog_udp_port: "{{ fluentd_syslog_port }}"
 
@@ -866,7 +831,6 @@ enable_ceph_rgw: "no"
 enable_ceph_rgw_loadbalancer: "{{ enable_ceph_rgw | bool }}"
 enable_cinder: "no"
 enable_cinder_backup: "yes"
-enable_cinder_backend_hnas_nfs: "no"
 enable_cinder_backend_iscsi: "{{ enable_cinder_backend_lvm | bool }}"
 enable_cinder_backend_lvm: "no"
 enable_cinder_backend_nfs: "no"
@@ -875,6 +839,7 @@ enable_cinder_backend_pure_iscsi: "no"
 enable_cinder_backend_pure_fc: "no"
 enable_cinder_backend_pure_roce: "no"
 enable_cinder_backend_pure_nvme_tcp: "no"
+enable_cinder_backend_lightbits: "no"
 enable_cloudkitty: "no"
 enable_collectd: "no"
 enable_cyborg: "no"
@@ -903,11 +868,14 @@ enable_horizon_neutron_vpnaas: "{{ enable_neutron_vpnaas | bool }}"
 enable_horizon_octavia: "{{ enable_octavia | bool }}"
 enable_horizon_tacker: "{{ enable_tacker | bool }}"
 enable_horizon_trove: "{{ enable_trove | bool }}"
+enable_horizon_venus: "{{ enable_venus | bool }}"
 enable_horizon_watcher: "{{ enable_watcher | bool }}"
 enable_horizon_zun: "{{ enable_zun | bool }}"
 enable_influxdb: "{{ enable_cloudkitty | bool and cloudkitty_storage_backend == 'influxdb' }}"
 enable_ironic: "no"
-enable_ironic_neutron_agent: "{{ enable_neutron | bool and enable_ironic | bool }}"
+enable_ironic_dnsmasq: "{{ enable_ironic | bool }}"
+enable_ironic_inspector: "no"
+enable_ironic_neutron_agent: "no"
 enable_ironic_prometheus_exporter: "{{ enable_ironic | bool and enable_prometheus | bool }}"
 enable_iscsid: "{{ enable_cinder | bool and enable_cinder_backend_iscsi | bool }}"
 enable_kuryr: "no"
@@ -919,6 +887,7 @@ enable_manila_backend_hnas: "no"
 enable_manila_backend_cephfs_native: "no"
 enable_manila_backend_cephfs_nfs: "no"
 enable_manila_backend_glusterfs_nfs: "no"
+enable_manila_backend_flashblade: "no"
 enable_mariabackup: "no"
 enable_masakari: "no"
 enable_masakari_instancemonitor: "{{ enable_masakari | bool }}"
@@ -950,16 +919,14 @@ enable_octavia_driver_agent: "{{ enable_octavia | bool and neutron_plugin_agent 
 enable_octavia_jobboard: "{{ enable_octavia | bool and 'amphora' in octavia_provider_drivers }}"
 enable_openvswitch: "{{ enable_neutron | bool and neutron_plugin_agent != 'linuxbridge' }}"
 enable_ovn: "{{ enable_neutron | bool and neutron_plugin_agent == 'ovn' }}"
+enable_ovn_sb_db_relay: "{{ enable_ovn | bool }}"
 enable_ovs_dpdk: "no"
 enable_osprofiler: "no"
 enable_placement: "{{ enable_nova | bool or enable_zun | bool }}"
 enable_prometheus: "no"
-enable_proxysql: "no"
+enable_proxysql: "yes"
 enable_redis: "no"
 enable_skyline: "no"
-enable_swift: "no"
-enable_swift_s3api: "no"
-enable_swift_recon: "no"
 enable_tacker: "no"
 enable_telegraf: "no"
 enable_trove: "no"
@@ -1116,12 +1083,11 @@ openstack_auth:
 #######################
 # Glance options
 #######################
-glance_backend_file: "{{ not (glance_backend_ceph | bool or glance_backend_s3 | bool or glance_backend_swift | bool or glance_backend_vmware | bool) }}"
+glance_backend_file: "{{ not (glance_backend_ceph | bool or glance_backend_s3 | bool or glance_backend_vmware | bool) }}"
 glance_backend_ceph: "no"
 glance_backend_vmware: "no"
 glance_backend_s3: "no"
 enable_glance_image_cache: "no"
-glance_backend_swift: "{{ enable_swift | bool }}"
 glance_file_datadir_volume: "glance"
 glance_enable_rolling_upgrade: "no"
 glance_enable_property_protection: "no"
@@ -1140,8 +1106,8 @@ barbican_library_path: "/usr/lib/libCryptoki2_64.so"
 #################
 # Gnocchi options
 #################
-# Valid options are [ file, ceph, swift ]
-gnocchi_backend_storage: "{% if enable_swift | bool %}swift{% else %}file{% endif %}"
+# Valid options are [ file, ceph ]
+gnocchi_backend_storage: "file"
 
 # Valid options are [redis, '']
 gnocchi_incoming_storage: "{{ 'redis' if enable_redis | bool else '' }}"
@@ -1160,7 +1126,7 @@ cinder_target_helper: "{{ 'lioadm' if ansible_facts.os_family == 'RedHat' else '
 # Valid options are [ '', redis, etcd ]
 cinder_coordination_backend: "{{ 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
 
-# Valid options are [ nfs, swift, ceph, s3 ]
+# Valid options are [ nfs, ceph, s3 ]
 cinder_backup_driver: "ceph"
 cinder_backup_share: ""
 cinder_backup_mount_options_nfs: ""
@@ -1270,6 +1236,8 @@ horizon_enable_tls_backend: "{{ kolla_enable_tls_backend }}"
 # External Ceph - cephx auth enabled (this is the standard nowadays, defaults to yes)
 external_ceph_cephx_enabled: "yes"
 
+ceph_cluster: "ceph"
+
 # External Ceph pool names
 ceph_cinder_pool_name: "volumes"
 ceph_cinder_backup_pool_name: "backups"
@@ -1283,14 +1251,6 @@ ceph_glance_user: "glance"
 ceph_gnocchi_user: "gnocchi"
 ceph_manila_user: "manila"
 ceph_nova_user: "{{ ceph_cinder_user }}"
-
-# External Ceph keyrings
-ceph_cinder_keyring: "client.{{ ceph_cinder_user }}.keyring"
-ceph_cinder_backup_keyring: "client.{{ ceph_cinder_backup_user }}.keyring"
-ceph_glance_keyring: "client.{{ ceph_glance_user }}.keyring"
-ceph_gnocchi_keyring: "client.{{ ceph_gnocchi_user }}.keyring"
-ceph_manila_keyring: "client.{{ ceph_manila_user }}.keyring"
-ceph_nova_keyring: "{{ ceph_cinder_keyring }}"
 
 #####################
 # VMware support
@@ -1337,6 +1297,7 @@ enable_prometheus_proxysql_exporter: "{{ enable_prometheus | bool and enable_pro
 prometheus_alertmanager_user: "admin"
 prometheus_ceph_exporter_interval: "{{ prometheus_scrape_interval }}"
 prometheus_grafana_user: "grafana"
+prometheus_haproxy_user: "haproxy"
 prometheus_skyline_user: "skyline"
 prometheus_scrape_interval: "60s"
 prometheus_openstack_exporter_interval: "{{ prometheus_scrape_interval }}"
