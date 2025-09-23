@@ -183,6 +183,14 @@ mariadb_shun_on_failures: "{{ '10' if mariadb_shards_info.shards.values() | map(
 mariadb_connect_retries_delay: "{{ '1000' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '1' }}"
 mariadb_connect_retries_on_failure: "{{ '20' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '10' }}"
 
+om_enable_rabbitmq_high_availability: false
+om_enable_rabbitmq_quorum_queues: true
+om_enable_queue_manager: false
+om_enable_rabbitmq_transient_quorum_queue: "{{ om_enable_rabbitmq_quorum_queues | bool and om_enable_queue_manager | bool }}"
+
+# This has to be set to true in environments/kolla/configuration.yml for >= 2025.1.
+om_enable_rabbitmq_stream_fanout: "{{ om_enable_rabbitmq_quorum_queues | bool and om_enable_rabbitmq_transient_quorum_queue | bool }}"
+
 ##########################################################
 # Bugfixes
 
