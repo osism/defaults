@@ -27,8 +27,13 @@ enable_prometheus_openstack_exporter: "no"
 # We don't usually use heat anywhere. Enable it explicitly if required.
 enable_heat: "no"
 
+# Backward compatibility for < 2025.1
+enable_proxysql: "no"
+
 ##########################################################
 # Set default configuartions
+
+network_interface: loopback0
 
 certificates_dir: /share/certificates
 
@@ -38,8 +43,8 @@ kolla_install_type: source
 config_strategy: COPY_ALWAYS
 node_custom_config: "{{ node_config }}/files/overlays"
 
-docker_namespace: osism
-docker_registry_kolla: quay.io
+docker_namespace: kolla
+docker_registry_kolla: registry.osism.tech
 
 openstack_logging_debug: "False"  # NOTE: This has to be "False", not "false"!
 
@@ -163,6 +168,20 @@ grafana_custom_dashboards_paths: "{{
   +
   [node_custom_config + '/grafana/dashboards']
 }}"
+
+##########################################################
+# Backward compability
+
+mariadb_monitor_connect_interval: "2000"
+mariadb_monitor_galera_healthcheck_interval: "4000"
+mariadb_monitor_galera_healthcheck_timeout: "1000"
+mariadb_monitor_galera_healthcheck_max_timeout_count: "2"
+mariadb_monitor_ping_interval: "3000"
+mariadb_monitor_ping_timeout: "2000"
+mariadb_monitor_ping_max_failures: "2"
+mariadb_shun_on_failures: "{{ '10' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '5' }}"
+mariadb_connect_retries_delay: "{{ '1000' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '1' }}"
+mariadb_connect_retries_on_failure: "{{ '20' if mariadb_shards_info.shards.values() | map(attribute='hosts') | map('length') | select('<=', 1) | list | length > 0 else '10' }}"
 
 ##########################################################
 # Bugfixes
