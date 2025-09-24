@@ -627,6 +627,8 @@ ovn_northd_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-northd
 ovn_northd_tag: "{{ ovn_tag }}"
 ovn_nb_db_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-nb-db-server"
 ovn_nb_db_tag: "{{ ovn_tag }}"
+ovn_sb_db_relay_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-sb-db-relay"
+ovn_sb_db_relay_tag: "{{ ovn_tag }}"
 ovn_sb_db_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/ovn-sb-db-server"
 ovn_sb_db_tag: "{{ ovn_tag }}"
 
