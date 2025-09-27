@@ -377,7 +377,7 @@ glance_tls_proxy_tag: "{{ glance_tag }}"
 # role: prometheus
 
 prometheus_tag: "{{ kolla_prometheus_version|default(kolla_image_version) }}"
-prometheus_server_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/{{ 'prometheus-server' if prometheus_use_v1|default(False) or openstack_version in ['victoria'] else 'prometheus-v2-server' }}"
+prometheus_server_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/{{ 'prometheus-server' if openstack_version in ['2025.1'] else 'prometheus-v2-server' }}"
 prometheus_server_tag: "{{ prometheus_tag }}"
 prometheus_haproxy_exporter_image: "{{ docker_registry_kolla }}/{{ docker_namespace }}/prometheus-haproxy-exporter"
 prometheus_haproxy_exporter_tag: "{{ kolla_prometheus_haproxy_exporter_version|default(prometheus_tag) }}"
