@@ -90,9 +90,6 @@
     check:
       jobs:
         - yamllint
-    gate:
-      jobs:
-        - yamllint
     periodic-daily:
       jobs:
         - yamllint
