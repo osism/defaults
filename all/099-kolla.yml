@@ -203,6 +203,7 @@ gnocchi_statsd_enable_healthchecks: "no"
 # required to be backward compatible
 enable_ironic_dnsmasq: "no"
 enable_skydive: "no"
+enable_swift: "no"
 
 keystone_admin_port: "35357"
 keystone_admin_listen_port: "{{ keystone_admin_port }}"
