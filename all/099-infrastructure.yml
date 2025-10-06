@@ -22,6 +22,11 @@ openstackclient_configuration_directory: "{{ configuration_directory }}/environm
 opentstackclient_groupname: openstackclient
 
 ##########################
+# substation
+
+substation_configuration_directory: "{{ configuration_directory }}/environments/openstack"
+
+##########################
 # phpmyadmin
 
 phpmyadmin_host: "{{ hostvars[inventory_hostname]['ansible_' + management_interface]['ipv4']['address'] }}"
