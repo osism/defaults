@@ -96,12 +96,6 @@ extra_server_args: >-
 extra_agent_args: >-
   {{ extra_args }}
 
-# custom registries
-k3s_custom_registries: true
-custom_registries_yaml:
-  mirrors:
-    "*":
-
 # other
 k3s_create_kubectl_symlink: false
 k3s_create_crictl_symlink: false
