@@ -312,9 +312,7 @@ dpdk_tunnel_interface_address: "{{ 'dpdk_tunnel' | kolla_address }}"
 ironic_http_interface_address: "{{ 'ironic_http' | kolla_address }}"
 ironic_tftp_interface_address: "{{ 'ironic_tftp' | kolla_address }}"
 
-# Valid options are [ openvswitch, ovn, linuxbridge, vmware_nsxv, vmware_nsxv3, vmware_nsxp, vmware_dvs ]
-# Do note linuxbridge is *EXPERIMENTAL* in Neutron since Zed and it requires extra tweaks to config to be usable.
-# For details, see: https://docs.openstack.org/neutron/latest/admin/config-experimental-framework.html
+# Valid options are [ openvswitch, ovn, vmware_nsxv, vmware_nsxv3, vmware_nsxp, vmware_dvs ]
 neutron_plugin_agent: "openvswitch"
 
 # Valid options are [ internal, infoblox ]
@@ -463,8 +461,9 @@ heat_api_cfn_public_port: "{{ haproxy_single_external_frontend_public_port if ha
 
 horizon_internal_fqdn: "{{ kolla_internal_fqdn }}"
 horizon_external_fqdn: "{{ kolla_external_fqdn }}"
-horizon_internal_endpoint: "{{ kolla_internal_fqdn | kolla_url(internal_protocol, horizon_tls_port if kolla_enable_tls_internal | bool else horizon_port) }}"
-horizon_public_endpoint: "{{ kolla_external_fqdn | kolla_url(public_protocol, horizon_tls_port if kolla_enable_tls_external | bool else horizon_port) }}"
+horizon_internal_endpoint: "{{ horizon_internal_fqdn | kolla_url(internal_protocol, horizon_tls_port if kolla_enable_tls_internal | bool else horizon_port) }}"
+horizon_public_endpoint: "{{ horizon_external_fqdn | kolla_url(public_protocol, horizon_tls_port if kolla_enable_tls_external | bool else horizon_port) }}"
+
 horizon_port: "80"
 horizon_tls_port: "443"
 horizon_listen_port: "{{ horizon_tls_port if horizon_enable_tls_backend | bool else horizon_port }}"
@@ -541,6 +540,12 @@ mariadb_backup_target: "{{ 'active' if mariadb_loadbalancer == 'haproxy' else 'r
 mariadb_shard_root_user_prefix: "root_shard_"
 mariadb_shard_backup_user_prefix: "backup_shard_"
 mariadb_shards_info: "{{ groups['mariadb'] | database_shards_info() }}"
+
+# Size in mega-bytes of each InnoDB redo log file in the log group.
+# Allowed minimum is 4MB and maximum is 524288MB (512GB).
+# Larger values mean less disk I/O due to less flushing checkpoint activity,
+# but also slower recovery from a crash.
+mariadb_innodb_log_file_size_mb: 2048
 
 masakari_internal_fqdn: "{{ kolla_internal_fqdn }}"
 masakari_external_fqdn: "{{ kolla_external_fqdn }}"
@@ -677,6 +682,10 @@ prometheus_blackbox_exporter_port: "9115"
 prometheus_instance_label:
 
 proxysql_admin_port: "6032"
+# Integer variable to set ProxySQL version. Valid options are 2 and 3
+# When it's set to 2 (Default), ProxySQL 2.7.x is deployed.
+# When it's set to 3, ProxySQL 3.0.x is used.
+proxysql_version: 2
 
 rabbitmq_port: "{{ '5671' if rabbitmq_enable_tls | bool else '5672' }}"
 rabbitmq_management_port: "15672"
@@ -922,7 +931,7 @@ enable_nova_ssh: "yes"
 enable_octavia: "no"
 enable_octavia_driver_agent: "{{ enable_octavia | bool and neutron_plugin_agent == 'ovn' }}"
 enable_octavia_jobboard: "{{ enable_octavia | bool and 'amphora' in octavia_provider_drivers }}"
-enable_openvswitch: "{{ enable_neutron | bool and neutron_plugin_agent != 'linuxbridge' }}"
+enable_openvswitch: "{{ enable_neutron | bool }}"
 enable_ovn: "{{ enable_neutron | bool and neutron_plugin_agent == 'ovn' }}"
 enable_ovn_sb_db_relay: "{{ enable_ovn | bool }}"
 enable_ovs_dpdk: "no"

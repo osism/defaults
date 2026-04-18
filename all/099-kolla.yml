@@ -30,6 +30,8 @@ enable_heat: "no"
 # Backward compatibility for < 2025.1
 enable_proxysql: "no"
 
+proxysql_version: 3
+
 ##########################################################
 # Set default configuartions
 
