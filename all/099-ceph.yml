@@ -10,6 +10,34 @@ fetch_directory: /share
 generate_fsid: false
 ntp_service_enabled: false
 
+##########################
+# cluster policy
+
+# Sets the Ceph OSD map require-min-compat-client parameter.
+# With mimic or newer, RBD clone v2 is used: parent snapshots no longer need
+# to be protected, enabling Glance image deletion via trash_move() when Nova
+# ephemeral RBD clones exist. Clients older than the specified release are
+# rejected cluster-wide (hard gate, not a warning). Set to '' to skip.
+# NOTE: This is effectively one-way on a live cluster once clone v2 objects
+# exist. Do not lower this value on production clusters.
+ceph_require_min_compat_client: mimic
+
+# Release ordering used to compare Ceph release names for the idempotency
+# check. Only releases from luminous onward are relevant. If ceph_require_min_compat_client
+# names a release absent from this map, the assertion task fails with a clear
+# message. If the cluster's current value is absent, the task skips.
+# Extend this map when new Ceph releases are supported.
+ceph_min_compat_client_order:
+  luminous: 12
+  mimic: 13
+  nautilus: 14
+  octopus: 15
+  pacific: 16
+  quincy: 17
+  reef: 18
+  squid: 19
+  tentacle: 20
+
 # NOTE(berendt): We use an adapted Ceph image in which always the UID 64045 is used
 ceph_uid: 64045
 bootstrap_dirs_owner: "64045"
