@@ -69,6 +69,14 @@ redis_sentinel_image: "{{ docker_image_url }}redis-sentinel"
 redis_sentinel_tag: "{{ redis_tag }}"
 
 ##############################
+# role: valkey
+
+valkey_image: "{{ docker_image_url }}valkey-server"
+valkey_tag: "{{ kolla_valkey_version|default(kolla_image_version) }}"
+valkey_sentinel_image: "{{ docker_image_url }}valkey-sentinel"
+valkey_sentinel_tag: "{{ valkey_tag }}"
+
+##############################
 # role: octavia-certificates
 
 
@@ -182,6 +190,8 @@ keystone_fernet_image: "{{ docker_image_url }}keystone-fernet"
 keystone_fernet_tag: "{{ keystone_tag }}"
 keystone_ssh_image: "{{ docker_image_url }}keystone-ssh"
 keystone_ssh_tag: "{{ keystone_tag }}"
+keystone_httpd_image: "{{ docker_image_url }}httpd"
+keystone_httpd_tag: "{{ keystone_tag }}"
 
 ##############################
 # role: vitrage
@@ -654,10 +664,18 @@ neutron_ovn_metadata_agent_image: "{{ docker_image_url }}neutron-metadata-agent"
 neutron_ovn_metadata_agent_tag: "{{ neutron_tag }}"
 neutron_ovn_vpn_agent_image: "{{ docker_image_url }}neutron-ovn-vpn-agent"
 neutron_ovn_vpn_agent_tag: "{{ neutron_tag }}"
+neutron_ovn_agent_image: "{{ docker_image_url }}neutron-ovn-agent"
+neutron_ovn_agent_tag: "{{ neutron_tag }}"
 neutron_openvswitch_agent_image: "{{ docker_image_url }}neutron-openvswitch-agent"
 neutron_openvswitch_agent_tag: "{{ neutron_tag }}"
 neutron_server_image: "{{ docker_image_url }}neutron-server"
 neutron_server_tag: "{{ neutron_tag }}"
+neutron_rpc_server_image: "{{ neutron_server_image }}"
+neutron_rpc_server_tag: "{{ neutron_tag }}"
+neutron_periodic_worker_image: "{{ neutron_server_image }}"
+neutron_periodic_worker_tag: "{{ neutron_tag }}"
+neutron_ovn_maintenance_worker_image: "{{ neutron_server_image }}"
+neutron_ovn_maintenance_worker_tag: "{{ neutron_tag }}"
 neutron_bgp_dragent_image: "{{ docker_image_url }}neutron-bgp-dragent"
 neutron_bgp_dragent_tag: "{{ neutron_tag }}"
 neutron_infoblox_ipam_agent_image: "{{ docker_image_url }}neutron-infoblox-ipam-agent"
@@ -679,6 +697,8 @@ ironic_conductor_image: "{{ docker_image_url }}ironic-conductor"
 ironic_conductor_tag: "{{ ironic_tag }}"
 ironic_pxe_image: "{{ docker_image_url }}ironic-pxe"
 ironic_pxe_tag: "{{ ironic_tag }}"
+ironic_pxe_filter_image: "{{ docker_image_url }}ironic-pxe-filter"
+ironic_pxe_filter_tag: "{{ ironic_tag }}"
 ironic_inspector_image: "{{ docker_image_url }}ironic-inspector"
 ironic_inspector_tag: "{{ kolla_ironic_inspector_version|default(kolla_image_version) }}"
 ironic_dnsmasq_image: "{{ docker_image_url }}dnsmasq"
