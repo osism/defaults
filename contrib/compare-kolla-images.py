@@ -37,22 +37,38 @@ compares the set with the ``*_image`` variables defined in
              differs. Some are intentional (OSISM builds its own images, e.g.
              neutron-eswitchd); review case by case.
 
-The exit code is non-zero when images are MISSING or have an ALIAS mismatch,
-so the script can be used as a CI guard.
+This is a manual helper, not a CI gate. ``all/002-images-kolla.yml`` is a
+single file covering *all* supported releases, while this script compares it
+against *one* kolla-ansible checkout. A superset-vs-single-branch comparison
+always produces some noise - MISSING when the checked-out branch is newer than
+the file's coverage, OBSOLETE for variables belonging to other releases - so
+the exit code cannot cleanly mean "out of sync". It is non-zero when images are
+MISSING or have an ALIAS mismatch, which is convenient for a local run, but do
+not wire it into CI expecting a reliable signal.
 
 Usage
 -----
-    contrib/compare-kolla-images.py [--kolla-ansible PATH] [--show-obsolete]
-                                    [--show-differs] [--strict]
+    contrib/compare-kolla-images.py [--repo REPO] [--branch BRANCH]
+                                    [--show-obsolete] [--show-differs] [--strict]
+
+The kolla-ansible repository is shallow-cloned into a temporary directory for
+the duration of the run and removed afterwards (default repo:
+openstack/kolla-ansible, default branch: master).
 """
 
 from __future__ import annotations
 
 import argparse
-import os
+import contextlib
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
+
+DEFAULT_REPO = "openstack/kolla-ansible"
+DEFAULT_BRANCH = "master"
 
 # <var>_image: "<value>"   (ignore *_image_full, those are derived downstream)
 IMAGE_RE = re.compile(r'^(?P<var>[a-z0-9_]+_image):\s*["\']?(?P<value>.+?)["\']?\s*$')
@@ -66,28 +82,44 @@ DOCKER_URL_RE = re.compile(
 ALIAS_RE = re.compile(r"^\{\{\s*(?P<ref>[a-z0-9_]+_image)\s*\}\}$")
 
 
-def find_kolla_ansible(explicit: str | None) -> Path:
-    """Locate a kolla-ansible checkout."""
-    candidates = []
-    if explicit:
-        candidates.append(Path(explicit).expanduser())
-    env = os.environ.get("KOLLA_ANSIBLE_PATH")
-    if env:
-        candidates.append(Path(env).expanduser())
-    repo_root = Path(__file__).resolve().parent.parent
-    candidates += [
-        repo_root.parent / "kolla-ansible",
-        repo_root.parent.parent / "kolla-ansible",
-        Path("~/Repositories/kolla-ansible").expanduser(),
-    ]
-    for c in candidates:
-        if (c / "ansible" / "roles").is_dir():
-            return c
-    tried = "\n  ".join(str(c) for c in candidates)
-    sys.exit(
-        "error: could not find a kolla-ansible checkout. Use --kolla-ansible "
-        f"or set KOLLA_ANSIBLE_PATH.\nTried:\n  {tried}"
-    )
+def repo_url(repo: str) -> str:
+    """Expand an ``owner/name`` shorthand to a GitHub URL; pass URLs through."""
+    if re.fullmatch(r"[\w.-]+/[\w.-]+", repo):
+        return f"https://github.com/{repo}.git"
+    return repo
+
+
+@contextlib.contextmanager
+def kolla_ansible_checkout(repo: str, branch: str):
+    """Shallow-clone *repo* at *branch* into a temp dir, then remove it.
+
+    *repo* is an ``owner/name`` shorthand (cloned from GitHub) or a full git
+    URL. Yields the path to the checkout for the duration of the ``with`` block.
+    """
+    url = repo_url(repo)
+    tmp = Path(tempfile.mkdtemp(prefix="kolla-ansible-"))
+    try:
+        print(f"cloning {url} ({branch}) ...", file=sys.stderr)
+        try:
+            subprocess.run(
+                ["git", "clone", "--depth", "1", "--branch", branch, url, str(tmp)],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+        except FileNotFoundError:
+            sys.exit("error: 'git' is required but was not found on PATH.")
+        except subprocess.CalledProcessError as exc:
+            sys.exit(f"error: failed to clone {url} ({branch}):\n{exc.stderr.strip()}")
+        if not (tmp / "ansible" / "roles").is_dir():
+            sys.exit(
+                f"error: {url} ({branch}) does not look like a kolla-ansible "
+                "checkout (no ansible/roles directory)."
+            )
+        yield tmp
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def parse_image_vars(path: Path) -> dict[str, str]:
@@ -145,7 +177,9 @@ def resolve_image_name(var: str, values: dict[str, str], _seen=None) -> str | No
     """Resolve the image name for *var*, following alias chains.
 
     Returns the image name (e.g. "neutron-server"), the literal value for
-    unrecognised patterns, or None.
+    unrecognised plain patterns, or None when the value is an unresolved
+    template (e.g. a conditional name built from a second ``{{ ... }}``) or
+    the variable is unknown.
     """
     _seen = _seen or set()
     if var in _seen or var not in values:
@@ -158,7 +192,13 @@ def resolve_image_name(var: str, values: dict[str, str], _seen=None) -> str | No
     m = ALIAS_RE.match(value)
     if m:
         return resolve_image_name(m.group("ref"), values, _seen)
-    return value  # unknown pattern, surface it verbatim
+    if "{{" in value:
+        # A template expression we could not resolve to a plain name, e.g. a
+        # conditional like mariadb_image/prometheus_server_image that inserts a
+        # second "{{ ... }}". It is not an image name, so report it as
+        # unresolved instead of surfacing the raw template string.
+        return None
+    return value  # unknown literal pattern, surface it verbatim
 
 
 def suggest_snippet(
@@ -209,10 +249,17 @@ def main() -> int:
         description="Compare all/002-images-kolla.yml with openstack/kolla-ansible.",
     )
     parser.add_argument(
-        "--kolla-ansible",
-        metavar="PATH",
-        help="Path to a kolla-ansible checkout "
-        "(default: autodetect, or $KOLLA_ANSIBLE_PATH).",
+        "--repo",
+        metavar="REPO",
+        default=DEFAULT_REPO,
+        help="kolla-ansible repository to clone, as 'owner/name' (GitHub) or a "
+        f"full git URL (default: {DEFAULT_REPO}).",
+    )
+    parser.add_argument(
+        "--branch",
+        metavar="BRANCH",
+        default=DEFAULT_BRANCH,
+        help=f"Branch to clone and compare against (default: {DEFAULT_BRANCH}).",
     )
     parser.add_argument(
         "--images-file",
@@ -246,9 +293,10 @@ def main() -> int:
     if not images_file.is_file():
         sys.exit(f"error: images file not found: {images_file}")
 
-    ka_root = find_kolla_ansible(args.kolla_ansible)
+    ka_source = f"{repo_url(args.repo)} ({args.branch})"
+    with kolla_ansible_checkout(args.repo, args.branch) as ka_root:
+        ka_role, ka_value = collect_kolla_images(ka_root)
 
-    ka_role, ka_value = collect_kolla_images(ka_root)
     osism_value = parse_image_vars(images_file)
     osism_tags = parse_tag_vars(images_file)
 
@@ -273,7 +321,7 @@ def main() -> int:
         if ka_name != osism_name:
             differs.append((var, ka_name or "?", osism_name or "?"))
 
-    print(f"kolla-ansible : {ka_root}")
+    print(f"kolla-ansible : {ka_source}")
     print(f"images file   : {images_file}")
     print(
         f"upstream images: {len(ka_vars)}   "
