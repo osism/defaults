@@ -26,15 +26,6 @@ heat_engine_image: "{{ docker_image_url }}heat-engine"
 heat_engine_tag: "{{ heat_tag }}"
 
 ##############################
-# role: murano
-
-murano_tag: "{{ kolla_murano_version|default(kolla_image_version) }}"
-murano_api_image: "{{ docker_image_url }}murano-api"
-murano_api_tag: "{{ murano_tag }}"
-murano_engine_image: "{{ docker_image_url }}murano-engine"
-murano_engine_tag: "{{ murano_tag }}"
-
-##############################
 # role: manila
 
 manila_tag: "{{ kolla_manila_version|default(kolla_image_version) }}"
@@ -155,19 +146,6 @@ masakari_monitors_image: "{{ docker_image_url }}masakari-monitors"
 masakari_monitors_tag: "{{ masakari_tag }}"
 
 ##############################
-# role: solum
-
-solum_tag: "{{ kolla_solum_version|default(kolla_image_version) }}"
-solum_worker_image: "{{ docker_image_url }}solum-worker"
-solum_worker_tag: "{{ solum_tag }}"
-solum_deployer_image: "{{ docker_image_url }}solum-deployer"
-solum_deployer_tag: "{{ solum_tag }}"
-solum_conductor_image: "{{ docker_image_url }}solum-conductor"
-solum_conductor_tag: "{{ solum_tag }}"
-solum_api_image: "{{ docker_image_url }}solum-api"
-solum_api_tag: "{{ solum_tag }}"
-
-##############################
 # role: senlin
 
 senlin_tag: "{{ kolla_senlin_version|default(kolla_image_version) }}"
@@ -192,21 +170,6 @@ keystone_ssh_image: "{{ docker_image_url }}keystone-ssh"
 keystone_ssh_tag: "{{ keystone_tag }}"
 keystone_httpd_image: "{{ docker_image_url }}httpd"
 keystone_httpd_tag: "{{ keystone_tag }}"
-
-##############################
-# role: vitrage
-
-vitrage_tag: "{{ kolla_vitrage_version|default(kolla_image_version) }}"
-vitrage_graph_image: "{{ docker_image_url }}vitrage-graph"
-vitrage_graph_tag: "{{ vitrage_tag }}"
-vitrage_api_image: "{{ docker_image_url }}vitrage-api"
-vitrage_api_tag: "{{ vitrage_tag }}"
-vitrage_notifier_image: "{{ docker_image_url }}vitrage-notifier"
-vitrage_notifier_tag: "{{ vitrage_tag }}"
-vitrage_ml_image: "{{ docker_image_url }}vitrage-ml"
-vitrage_ml_tag: "{{ vitrage_tag }}"
-vitrage_persistor_image: "{{ docker_image_url }}vitrage-persistor"
-vitrage_persistor_tag: "{{ vitrage_tag }}"
 
 ##############################
 # role: vmtp
@@ -251,15 +214,6 @@ cinder_backup_image: "{{ docker_image_url }}cinder-backup"
 cinder_backup_tag: "{{ cinder_tag }}"
 cinder_api_image: "{{ docker_image_url }}cinder-api"
 cinder_api_tag: "{{ cinder_tag }}"
-
-##############################
-# role: freezer
-
-freezer_tag: "{{ kolla_freezer_version|default(kolla_image_version) }}"
-freezer_api_image: "{{ docker_image_url }}freezer-api"
-freezer_api_tag: "{{ freezer_tag }}"
-freezer_scheduler_image: "{{ docker_image_url }}freezer-scheduler"
-freezer_scheduler_tag: "{{ freezer_tag }}"
 
 ##############################
 # role: kibana
@@ -323,15 +277,6 @@ magnum_api_image: "{{ docker_image_url }}magnum-api"
 magnum_api_tag: "{{ magnum_tag }}"
 magnum_conductor_image: "{{ docker_image_url }}magnum-conductor"
 magnum_conductor_tag: "{{ magnum_tag }}"
-
-##############################
-# role: sahara
-
-sahara_tag: "{{ kolla_sahara_version|default(kolla_image_version) }}"
-sahara_engine_image: "{{ docker_image_url }}sahara-engine"
-sahara_engine_tag: "{{ sahara_tag }}"
-sahara_api_image: "{{ docker_image_url }}sahara-api"
-sahara_api_tag: "{{ sahara_tag }}"
 
 ##############################
 # role: loadbalancer
@@ -705,15 +650,6 @@ ironic_dnsmasq_image: "{{ docker_image_url }}dnsmasq"
 ironic_dnsmasq_tag: "{{ kolla_dnsmasq_version|default(kolla_image_version) }}"
 ironic_prometheus_exporter_image: "{{ docker_image_url }}ironic-prometheus-exporter"
 ironic_prometheus_exporter_tag: "{{ kolla_ironic_prometheus_exporter_version|default(kolla_image_version) }}"
-
-##############################
-# role: skydive
-
-skydive_tag: "{{ kolla_skydive_version|default(kolla_image_version) }}"
-skydive_analyzer_image: "{{ docker_image_url }}skydive-analyzer"
-skydive_analyzer_tag: "{{ skydive_tag }}"
-skydive_agent_image: "{{ docker_image_url }}skydive-agent"
-skydive_agent_tag: "{{ skydive_tag }}"
 
 ##############################
 # role: iscsi
