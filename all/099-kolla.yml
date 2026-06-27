@@ -210,9 +210,4 @@ enable_swift: "no"
 keystone_admin_port: "35357"
 keystone_admin_listen_port: "{{ keystone_admin_port }}"
 
-enable_outward_rabbitmq: "no"
-outward_rabbitmq_external_fqdn: "{{ kolla_external_fqdn }}"
-outward_rabbitmq_management_port: "15674"
-outward_rabbitmq_port: "5674"
-
 enable_prometheus_msteams: "no"
