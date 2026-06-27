@@ -146,19 +146,6 @@ masakari_monitors_image: "{{ docker_image_url }}masakari-monitors"
 masakari_monitors_tag: "{{ masakari_tag }}"
 
 ##############################
-# role: senlin
-
-senlin_tag: "{{ kolla_senlin_version|default(kolla_image_version) }}"
-senlin_conductor_image: "{{ docker_image_url }}senlin-conductor"
-senlin_conductor_tag: "{{ senlin_tag }}"
-senlin_engine_image: "{{ docker_image_url }}senlin-engine"
-senlin_engine_tag: "{{ senlin_tag }}"
-senlin_health_manager_image: "{{ docker_image_url }}senlin-health-manager"
-senlin_health_manager_tag: "{{ senlin_tag }}"
-senlin_api_image: "{{ docker_image_url }}senlin-api"
-senlin_api_tag: "{{ senlin_tag }}"
-
-##############################
 # role: keystone
 
 keystone_tag: "{{ kolla_keystone_version|default(kolla_image_version) }}"
