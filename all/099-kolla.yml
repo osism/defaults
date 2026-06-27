@@ -210,8 +210,6 @@ enable_swift: "no"
 keystone_admin_port: "35357"
 keystone_admin_listen_port: "{{ keystone_admin_port }}"
 
-enable_ironic_pxe_uefi: "no"
-
 enable_outward_rabbitmq: "no"
 outward_rabbitmq_external_fqdn: "{{ kolla_external_fqdn }}"
 outward_rabbitmq_management_port: "15674"
