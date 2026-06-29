@@ -555,7 +555,7 @@ masakari_public_endpoint: "{{ masakari_external_fqdn | kolla_url(public_protocol
 masakari_api_port: "15868"
 masakari_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else masakari_api_port }}"
 masakari_api_listen_port: "{{ masakari_api_port }}"
-masakari_coordination_backend: "{{ 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
+masakari_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
 
 memcached_port: "11211"
 memcache_security_strategy: "ENCRYPT"
@@ -1016,10 +1016,10 @@ valkey_connection_string_extras: "&db=0&socket_timeout=60&retry_on_timeout=yes"
 ####################
 # Osprofiler options
 ####################
-# valid values: ["elasticsearch", "redis"]
+# valid values: ["elasticsearch", "valkey", "redis"]
 osprofiler_backend: "elasticsearch"
 opensearch_connection_string: "elasticsearch://{{ opensearch_address | put_address_in_context('url') }}:{{ opensearch_port }}"
-osprofiler_backend_connection_string: "{{ redis_connection_string if osprofiler_backend == 'redis' else opensearch_connection_string }}"
+osprofiler_backend_connection_string: "{{ valkey_connection_string if osprofiler_backend in ['redis', 'valkey'] and enable_valkey | bool else redis_connection_string if osprofiler_backend in ['redis', 'valkey'] and enable_redis | bool else opensearch_connection_string }}"
 
 ####################
 # RabbitMQ options
@@ -1144,8 +1144,8 @@ barbican_library_path: "/usr/lib/libCryptoki2_64.so"
 # Valid options are [ file, ceph ]
 gnocchi_backend_storage: "file"
 
-# Valid options are [redis, '']
-gnocchi_incoming_storage: "{{ 'redis' if enable_redis | bool else '' }}"
+# Valid options are [valkey, redis, '']
+gnocchi_incoming_storage: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else '' }}"
 gnocchi_metric_datadir_volume: "gnocchi"
 
 #################################
@@ -1158,8 +1158,8 @@ cinder_backend_vmwarevc_vmdk: "no"
 cinder_backend_vmware_vstorage_object: "no"
 cinder_volume_group: "cinder-volumes"
 cinder_target_helper: "{{ 'lioadm' if ansible_facts.os_family == 'RedHat' else 'tgtadm' }}"
-# Valid options are [ '', redis, etcd ]
-cinder_coordination_backend: "{{ 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
+# Valid options are [ '', valkey, redis, etcd ]
+cinder_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
 
 # Valid options are [ nfs, ceph, s3 ]
 cinder_backup_driver: "ceph"
@@ -1185,8 +1185,8 @@ designate_ns_record:
   - "ns1.example.org"
 designate_backend_external: "no"
 designate_backend_external_bind9_nameservers: ""
-# Valid options are [ '', redis ]
-designate_coordination_backend: "{{ 'redis' if enable_redis | bool else '' }}"
+# Valid options are [ '', valkey, redis ]
+designate_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else '' }}"
 
 designate_enable_notifications_sink: "no"
 designate_notifications_topic_name: "notifications_designate"
@@ -1383,8 +1383,8 @@ s3_secret_key:
 # telemetry data.
 telegraf_enable_docker_input: "no"
 
-# Valid options are [ '', redis, etcd ]
-ironic_coordination_backend: "{{ 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
+# Valid options are [ '', valkey, redis, etcd ]
+ironic_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
 
 ##########
 # Octavia
