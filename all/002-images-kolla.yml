@@ -72,25 +72,6 @@ valkey_sentinel_tag: "{{ valkey_tag }}"
 
 
 ##############################
-# role: monasca
-
-monasca_tag: "{{ kolla_monasca_version|default(kolla_image_version) }}"
-monasca_agent_image: "{{ docker_image_url }}monasca-agent"
-monasca_agent_tag: "{{ monasca_tag }}"
-monasca_api_image: "{{ docker_image_url }}monasca-api"
-monasca_api_tag: "{{ monasca_tag }}"
-monasca_logstash_image: "{{ docker_image_url }}logstash"
-monasca_logstash_tag: "{{ kolla_logstash_version|default(kolla_image_version) }}"
-monasca_thresh_image: "{{ docker_image_url }}monasca-thresh"
-monasca_thresh_tag: "{{ monasca_tag }}"
-monasca_notification_image: "{{ docker_image_url }}monasca-notification"
-monasca_notification_tag: "{{ monasca_tag }}"
-monasca_persister_image: "{{ docker_image_url }}monasca-persister"
-monasca_persister_tag: "{{ monasca_tag }}"
-monasca_grafana_image: "{{ docker_image_url }}monasca-grafana"
-monasca_grafana_tag: "{{ monasca_tag }}"
-
-##############################
 # role: mistral
 
 mistral_tag: "{{ kolla_mistral_version|default(kolla_image_version) }}"
@@ -102,12 +83,6 @@ mistral_executor_image: "{{ docker_image_url }}mistral-executor"
 mistral_executor_tag: "{{ mistral_tag }}"
 mistral_api_image: "{{ docker_image_url }}mistral-api"
 mistral_api_tag: "{{ mistral_tag }}"
-
-##############################
-# role: rally
-
-rally_image: "{{ docker_image_url }}rally"
-rally_tag: "{{ koll_rally_version|default(kolla_image_version) }}"
 
 ##############################
 # role: grafana
@@ -159,12 +134,6 @@ keystone_httpd_image: "{{ docker_image_url }}httpd"
 keystone_httpd_tag: "{{ keystone_tag }}"
 
 ##############################
-# role: vmtp
-
-vmtp_image: "{{ docker_image_url }}vmtp"
-vmtp_tag: "{{ kolla_vmtp_version|default(kolla_image_version) }}"
-
-##############################
 # role: mariadb
 
 mariadb_image: "{{ docker_image_url }}{{ 'mariadb' if openstack_version in ['victoria'] else 'mariadb-server'  }}"
@@ -201,12 +170,6 @@ cinder_backup_image: "{{ docker_image_url }}cinder-backup"
 cinder_backup_tag: "{{ cinder_tag }}"
 cinder_api_image: "{{ docker_image_url }}cinder-api"
 cinder_api_tag: "{{ cinder_tag }}"
-
-##############################
-# role: kibana
-
-kibana_image: "{{ docker_image_url }}kibana"
-kibana_tag: "{{ kolla_kibana_version|default(kolla_image_version) }}"
 
 ##############################
 # role: hacluster
@@ -278,12 +241,6 @@ proxysql_image: "{{ docker_image_url }}proxysql"
 proxysql_tag: "{{ kolla_proxysql_version|default(kolla_image_version) }}"
 
 ##############################
-# role: zookeeper
-
-zookeeper_image: "{{ docker_image_url }}zookeeper"
-zookeeper_tag: "{{ kolla_zookeeper_version|default(kolla_image_version) }}"
-
-##############################
 # role: service-precheck
 
 
@@ -297,14 +254,6 @@ watcher_api_image: "{{ docker_image_url }}watcher-api"
 watcher_api_tag: "{{ watcher_tag }}"
 watcher_applier_image: "{{ docker_image_url }}watcher-applier"
 watcher_applier_tag: "{{ watcher_tag }}"
-
-##############################
-# role: elasticsearch
-
-elasticsearch_image: "{{ docker_image_url }}elasticsearch"
-elasticsearch_tag: "{{ kolla_elasticsearch_version|default(kolla_image_version) }}"
-elasticsearch_curator_image: "{{ docker_image_url }}elasticsearch-curator"
-elasticsearch_curator_tag: "{{ kolla_elasticsearch_curator_version|default(kolla_image_version) }}"
 
 ##############################
 # role: glance
@@ -380,18 +329,6 @@ tacker_server_image: "{{ docker_image_url }}tacker-server"
 tacker_server_tag: "{{ tacker_tag }}"
 tacker_conductor_image: "{{ docker_image_url }}tacker-conductor"
 tacker_conductor_tag: "{{ tacker_tag }}"
-
-##############################
-# role: kafka
-
-kafka_image: "{{ docker_image_url }}kafka"
-kafka_tag: "{{ kolla_kafka_version|default(kolla_image_version) }}"
-
-##############################
-# role: storm
-
-storm_image: "{{ docker_image_url }}storm"
-storm_tag: "{{ kolla_storm_version|default(kolla_image_version) }}"
 
 ##############################
 # role: kuryr
@@ -470,13 +407,6 @@ gnocchi_metricd_image: "{{ docker_image_url }}gnocchi-metricd"
 gnocchi_metricd_tag: "{{ gnocchi_tag }}"
 
 ##############################
-# role: panko
-
-panko_tag: "{{ kolla_panko_version|default(kolla_image_version) }}"
-panko_api_image: "{{ docker_image_url }}panko-api"
-panko_api_tag: "{{ panko_tag }}"
-
-##############################
 # role: etcd
 
 etcd_image: "{{ docker_image_url }}etcd"
@@ -496,12 +426,6 @@ cron_image: "{{ docker_image_url }}cron"
 cron_tag: "{{ kolla_cron_version|default(kolla_image_version) }}"
 fluentd_image: "{{ docker_image_url }}fluentd"
 fluentd_tag: "{{ kolla_fluentd_version|default(kolla_image_version) }}"
-
-##############################
-# role: chrony
-
-chrony_image: "{{ docker_image_url }}chrony"
-chrony_tag: "{{ kolla_chrony_version|default(kolla_image_version) }}"
 
 ##############################
 # role: placement
@@ -552,12 +476,6 @@ ovsdpdk_db_image: "{{ docker_image_url }}ovsdpdk-db"
 ovsdpdk_db_tag: "{{ ovsdpdk_tag }}"
 ovsdpdk_vswitchd_image: "{{ docker_image_url }}ovsdpdk-vswitchd"
 ovsdpdk_vswitchd_tag: "{{ ovsdpdk_tag }}"
-
-##############################
-# role: qdrouterd
-
-qdrouterd_image: "{{ docker_image_url }}qdrouterd"
-qdrouterd_tag: "{{ kolla_qdrouterd_version|default(kolla_image_version) }}"
 
 ##############################
 # role: ovn
