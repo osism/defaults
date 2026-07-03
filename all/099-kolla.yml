@@ -28,8 +28,10 @@ enable_prometheus_openstack_exporter: "no"
 # We don't usually use heat anywhere. Enable it explicitly if required.
 enable_heat: "no"
 
-# Backward compatibility for < 2025.1
-enable_proxysql: "no"
+# ProxySQL became the default MariaDB load balancer in 2025.2 (the internal
+# HAProxy MariaDB frontend was removed upstream); enable it for 2025.2+, keep
+# HAProxy for <= 2025.1.
+enable_proxysql: "{{ 'no' if openstack_version in ['2024.1', '2024.2', '2025.1'] else 'yes' }}"
 
 proxysql_version: 3
 
