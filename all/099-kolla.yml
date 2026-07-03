@@ -70,6 +70,11 @@ enable_mariabackup: "yes"
 
 # horizon
 horizon_backend_database: "yes"
+# 2025.2 switched Horizon to uWSGI (horizon_wsgi_provider defaults to uwsgi);
+# behind HAProxy the uWSGI backend must listen on the unprivileged 8080, not
+# the privileged 80. Match upstream for 2025.2+, keep the pre-uWSGI value for
+# <= 2025.1.
+horizon_listen_port: "{{ '8080' if (enable_haproxy | bool and openstack_version not in ['2024.1', '2024.2', '2025.1']) else horizon_tls_port if horizon_enable_tls_backend | bool else horizon_port }}"
 
 # ironic
 ironic_agent_files_directory: /share/ironic
