@@ -494,6 +494,7 @@ keystone_public_port: "{{ haproxy_single_external_frontend_public_port if haprox
 keystone_public_listen_port: "5000"
 keystone_internal_port: "5000"
 keystone_internal_listen_port: "{{ keystone_internal_port }}"
+keystone_listen_port: "{{ keystone_internal_listen_port }}"
 
 keystone_ssh_port: "8023"
 
@@ -892,6 +893,7 @@ enable_ironic_dnsmasq: "{{ enable_ironic | bool }}"
 enable_ironic_inspector: "no"
 enable_ironic_neutron_agent: "no"
 enable_ironic_prometheus_exporter: "{{ enable_ironic | bool and enable_prometheus | bool }}"
+enable_ironic_pxe_filter: "no"
 enable_iscsid: "{{ enable_cinder | bool and enable_cinder_backend_iscsi | bool }}"
 enable_kuryr: "no"
 enable_letsencrypt: "no"
@@ -1243,7 +1245,16 @@ nova_console: "novnc"
 #######################
 # Nova Database
 #######################
+nova_database_address: "{{ database_address | put_address_in_context('url') }}:{{ database_port }}"
+nova_database_name: "nova"
 nova_database_shard_id: "{{ mariadb_default_database_shard_id | int }}"
+nova_database_user: "{% if use_preconfigured_databases | bool and use_common_mariadb_user | bool %}{{ database_user }}{% else %}nova{% endif %}"
+
+nova_cell0_database_address: "{{ nova_database_address }}"
+nova_cell0_database_name: "{{ nova_database_name }}_cell0"
+nova_cell0_database_password: "{{ nova_database_password }}"
+nova_cell0_database_shard_id: "{{ nova_database_shard_id | int }}"
+nova_cell0_database_user: "{{ nova_database_user }}"
 
 #######################
 # Horizon options
