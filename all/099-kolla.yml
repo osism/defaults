@@ -68,6 +68,14 @@ haproxy_socket_level_admin: "yes"
 # mariadb
 enable_mariabackup: "yes"
 
+# 2025.2 hardcoded these to their ProxySQL values (upstream made ProxySQL the
+# MariaDB LB default); OSISM keeps HAProxy for <= 2025.1 (enable_proxysql is
+# gated off there). Restore the conditional forms — they resolve correctly on
+# every release via the enable_proxysql gate. 001 mirrors the 2025.2 literals.
+mariadb_loadbalancer: "{{ 'proxysql' if enable_proxysql | bool else 'haproxy' }}"
+mariadb_monitor_user: "{{ 'monitor' if enable_proxysql | bool else 'haproxy' }}"
+mariadb_backup_target: "{{ 'active' if mariadb_loadbalancer == 'haproxy' else 'replica' }}"
+
 # horizon
 horizon_backend_database: "yes"
 # 2025.2 switched Horizon to uWSGI (horizon_wsgi_provider defaults to uwsgi);
