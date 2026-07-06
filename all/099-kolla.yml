@@ -50,6 +50,10 @@ node_custom_config: "{{ node_config }}/files/overlays"
 
 docker_namespace: kolla
 docker_registry_kolla: registry.osism.tech
+# 2025.2 switched docker_image_url to build from docker_registry (quay.io);
+# OSISM pulls kolla images from its own registry, so keep the docker_registry_kolla
+# form. 001 mirrors the upstream docker_registry form; this wins.
+docker_image_url: "{{ docker_registry_kolla ~ '/' if docker_registry_kolla else '' }}{{ docker_namespace }}/{{ docker_image_name_prefix }}"
 
 openstack_logging_debug: "False"  # NOTE: This has to be "False", not "false"!
 
