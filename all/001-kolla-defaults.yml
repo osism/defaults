@@ -103,6 +103,9 @@ kolla_container_engine: "docker"
 # Docker options
 ####################
 docker_registry_email:
+docker_registry: "quay.io"
+docker_namespace: "openstack.kolla"
+openstack_release: "2025.2"
 docker_image_name_prefix: ""
 docker_image_url: "{{ docker_registry_kolla ~ '/' if docker_registry_kolla else '' }}{{ docker_namespace }}/{{ docker_image_name_prefix }}"
 docker_registry_username:
@@ -200,6 +203,24 @@ default_docker_dimensions_el9:
       soft: 1048576
       hard: 1048576
 default_podman_dimensions_el9:
+  ulimits:
+    RLIMIT_NOFILE:
+      soft: 1048576
+      hard: 1048576
+    RLIMIT_NPROC:
+      soft: 1048576
+      hard: 1048576
+
+default_container_dimensions_docker:
+  ulimits:
+    nofile:
+      soft: 1048576
+      hard: 1048576
+
+# NOTE(amir58118): Podman currently lowers RLIMIT_NOFILE and RLIMIT_NPROC
+#                  in kolla_podman_worker.py. These constants are retained here
+#                  for documentation and potential future use.
+default_container_dimensions_podman:
   ulimits:
     RLIMIT_NOFILE:
       soft: 1048576
