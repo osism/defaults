@@ -577,7 +577,7 @@ masakari_public_endpoint: "{{ masakari_external_fqdn | kolla_url(public_protocol
 masakari_api_port: "15868"
 masakari_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else masakari_api_port }}"
 masakari_api_listen_port: "{{ masakari_api_port }}"
-masakari_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
+masakari_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'etcd' if enable_etcd | bool else '' }}"
 
 memcached_port: "11211"
 memcache_security_strategy: "ENCRYPT"
@@ -963,7 +963,6 @@ enable_osprofiler: "no"
 enable_placement: "{{ enable_nova | bool or enable_zun | bool }}"
 enable_prometheus: "no"
 enable_proxysql: "{{ enable_mariadb }}"
-enable_redis: "no"
 enable_skyline: "no"
 enable_tacker: "no"
 enable_telegraf: "no"
@@ -1011,12 +1010,6 @@ enable_opensearch: "{{ enable_central_logging | bool or enable_osprofiler | bool
 enable_opensearch_dashboards: "{{ enable_opensearch | bool }}"
 enable_opensearch_dashboards_external: "{{ enable_opensearch_dashboards | bool }}"
 
-####################
-# Redis options
-####################
-redis_connection_string: "redis://{% for host in groups['redis'] %}{% if host == groups['redis'][0] %}default:{{ redis_master_password }}@{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ redis_sentinel_port }}?sentinel=kolla{% else %}&sentinel_fallback={{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ redis_sentinel_port }}{% endif %}{% endfor %}{{ redis_connection_string_extras }}"
-redis_connection_string_extras: "&db=0&socket_timeout=60&retry_on_timeout=yes"
-
 ###################
 # Valkey options
 ###################
@@ -1042,7 +1035,7 @@ valkey_connection_string_extras: "&db=0&socket_timeout=60&retry_on_timeout=yes"
 # valid values: ["elasticsearch", "valkey", "redis"]
 osprofiler_backend: "elasticsearch"
 opensearch_connection_string: "elasticsearch://{{ opensearch_address | put_address_in_context('url') }}:{{ opensearch_port }}"
-osprofiler_backend_connection_string: "{{ valkey_connection_string if osprofiler_backend in ['redis', 'valkey'] and enable_valkey | bool else redis_connection_string if osprofiler_backend in ['redis', 'valkey'] and enable_redis | bool else opensearch_connection_string }}"
+osprofiler_backend_connection_string: "{{ valkey_connection_string if osprofiler_backend in ['redis', 'valkey'] else opensearch_connection_string }}"
 
 ####################
 # RabbitMQ options
@@ -1168,7 +1161,7 @@ barbican_library_path: "/usr/lib/libCryptoki2_64.so"
 gnocchi_backend_storage: "file"
 
 # Valid options are [valkey, redis, '']
-gnocchi_incoming_storage: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else '' }}"
+gnocchi_incoming_storage: "{{ 'valkey' if enable_valkey | bool else '' }}"
 gnocchi_metric_datadir_volume: "gnocchi"
 
 #################################
@@ -1182,7 +1175,7 @@ cinder_backend_vmware_vstorage_object: "no"
 cinder_volume_group: "cinder-volumes"
 cinder_target_helper: "{{ 'lioadm' if ansible_facts.os_family == 'RedHat' else 'tgtadm' }}"
 # Valid options are [ '', valkey, redis, etcd ]
-cinder_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
+cinder_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'etcd' if enable_etcd | bool else '' }}"
 
 # Valid options are [ nfs, ceph, s3 ]
 cinder_backup_driver: "ceph"
@@ -1209,7 +1202,7 @@ designate_ns_record:
 designate_backend_external: "no"
 designate_backend_external_bind9_nameservers: ""
 # Valid options are [ '', valkey, redis ]
-designate_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else '' }}"
+designate_coordination_backend: "{{ 'valkey' if enable_valkey | bool else '' }}"
 
 designate_enable_notifications_sink: "no"
 designate_notifications_topic_name: "notifications_designate"
@@ -1416,7 +1409,7 @@ s3_secret_key:
 telegraf_enable_docker_input: "no"
 
 # Valid options are [ '', valkey, redis, etcd ]
-ironic_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'redis' if enable_redis | bool else 'etcd' if enable_etcd | bool else '' }}"
+ironic_coordination_backend: "{{ 'valkey' if enable_valkey | bool else 'etcd' if enable_etcd | bool else '' }}"
 
 ##########
 # Octavia
