@@ -91,8 +91,8 @@ database_user: "root"
 database_port: "3306"
 database_connection_recycle_time: 10
 database_max_pool_size: 1
-database_enable_tls_backend: "{{ 'yes' if ((kolla_enable_tls_backend | bool ) and ( enable_proxysql | bool)) else 'no' }}"
-database_enable_tls_internal: "{{ 'yes' if ((kolla_enable_tls_internal | bool ) and ( enable_proxysql | bool)) else 'no' }}"
+database_enable_tls_backend: "{{ 'yes' if ((kolla_enable_tls_backend | bool) and (enable_proxysql | bool)) else 'no' }}"
+database_enable_tls_internal: "{{ 'yes' if ((kolla_enable_tls_internal | bool) and (enable_proxysql | bool)) else 'no' }}"
 
 ####################
 # Container engine options
@@ -467,7 +467,7 @@ horizon_public_endpoint: "{{ horizon_external_fqdn | kolla_url(public_protocol, 
 
 horizon_port: "80"
 horizon_tls_port: "443"
-horizon_listen_port: "{{ horizon_tls_port if horizon_enable_tls_backend | bool else horizon_port }}"
+horizon_listen_port: "{{ '8080' if enable_haproxy | bool else horizon_tls_port if horizon_enable_tls_backend | bool else horizon_port }}"
 
 influxdb_http_port: "8086"
 
@@ -528,7 +528,7 @@ mariadb_sst_port: "4444"
 mariadb_clustercheck_port: "4569"
 mariadb_enable_tls_backend: "{{ database_enable_tls_backend }}"
 
-mariadb_monitor_user: "{{ 'monitor' if enable_proxysql | bool else 'haproxy' }}"
+mariadb_monitor_user: "monitor"
 
 mariadb_datadir_volume: "mariadb"
 
@@ -537,8 +537,8 @@ mariadb_default_database_shard_hosts: "{% set default_shard = [] %}{% for host i
 mariadb_shard_id: "{{ mariadb_default_database_shard_id }}"
 mariadb_shard_name: "shard_{{ mariadb_shard_id }}"
 mariadb_shard_group: "mariadb_{{ mariadb_shard_name }}"
-mariadb_loadbalancer: "{{ 'proxysql' if enable_proxysql | bool else 'haproxy' }}"
-mariadb_backup_target: "{{ 'active' if mariadb_loadbalancer == 'haproxy' else 'replica' }}"
+mariadb_loadbalancer: proxysql
+mariadb_backup_target: replica
 mariadb_shard_root_user_prefix: "root_shard_"
 mariadb_shard_backup_user_prefix: "backup_shard_"
 mariadb_shards_info: "{{ groups['mariadb'] | database_shards_info() }}"
@@ -941,7 +941,7 @@ enable_ovs_dpdk: "no"
 enable_osprofiler: "no"
 enable_placement: "{{ enable_nova | bool or enable_zun | bool }}"
 enable_prometheus: "no"
-enable_proxysql: "yes"
+enable_proxysql: "{{ enable_mariadb }}"
 enable_redis: "no"
 enable_skyline: "no"
 enable_tacker: "no"
@@ -1368,9 +1368,9 @@ influxdb_internal_endpoint: "{{ kolla_internal_fqdn | kolla_url(internal_protoco
 # Internal Image options
 #########################
 kolla_base_distro_version_default_map: {
-  "centos": "stream9",
+  "centos": "stream10",
   "debian": "bookworm",
-  "rocky": "9",
+  "rocky": "10",
   "ubuntu": "noble",
 }
 
