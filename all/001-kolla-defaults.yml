@@ -182,13 +182,6 @@ run_default_volumes_podman:
 
 run_default_volumes_docker: []
 
-run_default_subdirectories:
-  - '/run/netns'
-  - '/run/lock/nova'
-  - "/run/libvirt"
-  - "/run/nova"
-  - "/run/openvswitch"
-
 ####################
 # Dimensions options
 ####################
@@ -499,13 +492,6 @@ ironic_public_endpoint: "{{ ironic_external_fqdn | kolla_url(public_protocol, ir
 ironic_api_port: "6385"
 ironic_api_listen_port: "{{ ironic_api_port }}"
 ironic_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else ironic_api_port }}"
-ironic_inspector_internal_fqdn: "{{ kolla_internal_fqdn }}"
-ironic_inspector_external_fqdn: "{{ kolla_external_fqdn }}"
-ironic_inspector_internal_endpoint: "{{ ironic_inspector_internal_fqdn | kolla_url(internal_protocol, ironic_inspector_port) }}"
-ironic_inspector_public_endpoint: "{{ ironic_inspector_external_fqdn | kolla_url(public_protocol, ironic_inspector_public_port) }}"
-ironic_inspector_port: "5050"
-ironic_inspector_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else ironic_inspector_port }}"
-ironic_inspector_listen_port: "{{ ironic_inspector_port }}"
 ironic_http_port: "8089"
 ironic_prometheus_exporter_port: "9608"
 
@@ -546,7 +532,6 @@ mariadb_port: "{{ database_port }}"
 mariadb_wsrep_port: "4567"
 mariadb_ist_port: "4568"
 mariadb_sst_port: "4444"
-mariadb_clustercheck_port: "4569"
 mariadb_enable_tls_backend: "{{ database_enable_tls_backend }}"
 
 mariadb_monitor_user: "monitor"
@@ -597,7 +582,6 @@ neutron_public_endpoint: "{{ neutron_external_fqdn | kolla_url(public_protocol, 
 neutron_server_port: "9696"
 neutron_server_listen_port: "{{ neutron_server_port }}"
 neutron_server_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else neutron_server_port }}"
-neutron_tls_proxy_stats_port: "9697"
 
 nova_internal_fqdn: "{{ kolla_internal_fqdn }}"
 nova_external_fqdn: "{{ kolla_external_fqdn }}"
@@ -758,14 +742,6 @@ valkey_sentinel_port: "26379"
 valkey_sentinel_monitor_name: "kolla"
 valkey_sentinel_quorum: 2
 
-venus_internal_fqdn: "{{ kolla_internal_fqdn }}"
-venus_external_fqdn: "{{ kolla_external_fqdn }}"
-venus_internal_endpoint: "{{ venus_internal_fqdn | kolla_url(internal_protocol, venus_api_port) }}"
-venus_public_endpoint: "{{ venus_external_fqdn | kolla_url(public_protocol, venus_api_public_port) }}"
-venus_api_port: "10010"
-venus_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else venus_api_port }}"
-venus_api_listen_port: "{{ venus_api_port }}"
-
 watcher_internal_fqdn: "{{ kolla_internal_fqdn }}"
 watcher_external_fqdn: "{{ kolla_external_fqdn }}"
 watcher_internal_endpoint: "{{ watcher_internal_fqdn | kolla_url(internal_protocol, watcher_api_port) }}"
@@ -905,13 +881,11 @@ enable_horizon_neutron_vpnaas: "{{ enable_neutron_vpnaas | bool }}"
 enable_horizon_octavia: "{{ enable_octavia | bool }}"
 enable_horizon_tacker: "{{ enable_tacker | bool }}"
 enable_horizon_trove: "{{ enable_trove | bool }}"
-enable_horizon_venus: "{{ enable_venus | bool }}"
 enable_horizon_watcher: "{{ enable_watcher | bool }}"
 enable_horizon_zun: "{{ enable_zun | bool }}"
 enable_influxdb: "{{ enable_cloudkitty | bool and cloudkitty_storage_backend == 'influxdb' }}"
 enable_ironic: "no"
 enable_ironic_dnsmasq: "{{ enable_ironic | bool }}"
-enable_ironic_inspector: "no"
 enable_ironic_neutron_agent: "no"
 enable_ironic_prometheus_exporter: "{{ enable_ironic | bool and enable_prometheus | bool }}"
 enable_ironic_pxe_filter: "no"
@@ -969,7 +943,6 @@ enable_telegraf: "no"
 enable_trove: "no"
 enable_trove_singletenant: "no"
 enable_valkey: "no"
-enable_venus: "no"
 enable_watcher: "no"
 enable_zun: "no"
 
@@ -1136,7 +1109,6 @@ openstack_auth:
 #######################
 glance_backend_file: "{{ not (glance_backend_ceph | bool or glance_backend_s3 | bool) }}"
 glance_backend_ceph: "no"
-glance_backend_vmware: "no"
 glance_backend_s3: "no"
 enable_glance_image_cache: "no"
 glance_file_datadir_volume: "glance"
@@ -1170,8 +1142,6 @@ gnocchi_metric_datadir_volume: "gnocchi"
 cinder_backend_ceph: "no"
 cinder_backend_huawei: "no"
 cinder_backend_huawei_xml_files: []
-cinder_backend_vmwarevc_vmdk: "no"
-cinder_backend_vmware_vstorage_object: "no"
 cinder_volume_group: "cinder-volumes"
 cinder_target_helper: "{{ 'lioadm' if ansible_facts.os_family == 'RedHat' else 'tgtadm' }}"
 # Valid options are [ '', valkey, redis, etcd ]
@@ -1225,9 +1195,6 @@ computes_need_external_bridge: "{{ (enable_neutron_dvr | bool and neutron_comput
 
 # Default DNS resolvers for virtual networks
 neutron_dnsmasq_dns_servers: "1.1.1.1,8.8.8.8,8.8.4.4"
-
-# Set legacy iptables to allow kernels not supporting iptables-nft
-neutron_legacy_iptables: "no"
 
 # Enable distributed floating ip for OVN deployments
 neutron_ovn_distributed_fip: "no"
@@ -1311,14 +1278,6 @@ ceph_glance_user: "glance"
 ceph_gnocchi_user: "gnocchi"
 ceph_manila_user: "manila"
 ceph_nova_user: "{{ ceph_cinder_user }}"
-
-#####################
-# VMware support
-######################
-vmware_vcenter_host_ip: "127.0.0.1"
-vmware_vcenter_host_username: "username"
-vmware_vcenter_cluster_name: "cluster-1"
-vmware_vcenter_insecure: "True"
 
 #############################################
 # MariaDB component-specific database details
