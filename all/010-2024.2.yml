@@ -1,0 +1,18 @@
+---
+# Self-retiring backward-compat layer for release 2024.2 (parent spec D8).
+#
+# A verbatim copy of upstream kolla-ansible's group_vars/all keys that upstream
+# dropped by 2025.2 but that release 2024.2 still defines. OSISM supports 2024.2,
+# so these keys must stay in the enforced union. This file loads between 001
+# (the 2025.2 verbatim mirror) and 099 (OSISM opinions), extending the mirror
+# for the older release without polluting it. No OSISM edits belong here.
+#
+# Remove this file when 2024.2 leaves the supported release range.
+# Source: openstack/kolla-ansible ansible/group_vars/all.yml @ 2024.2-eol
+enable_swift_recon: "no"
+enable_swift_s3api: "no"
+swift_account_server_port: "6001"
+swift_container_server_port: "6002"
+swift_object_server_port: "6000"
+swift_proxy_server_listen_port: "{{ swift_proxy_server_port }}"
+swift_rsync_port: "10873"

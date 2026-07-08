@@ -1,0 +1,22 @@
+---
+# Self-retiring backward-compat layer for release 2024.1 (parent spec D8).
+#
+# A verbatim copy of upstream kolla-ansible's group_vars/all keys that upstream
+# dropped by 2025.2 but that release 2024.1 still defines. OSISM supports 2024.1,
+# so these keys must stay in the enforced union. This file loads between 001
+# (the 2025.2 verbatim mirror) and 099 (OSISM opinions), extending the mirror
+# for the older release without polluting it. No OSISM edits belong here.
+#
+# Remove this file when 2024.1 leaves the supported release range.
+# Source: openstack/kolla-ansible ansible/group_vars/all.yml @ 2024.1-eom
+distro_python_version_map: {
+  "centos": "3.9",
+  "debian": "3.11",
+  "rocky": "3.9",
+  "ubuntu": "3.10"
+}
+enable_cinder_backend_hnas_nfs: "no"
+prometheus_msteams_port: "9095"
+prometheus_msteams_webhook_url:
+swift_internal_endpoint: "{{ swift_internal_base_endpoint }}/v1/AUTH_%(tenant_id)s"
+swift_public_endpoint: "{{ swift_external_fqdn | kolla_url(public_protocol, swift_proxy_server_port, '/v1/AUTH_%(tenant_id)s') }}"
