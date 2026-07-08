@@ -1,0 +1,44 @@
+---
+# Self-retiring backward-compat layer for release 2025.1 (parent spec D8).
+#
+# A verbatim copy of upstream kolla-ansible's group_vars/all keys that upstream
+# dropped by 2025.2 but that release 2025.1 still defines. OSISM supports 2025.1,
+# so these keys must stay in the enforced union. This file loads between 001
+# (the 2025.2 verbatim mirror) and 099 (OSISM opinions), extending the mirror
+# for the older release without polluting it. No OSISM edits belong here.
+#
+# Remove this file when 2025.1 leaves the supported release range.
+# Source: openstack/kolla-ansible ansible/group_vars/all.yml @ stable/2025.1
+cinder_backend_vmware_vstorage_object: "no"
+cinder_backend_vmwarevc_vmdk: "no"
+enable_horizon_venus: "{{ enable_venus | bool }}"
+enable_ironic_inspector: "no"
+enable_venus: "no"
+glance_backend_vmware: "no"
+ironic_inspector_external_fqdn: "{{ kolla_external_fqdn }}"
+ironic_inspector_internal_endpoint: "{{ ironic_inspector_internal_fqdn | kolla_url(internal_protocol, ironic_inspector_port) }}"
+ironic_inspector_internal_fqdn: "{{ kolla_internal_fqdn }}"
+ironic_inspector_listen_port: "{{ ironic_inspector_port }}"
+ironic_inspector_port: "5050"
+ironic_inspector_public_endpoint: "{{ ironic_inspector_external_fqdn | kolla_url(public_protocol, ironic_inspector_public_port) }}"
+ironic_inspector_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else ironic_inspector_port }}"
+mariadb_clustercheck_port: "4569"
+neutron_legacy_iptables: "no"
+neutron_tls_proxy_stats_port: "9697"
+run_default_subdirectories:
+  - '/run/netns'
+  - '/run/lock/nova'
+  - "/run/libvirt"
+  - "/run/nova"
+  - "/run/openvswitch"
+venus_api_listen_port: "{{ venus_api_port }}"
+venus_api_port: "10010"
+venus_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else venus_api_port }}"
+venus_external_fqdn: "{{ kolla_external_fqdn }}"
+venus_internal_endpoint: "{{ venus_internal_fqdn | kolla_url(internal_protocol, venus_api_port) }}"
+venus_internal_fqdn: "{{ kolla_internal_fqdn }}"
+venus_public_endpoint: "{{ venus_external_fqdn | kolla_url(public_protocol, venus_api_public_port) }}"
+vmware_vcenter_cluster_name: "cluster-1"
+vmware_vcenter_host_ip: "127.0.0.1"
+vmware_vcenter_host_username: "username"
+vmware_vcenter_insecure: "True"
