@@ -9,6 +9,20 @@
 #
 # Remove this file when 2024.2 leaves the supported release range.
 # Source: openstack/kolla-ansible ansible/group_vars/all.yml @ 2024.2-eol
+default_container_dimensions_el9: "{{ default_docker_dimensions_el9 if kolla_container_engine == 'docker' else default_podman_dimensions_el9 }}"
+default_docker_dimensions_el9:
+  ulimits:
+    nofile:
+      soft: 1048576
+      hard: 1048576
+default_podman_dimensions_el9:
+  ulimits:
+    RLIMIT_NOFILE:
+      soft: 1048576
+      hard: 1048576
+    RLIMIT_NPROC:
+      soft: 1048576
+      hard: 1048576
 enable_swift_recon: "no"
 enable_swift_s3api: "no"
 swift_account_server_port: "6001"
