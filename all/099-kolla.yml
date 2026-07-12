@@ -227,6 +227,11 @@ om_enable_rabbitmq_transient_quorum_queue: "{{ om_enable_rabbitmq_quorum_queues 
 # This has to be set to true in environments/kolla/configuration.yml for >= 2025.1.
 om_enable_rabbitmq_stream_fanout: "{{ om_enable_rabbitmq_quorum_queues | bool and om_enable_rabbitmq_transient_quorum_queue | bool }}"
 
+# 2025.1 replaced the el9-conditional container dimensions with engine-keyed
+# ulimit defaults; 2024.x still uses the el9 form (its keys live in
+# 010-2024.2.yml). 001 mirrors the 2025.2 expression, which this overrides.
+default_container_dimensions: "{{ (default_container_dimensions_el9 if ansible_facts.os_family == 'RedHat' else '{}') if openstack_version in ['2024.1', '2024.2'] else (default_container_dimensions_docker if kolla_container_engine == 'docker' else default_container_dimensions_podman) }}"
+
 ##########################################################
 # Bugfixes
 
