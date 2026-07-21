@@ -7,6 +7,85 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20260712.0] - 2026-07-12
+
+### Removed
+- Remove image variables for kolla services no longer supported upstream: monasca, rally, vmtp, kibana, zookeeper, elasticsearch, kafka, storm, panko, chrony and qdrouterd (osism/defaults#296)
+- Remove orphaned enable flags for the retired OpenStack projects Karbor, Qinling and Searchlight (osism/defaults#296)
+
+### Changed
+- Sync kolla group_vars with upstream 2025.2, including CentOS/Rocky base image versions (stream9→stream10, 9→10), container ulimit dimensions and MariaDB/ProxySQL defaults, while keeping correct behavior for 2024.1–2025.1 releases and restoring values that had drifted from upstream (osism/defaults#297)
+- Move registry host settings to load after the kolla-ansible upstream mirror so OSISM's registry choice is no longer overridden by upstream defaults (osism/defaults#297)
+- Document the layout and conventions of the group_vars/all directory (osism/defaults#297)
+
+### Fixed
+- Restore Redis-based coordination backends for OpenStack releases prior to 2025.2 after the upstream re-sync dropped them (osism/defaults#297)
+
+## [v0.20260704.0] - 2026-07-04
+
+### Fixed
+- Gate prometheus image selection by release so 2025.2 and future releases resolve to the correct image instead of a non-existent one (osism/defaults#295)
+
+## [v0.20260703.0] - 2026-07-03
+
+### Added
+- Add missing kolla 2025.2 group_vars for keystone, ironic PXE filter, and nova cell0 database to prevent upgrade failures (osism/defaults#294)
+
+### Changed
+- Gate kolla ProxySQL enablement by OpenStack release, enabled by default for 2025.2 and later (osism/defaults#294)
+
+### Fixed
+- Fix kolla Horizon listen port for 2025.2 uWSGI behind HAProxy (osism/defaults#294)
+
+### Removed
+- Remove rook node label defaults as rook Ceph deployment is being phased out (osism/defaults#293)
+
+## [v0.20260701.0] - 2026-07-01
+
+### Changed
+- Gate `enable_redis`/`enable_valkey` by OpenStack release and route redis-backed coordination/incoming backends (masakari, gnocchi, cinder, designate, ironic) and osprofiler to valkey where enabled, keeping redis for 2024.1/2024.2/2025.1 and valkey for 2025.2+ (osism/defaults#292)
+
+## [v0.20260627.0] - 2026-06-27
+
+### Added
+- Add image definitions for neutron-ovn-agent, neutron-rpc-server, neutron-periodic-worker, neutron-ovn-maintenance-worker, keystone httpd, ironic-pxe-filter and valkey, plus a script to compare kolla image definitions against upstream kolla-ansible (osism/defaults#287)
+- Enable valkey (osism/defaults#289)
+
+### Fixed
+- Fix project-board automation for fork pull requests by switching to pull_request_target and scoping the passed secret (osism/defaults#290)
+
+### Removed
+- Drop redundant image-push post jobs and the now-unused secret (osism/defaults#288)
+- Remove orphaned configuration for six dropped kolla services (freezer, murano, sahara, solum, vitrage, skydive), senlin, ironic_pxe_uefi and outward_rabbitmq (osism/defaults#291)
+
+## [v0.20260620.0] - 2026-06-20
+
+### Changed
+- Introduce docker_image_url variable and use it across kolla image definitions instead of repeating the registry/namespace prefix (osism/defaults#285)
+
+## [v0.20260526.0] - 2026-05-26
+
+### Added
+- Automatically add all opened issues and PRs to project board (osism/defaults#283)
+- Add `ceph_require_min_compat_client` and `ceph_min_compat_client_order` default variables to control the Ceph require-min-compat-client cluster policy (osism/defaults#284)
+
+## [v0.20260418.1] - 2026-04-18
+
+### Added
+- Add mariadb_innodb_log_file_size_mb and proxysql_version kolla defaults, override proxysql_version to 3 (osism/defaults#282)
+
+### Changed
+- Sync kolla defaults with upstream 2025.1, horizon endpoints now derive from horizon_internal_fqdn and horizon_external_fqdn (osism/defaults#282)
+
+### Removed
+- Drop linuxbridge references from neutron_plugin_agent and enable_openvswitch (osism/defaults#282)
+
+## [v0.20260418.0] - 2026-04-18
+
+### Added
+- Add CHANGELOG.md file to document notable changes (osism/defaults#280)
+- Add Valkey configuration parameters including server/sentinel ports, quorum, and connection string (osism/defaults#281)
+
 ## [v0.20260319.0] - 2026-03-19
 
 No changes.
