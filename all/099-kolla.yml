@@ -92,7 +92,13 @@ enable_mariabackup: "yes"
 # every release via the enable_proxysql gate. 001 mirrors the 2025.2 literals.
 mariadb_loadbalancer: "{{ 'proxysql' if enable_proxysql | bool else 'haproxy' }}"
 mariadb_monitor_user: "{{ 'monitor' if enable_proxysql | bool else 'haproxy' }}"
-mariadb_backup_target: "{{ 'active' if mariadb_loadbalancer == 'haproxy' else 'replica' }}"
+
+# Always use the "active" backup path: "replica" makes mariabackup copy one
+# node's data files while taking its target LSN from another, which stalls the
+# backup for minutes to days. Only 2025.2 and 2026.1 change value here, and both
+# connect the backup to the local node upstream; the releases where OSISM keeps
+# HAProxy already resolve to "active". Full rationale in the commit message.
+mariadb_backup_target: active
 
 # horizon
 horizon_backend_database: "yes"
