@@ -33,7 +33,15 @@ cilium_mode: "native"
 cilium_cli: false
 cilium_hubble: false
 cilium_hubble_ui_lb: true
-cilium_bgp: true
+# Cilium BGP is opt-in: with cilium_bgp: true the MetalLB pool is not deployed
+# at all (osism/osism-kubernetes roles/k3s_server/tasks/main.yml and
+# roles/k3s_server_post/tasks/main.yml both gate it on
+# `not cilium_bgp or cilium_iface is not defined`, and 099-interfaces.yml always
+# defines cilium_iface). Load balancer addresses are then announced over BGP to
+# cilium_bgp_peer_address, which defaults to frr_loopback_v4 | default('127.0.0.1').
+# Without an FRR peer that means every type=LoadBalancer service stays <pending>
+# forever with no error anywhere, and metal_lb_ip_range is silently inert.
+cilium_bgp: false
 
 cilium_bgp_my_asn: "64513"
 cilium_bgp_peer_asn: "{{ frr_local_as | default('64512') }}"
