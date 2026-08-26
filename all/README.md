@@ -17,7 +17,7 @@ order. Effective precedence, low → high:
 
 | Prefix | File(s) | Purpose |
 |--------|---------|---------|
-| `001-` | `001-kolla-defaults.yml` | Verbatim mirror of upstream kolla-ansible `group_vars/all`. |
+| `001-` | `001-<service>.yml` | Byte-identical per-service mirror of upstream kolla-ansible `ansible/group_vars/all/<service>.yml` at the release this layer is synced to (see *Mirror target*). |
 | `002-` | `002-images-kolla.yml`, `002-images-ceph.yml` | Image name + tag **catalogue** (shape, not tag values). |
 | `003-` | `003-kolla-overlays.yml` | Near-frozen legacy; fold into `099-kolla.yml` when convenient. |
 | `010-` | `010-<release>.yml` | Upstream values an *older* release still needs; self-retiring. |
@@ -33,13 +33,48 @@ out, or migrate into `099-*`.
 
 ## The two layers: upstream mirror + OSISM overlay
 
-- **`001-kolla-defaults.yml` is a verbatim mirror** of upstream kolla-ansible's
-  `group_vars/all`. Treat it as generated: **never hand-edit `001`** to change
-  OSISM behaviour; it is re-synced wholesale from each new upstream release.
+- **The `001-*` layer is a byte-identical per-service mirror** of upstream
+  kolla-ansible's `ansible/group_vars/all/` at the **mirror target release**.
+  Treat the layer as generated: **never hand-edit any `001-*.yml`**; the layer
+  is re-synced wholesale per release. The rules that define it:
+  - **File-for-file**: one `all/001-<service>.yml` for every upstream
+    `ansible/group_vars/all/<service>.yml`; files absent from the mirror target
+    are deleted, not retained.
+  - **Keys only older releases need** go into `010-<last-release>.yml`, never
+    carried as whole `001-*` files.
+  - **No OSISM header**: copies carry no added header comment, deliberately —
+    correctness is checkable with `cmp` against the upstream tree.
+  - **`001-common.yml` and `001-database.yml` both carry the seven
+    `database_*` keys** — upstream defines them in both `common.yml` and
+    `database.yml`; `001-database.yml` wins by lexical order. This is
+    upstream's own duplication and must not be "cleaned up".
+
+### Mirror target, and why the layer lags it
+
+The target is the **newest supported release**, and "supported" is *derived*, not
+declared: `check-drift.py` globs `latest/openstack-*.yml` in `osism/release` and
+takes the highest (`enablement.release_range`). Adding one release definition
+file there moves the target.
+
+**The layer lags the target for a while after every release is added, and that is
+the normal condition, not a defect.** Adding a release takes changes across
+several repos that rarely land together, and the `001-*` re-sync is only one of
+them. For the whole window, `kolla_mirror_verbatim` reports the entire delta
+between the layer and the new target — expect it to be red, and expect it to
+clear in one step when the re-sync lands, not gradually.
+
+Two things follow:
+
+- **Do not "fix" those findings piecemeal.** A re-sync replaces the whole layer
+  from one pinned upstream commit at once. Cherry-picking individual keys out of
+  a newer release produces a layer that mirrors nothing.
+- **The layer states its own target.** `openstack_release` in `all/001-common.yml`
+  is the release the layer is currently synced to — read it there rather than
+  inferring it from the supported range, which moves first.
 - **`099-*` is OSISM's overlay.** Every OSISM opinion — a changed default, an
   enable/disable choice, an invented variable — lives in a `099-*` file, which
-  loads later and wins. This keeps OSISM's deltas auditable in one place and `001`
-  cleanly diffable against upstream.
+  loads later and wins. This keeps OSISM's deltas auditable in one place and
+  the `001-*` layer cleanly diffable against upstream.
 
 The kolla container's *effective* `group_vars/all` is assembled from **three**
 sources, all of which the `osism/release` drift detector counts: this repo's
@@ -122,7 +157,8 @@ python-osism) must resolve them the way the deployment does:
 
 ## File-by-file
 
-- **`001-kolla-defaults.yml`** — the upstream mirror (see above).
+- **`001-<service>.yml`** — the upstream mirror layer (see above). One file
+  per upstream `ansible/group_vars/all/<service>.yml`, byte-identical.
 - **`002-images-kolla.yml`** — the kolla image catalogue (`<service>_image` /
   `<service>_tag`), a **superset across all supported releases**; shape only, tag
   values come from the build's `versions.yml` and the release manifests.
