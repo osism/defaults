@@ -1,5 +1,5 @@
 ---
-enable_prometheus: "no"
+enable_prometheus: false
 
 ############
 # Prometheus
@@ -13,15 +13,17 @@ enable_prometheus_cadvisor: "{{ enable_prometheus | bool }}"
 enable_prometheus_fluentd_integration: "{{ enable_prometheus | bool and enable_fluentd | bool }}"
 enable_prometheus_alertmanager: "{{ enable_prometheus | bool }}"
 enable_prometheus_alertmanager_external: "{{ enable_prometheus_alertmanager | bool }}"
-enable_prometheus_ceph_mgr_exporter: "no"
+enable_prometheus_ceph_mgr_exporter: false
 enable_prometheus_openstack_exporter: "{{ enable_prometheus | bool }}"
-enable_prometheus_openstack_exporter_external: "no"
+enable_prometheus_openstack_exporter_external: false
 enable_prometheus_elasticsearch_exporter: "{{ enable_prometheus | bool and enable_opensearch | bool }}"
 enable_prometheus_blackbox_exporter: "{{ enable_prometheus | bool }}"
 enable_prometheus_rabbitmq_exporter: "{{ enable_prometheus | bool and enable_rabbitmq | bool }}"
 enable_prometheus_libvirt_exporter: "{{ enable_prometheus | bool and enable_nova | bool and nova_compute_virt_type in ['kvm', 'qemu'] }}"
 enable_prometheus_etcd_integration: "{{ enable_prometheus | bool and enable_etcd | bool }}"
 enable_prometheus_proxysql_exporter: "{{ enable_prometheus | bool and enable_proxysql | bool }}"
+enable_prometheus_valkey_exporter: "{{ enable_prometheus | bool and enable_valkey | bool }}"
+enable_prometheus_openstack_network_exporter: "{{ enable_prometheus | bool }}"
 
 prometheus_alertmanager_user: "admin"
 prometheus_ceph_exporter_interval: "{{ prometheus_scrape_interval }}"
@@ -56,6 +58,7 @@ prometheus_fluentd_integration_port: "24231"
 prometheus_libvirt_exporter_port: "9177"
 prometheus_etcd_integration_port: "{{ etcd_client_port }}"
 proxysql_prometheus_exporter_port: "6070"
+prometheus_valkey_exporter_port: "9121"
 
 # Prometheus alertmanager ports
 prometheus_alertmanager_internal_fqdn: "{{ kolla_internal_fqdn }}"
@@ -64,7 +67,12 @@ prometheus_alertmanager_internal_endpoint: "{{ prometheus_alertmanager_internal_
 prometheus_alertmanager_public_endpoint: "{{ prometheus_alertmanager_external_fqdn | kolla_url(public_protocol, prometheus_alertmanager_public_port) }}"
 prometheus_alertmanager_port: "9093"
 prometheus_alertmanager_cluster_port: "9094"
-prometheus_alertmanager_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else prometheus_alertmanager_port }}"
+prometheus_alertmanager_public_port: >-
+  {{
+    haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool
+    else prometheus_alertmanager_port
+  }}
+
 prometheus_alertmanager_listen_port: "{{ prometheus_alertmanager_port }}"
 
 # Prometheus openstack-exporter ports
@@ -73,6 +81,9 @@ prometheus_elasticsearch_exporter_port: "9108"
 
 # Prometheus blackbox-exporter ports
 prometheus_blackbox_exporter_port: "9115"
+
+# Prometheus network exporter ports
+prometheus_openstack_network_exporter_port: "1981"
 
 # Prometheus instance label to use for metrics
 prometheus_instance_label:

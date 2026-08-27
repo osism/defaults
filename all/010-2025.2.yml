@@ -1,0 +1,48 @@
+---
+# generated-by: sync-mirror
+# Self-retiring backward-compat layer for release 2025.2.
+#
+# Upstream group_vars/all keys that a newer supported release dropped but
+# that release 2025.2 still defines. Loads between the 001-* mirror and
+# 099 (OSISM opinions). Values are re-serialized, not byte-copied:
+# verbatim is enforced on the 001 layer only. No OSISM edits belong here.
+#
+# Remove this file when 2025.2 leaves the supported release range.
+# Source: openstack/kolla-ansible ansible/group_vars/all, at the pinned
+# commit for each supported release in this run:
+#   2024.1: 72d6b6ac6ad4dbc2564ccc4472069a65a3e50111
+#   2024.2: e3f40c8cbdc0a4a59699d11cb2bcca0d797b0ac3
+#   2025.1: 815530a444814235fbcc1175ff11baa90df3a49a
+#   2025.2: 6112487ba772f31a16051016f1247a0ab754aefe
+#   2026.1: 6e12d225082ab0ff2273d61febbdd8fb2bfa6e22
+containerd_configure_for_zun: "no"
+containerd_grpc_gid: 42463
+distro_python_version: "3"
+docker_configure_for_zun: "no"
+docker_zun_config: {}
+docker_zun_options: "-H tcp://{{ api_interface_address | put_address_in_context('url') }}:2375"
+enable_horizon_zun: "{{ enable_zun | bool }}"
+enable_influxdb: "{{ enable_cloudkitty | bool and cloudkitty_storage_backend == 'influxdb' }}"
+enable_kuryr: "no"
+enable_telegraf: "no"
+enable_zun: "no"
+glance_tls_proxy_stats_port: "9293"
+influxdb_address: "{{ kolla_internal_fqdn }}"
+influxdb_datadir_volume: "influxdb"
+influxdb_http_port: "8086"
+influxdb_internal_endpoint: "{{ kolla_internal_fqdn | kolla_url(internal_protocol, influxdb_http_port) }}"
+kuryr_port: "23750"
+telegraf_enable_docker_input: "no"
+zun_api_listen_port: "{{ zun_api_port }}"
+zun_api_port: "9517"
+zun_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else zun_api_port }}"
+zun_cni_daemon_port: "9036"
+zun_configure_for_cinder_ceph: "no"
+zun_external_fqdn: "{{ kolla_external_fqdn }}"
+zun_internal_base_endpoint: "{{ zun_internal_fqdn | kolla_url(internal_protocol, zun_api_port) }}"
+zun_internal_fqdn: "{{ kolla_internal_fqdn }}"
+zun_public_base_endpoint: "{{ zun_external_fqdn | kolla_url(public_protocol, zun_api_public_port) }}"
+zun_wsproxy_external_fqdn: "{{ kolla_external_fqdn }}"
+zun_wsproxy_internal_fqdn: "{{ kolla_internal_fqdn }}"
+zun_wsproxy_port: "6784"
+zun_wsproxy_protocol: "{{ 'wss' if kolla_enable_tls_external | bool else 'ws' }}"
