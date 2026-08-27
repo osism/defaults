@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20260827.0] - 2026-08-27
+
+### Changed
+- Mirror upstream kolla-ansible group_vars per service instead of one monolithic file, and document the new mirror layer (osism/defaults#300)
+
+### Fixed
+- Default `cilium_bgp` to false so MetalLB load balancer pools are deployed by default (osism/defaults#299)
+- Fix OVN SB relay port calculation for relay counts above 9 (osism/defaults#300)
+
 ## [v0.20260712.0] - 2026-07-12
 
 ### Removed
