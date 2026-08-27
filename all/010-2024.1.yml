@@ -14,6 +14,7 @@
 #   2024.2: e3f40c8cbdc0a4a59699d11cb2bcca0d797b0ac3
 #   2025.1: 815530a444814235fbcc1175ff11baa90df3a49a
 #   2025.2: 6112487ba772f31a16051016f1247a0ab754aefe
+#   2026.1: 6e12d225082ab0ff2273d61febbdd8fb2bfa6e22
 distro_python_version_map:
   centos: "3.9"
   debian: "3.11"

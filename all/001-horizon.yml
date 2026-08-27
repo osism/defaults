@@ -15,7 +15,6 @@ enable_horizon_octavia: "{{ enable_octavia | bool }}"
 enable_horizon_tacker: "{{ enable_tacker | bool }}"
 enable_horizon_trove: "{{ enable_trove | bool }}"
 enable_horizon_watcher: "{{ enable_watcher | bool }}"
-enable_horizon_zun: "{{ enable_zun | bool }}"
 
 #######################
 # Horizon options
@@ -37,6 +36,12 @@ enable_nova_horizon_policy_file: "{{ enable_nova }}"
 
 # TLS
 horizon_enable_tls_backend: "{{ kolla_enable_tls_backend }}"
+
+# Cache
+horizon_session_cache_backend: >-
+  {{ 'valkey' if enable_valkey | bool
+      else 'memcached' if enable_memcached | bool
+      else 'disabled' }}
 
 # Ports
 horizon_internal_fqdn: "{{ kolla_internal_fqdn }}"
