@@ -1,14 +1,19 @@
 ---
-# Self-retiring backward-compat layer for release 2025.1 (parent spec D8).
+# generated-by: sync-mirror
+# Self-retiring backward-compat layer for release 2025.1.
 #
-# A verbatim copy of upstream kolla-ansible's group_vars/all keys that upstream
-# dropped by 2025.2 but that release 2025.1 still defines. OSISM supports 2025.1,
-# so these keys must stay in the enforced union. This file loads between 001
-# (the 2025.2 verbatim mirror) and 099 (OSISM opinions), extending the mirror
-# for the older release without polluting it. No OSISM edits belong here.
+# Upstream group_vars/all keys that a newer supported release dropped but
+# that release 2025.1 still defines. Loads between the 001-* mirror and
+# 099 (OSISM opinions). Values are re-serialized, not byte-copied:
+# verbatim is enforced on the 001 layer only. No OSISM edits belong here.
 #
 # Remove this file when 2025.1 leaves the supported release range.
-# Source: openstack/kolla-ansible ansible/group_vars/all.yml @ stable/2025.1
+# Source: openstack/kolla-ansible ansible/group_vars/all, at the pinned
+# commit for each supported release in this run:
+#   2024.1: 72d6b6ac6ad4dbc2564ccc4472069a65a3e50111
+#   2024.2: e3f40c8cbdc0a4a59699d11cb2bcca0d797b0ac3
+#   2025.1: 815530a444814235fbcc1175ff11baa90df3a49a
+#   2025.2: 6112487ba772f31a16051016f1247a0ab754aefe
 cinder_backend_vmware_vstorage_object: "no"
 cinder_backend_vmwarevc_vmdk: "no"
 enable_horizon_venus: "{{ enable_venus | bool }}"
@@ -26,8 +31,8 @@ mariadb_clustercheck_port: "4569"
 neutron_legacy_iptables: "no"
 neutron_tls_proxy_stats_port: "9697"
 run_default_subdirectories:
-  - '/run/netns'
-  - '/run/lock/nova'
+  - "/run/netns"
+  - "/run/lock/nova"
   - "/run/libvirt"
   - "/run/nova"
   - "/run/openvswitch"
