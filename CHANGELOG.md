@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20260909.0] - 2026-09-09
+
+### Changed
+- Regenerate the 010-<release>.yml backward-compat layers using the sync-mirror generator instead of hand-written files, with no key or value changes (osism/defaults#302)
+- Bump the default OpenStack release to 2026.1 and re-sync the kolla mirror layer, updating cinder backend definitions, HAProxy SSL cipher settings, RabbitMQ prefetch count, and other upstream defaults (osism/defaults#303)
+
+### Fixed
+- Use the shared httpd image for the letsencrypt webserver from OpenStack 2026.1 on, since kolla removed the dedicated letsencrypt-webserver image in that release (osism/defaults#305)
+
+### Removed
+- Kuryr, telegraf, and influxdb service support dropped along with zun, following their removal upstream in OpenStack 2026.1 (osism/defaults#303)
+
 ## [v0.20260827.0] - 2026-08-27
 
 ### Changed
