@@ -252,6 +252,21 @@ _openstack_auth_current:
   password: "{{ keystone_admin_password }}"
 openstack_auth: "{{ _openstack_auth_legacy if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2'] else _openstack_auth_current }}"
 
+# 2026.1 changed designate_backend_external from the string "no" to boolean
+# false and rewrote its own guard in the same commit: roles/designate/tasks/
+# config.yml went from `designate_backend_external == 'no'` to
+# `not designate_backend_external | bool`. The value is mirrored in 001 for
+# every release, but the roles come from each release's own kolla-ansible
+# image, so on <= 2025.2 the guard still compares against the string and
+# `false == 'no'` is False -- rndc.conf and rndc.key stop being templated for
+# designate-backend-bind9 and designate-worker, leaving designate without
+# bind9's control channel. OSISM enables designate by default and
+# designate_backend defaults to bind9, so this is reachable.
+# The `== 'bind9'` comparisons for the external backend are unaffected by
+# either value. The else branch must track 001-designate.yml.
+# (drop when 2025.2 support ends)
+designate_backend_external: "{{ 'no' if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2'] else false }}"
+
 ##########################################################
 # Bugfixes
 
