@@ -232,6 +232,26 @@ om_enable_rabbitmq_stream_fanout: "{{ om_enable_rabbitmq_quorum_queues | bool an
 # 010-2024.2.yml). 001 mirrors the 2025.2 expression, which this overrides.
 default_container_dimensions: "{{ (default_container_dimensions_el9 if ansible_facts.os_family == 'RedHat' else '{}') if openstack_version in ['2024.1', '2024.2'] else (default_container_dimensions_docker if kolla_container_engine == 'docker' else default_container_dimensions_podman) }}"
 
+# 2026.1 moved the admin credential into a named cloud (openstack_auth_cloud)
+# and reduced openstack_auth to the password alone; its kolla-ansible passes
+# auth: and cloud: together. Releases <= 2025.2 still expect the full
+# credential in openstack_auth, but 001-common.yml mirrors 2026.1 for all of
+# them, so keystone and every service-ks-register call fails there without
+# auth_url. Restore the pre-2026.1 value below 2026.1 and leave 2026.1 alone.
+# Both branches are plain variable references, like default_container_dimensions
+# above; _openstack_auth_current must track 001-common.yml.
+# (drop the whole block when 2025.2 support ends)
+_openstack_auth_legacy:
+  auth_url: "{{ keystone_internal_url }}"
+  username: "{{ keystone_admin_user }}"
+  password: "{{ keystone_admin_password }}"
+  project_name: "{{ keystone_admin_project }}"
+  domain_name: "default"
+  user_domain_name: "default"
+_openstack_auth_current:
+  password: "{{ keystone_admin_password }}"
+openstack_auth: "{{ _openstack_auth_legacy if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2'] else _openstack_auth_current }}"
+
 ##########################################################
 # Bugfixes
 
