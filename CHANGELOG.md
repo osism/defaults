@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20260911.0] - 2026-09-11
+
+### Fixed
+- Restore full openstack_auth credentials for releases below 2026.1 after mirror re-sync left them password-only (osism/defaults#307)
+
 ## [v0.20260909.0] - 2026-09-09
 
 ### Changed
