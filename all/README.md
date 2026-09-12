@@ -84,9 +84,11 @@ overlays above.
 
 ## Where a variable goes
 
-One shared `defaults` tag builds **every** supported release (currently
-2024.1–2025.2), so placement is by *what the variable is*, not by which release
-ships it:
+One shared `defaults` tag builds **every** supported release — that range is
+derived rather than declared, so read it from `osism/release`'s
+`latest/openstack-*.yml` (see *Mirror target* above) instead of from here.
+Placement is therefore by *what the variable is*, not by which release ships
+it:
 
 - **Override an upstream value, or add an OSISM-invented variable** → the matching
   `099-*` domain file (kolla values in `099-kolla.yml`). Never edit `001`.
@@ -101,6 +103,32 @@ ships it:
 - **A new kolla image** → `002-images-kolla.yml`, following the `<service>_image` /
   `<service>_tag` pattern (shape only; the tag *values* come from the release
   manifests, never from here).
+
+### Gating a non-scalar value
+
+The gates above are scalars, which is most of them. A mapping or a list works
+the same way, but **put each branch in its own helper variable** rather than
+inlining a dict literal — it keeps the expression readable and keeps values out
+of Jinja braces. `openstack_auth` in `099-kolla.yml` is the worked example:
+
+```yaml
+_openstack_auth_legacy:
+  auth_url: "{{ keystone_internal_url }}"
+  username: "{{ keystone_admin_user }}"
+  password: "{{ keystone_admin_password }}"
+  project_name: "{{ keystone_admin_project }}"
+  domain_name: "default"
+  user_domain_name: "default"
+_openstack_auth_current:
+  password: "{{ keystone_admin_password }}"
+openstack_auth: "{{ _openstack_auth_legacy if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2'] else _openstack_auth_current }}"
+```
+
+The `else` branch must track the `001` value byte for byte, so the gate is a
+no-op on the target release; say so in a comment, because nothing enforces it.
+Label the block with its retire trigger, as *Backward compatibility* requires.
+Note `sync-mirror`'s `--retain` cannot verify a non-scalar gate — it parses
+only quoted scalar literals, so such a key takes `--retain-unverified`.
 
 **The drift allowlist (`osism/release`) is never a home for a `group_var`.** OSISM
 carries the *full* upstream `group_vars` union — a var for a service OSISM does not
@@ -120,6 +148,29 @@ to keep older releases correct, and find these by **comparing the value across
 releases**, not by trusting the detector. (Example: 2025.2 hardcoded
 `mariadb_loadbalancer: proxysql`; `099-kolla.yml` restores the
 `enable_proxysql`-conditional form so 2024.x keeps HAProxy.)
+
+### The roles are not shared, only the values are
+
+This layer is one tree for every supported release, but each release's **roles
+come from its own kolla-ansible image**. When upstream changes a value *and*
+the code that reads it in the same commit, mirroring the value alone splits the
+pair — the new value meets the old consumer. Two shapes, both from the 2026.1
+re-sync:
+
+- **The meaning moved.** `openstack_auth` lost five of six keys because 2026.1
+  reads them from a `clouds.yaml` older releases do not have (osism/defaults#307).
+- **The *type* changed, truth value preserved.** `designate_backend_external`
+  went `"no"` → `false`; the older role compares `== 'no'`, and
+  `false == 'no'` is `False` (osism/defaults#309).
+
+The second survives the checks that catch the first, because both values are
+`false` under `| bool` — note the bare string `"no"` is *truthy*; it is the
+filter that makes them agree. So: **a notation change (`"yes"`/`"no"` →
+`true`/`false`) is inert only if every consumer's behaviour is preserved.**
+Passing through `| bool` is the usual way that holds; a literal comparison is
+the usual way it does not. Before accepting one, search the older releases'
+roles for a comparison against the key and evaluate it against *both* values —
+most will not invert, which is what makes the one that does easy to miss.
 
 ## Defaults here vs the operator's `configuration.yml`
 
@@ -154,6 +205,38 @@ python-osism) must resolve them the way the deployment does:
   "var=enable_proxysql"`), or design the consumer so it does not need the value.
   Re-implementing a gate expression in the consumer is forbidden — it rots at the
   next release, exactly like duplicating it into cfg-cookiecutter.
+
+### Resolving one by hand needs more than that command
+
+An ad-hoc run loads `group_vars/` but none of the play context, and each
+missing piece fails differently:
+
+| missing | what you get |
+|---|---|
+| the kolla filter plugins | `FAILED! … Could not load "kolla_url"` |
+| a vault-held secret | `"<name>": "VARIABLE IS NOT DEFINED!"` — **reads as "not set" for a key that is set** |
+| a site input (`kolla_internal_fqdn`, …) | `"keystone_internal_url": "http://:5000"` — **silent**, a malformed value |
+
+So supply all three, from inside the `kolla-ansible` container on the manager:
+
+    ANSIBLE_FILTER_PLUGINS=/ansible/filter_plugins \
+      ansible -i inventory/hosts.yml <host> -m debug -a "var=openstack_auth" \
+      -e keystone_admin_password=STUB \
+      -e kolla_internal_fqdn=api.example.test -e kolla_internal_vip_address=10.0.0.1 \
+      -e kolla_external_fqdn=api.example.test -e kolla_external_vip_address=10.0.0.1
+
+Three things to keep in mind about the result:
+
+- **It is synthetic.** Every `-e` replaces a real input, so this answers "is the
+  gate shaped correctly", not "what endpoint is this cluster using".
+- **`NOT DEFINED` is ambiguous.** A key that is undefined and a key whose
+  template hits something undefined print the same thing. To tell them apart
+  read the raw definition — `ansible-inventory --host` returns it as-defined,
+  which is exactly what makes it useless for resolution and right for this.
+- **It proves delivery, not consumption.** `om_rabbitmq_qos_prefetch_count`
+  resolves to `50` on every release and, under OSISM's default profile, reaches
+  no config file at all. To show a value is *used*, find the consuming template
+  or deploy.
 
 ## File-by-file
 
