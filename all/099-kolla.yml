@@ -158,7 +158,7 @@ prometheus_node_exporter_cmdline_extras: "--collector.filesystem.mount-points-ex
 
 rabbitmq_datadir_volume: "rabbitmq"
 
-enable_kolla_operations: "yes"
+enable_kolla_operations: "{{ 'yes' if openstack_version in ['2024.1', '2024.2'] else 'no' }}"
 prometheus_custom_alert_paths: "{{
   (['/operations/prometheus'] if enable_kolla_operations | bool else [])
   +
