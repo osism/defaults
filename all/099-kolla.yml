@@ -110,7 +110,7 @@ enable_ironic_prometheus_exporter: false
 keystone_token_provider: "fernet"
 # NOTE: use authorization code in keystone instead of default upstream
 keystone_federation_oidc_response_type: "code"
-keystone_oidc_forward_header: "X-Forwarded-Proto"
+keystone_federation_oidc_forwarded_headers: "X-Forwarded-Proto"
 
 enable_keystone_federation: false         # Must be a boolean
 keystone_enable_federation_openid: false  # Must be a boolean
