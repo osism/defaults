@@ -12,7 +12,6 @@ configuration_directory: /opt/configuration
 ##########################
 # docker
 
-docker_configure_storage_driver: true
 docker_storage_driver: overlay2
 docker_compose_install_type: package
 
@@ -22,10 +21,6 @@ docker_compose_install_type: package
 # apt
 
 apt__enabled: false
-
-# grub
-
-grub_hidden_timeout: false
 
 ##########################
 # timezone
@@ -48,7 +43,6 @@ osism_strategy: linear
 ##########################
 # rsyslog
 
-fluentd_host: "{{ rsyslog_fluentd_host }}"
 rsyslog_fluentd_host: "{{ internal_address }}"
 
 ##########################
@@ -59,7 +53,6 @@ falco_configure_repository: true
 lynis_configure_repository: true
 netdata_configure_repository: true
 osquery_configure_repository: true
-sysdig_configure_repository: true
 trivy_configure_repository: true
 zabbix_agent_configure_repository: true
 
