@@ -30,7 +30,6 @@ k3s_monitoring_controller_manage_port: "10257"
 
 # cilium
 cilium_mode: "native"
-cilium_cli: false
 cilium_hubble: false
 cilium_hubble_ui_lb: true
 # Cilium BGP is opt-in: with cilium_bgp: true the MetalLB pool is not deployed
