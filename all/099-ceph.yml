@@ -2,7 +2,6 @@
 ##########################
 # generic
 
-ceph_share_directory: /share
 configure_firewall: false
 containerized_deployment: true
 dashboard_enabled: false
@@ -40,14 +39,11 @@ ceph_min_compat_client_order:
 
 # NOTE(berendt): We use an adapted Ceph image in which always the UID 64045 is used
 ceph_uid: 64045
-bootstrap_dirs_owner: "64045"
-bootstrap_dirs_group: "64045"
 
 ##########################
 # osd
 
 osd_objectstore: bluestore
-osd_scenario: lvm
 
 ##########################
 # group names
