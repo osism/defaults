@@ -54,8 +54,6 @@ proxysql_version: 3
 
 network_interface: loopback0
 
-certificates_dir: /share/certificates
-
 kolla_base_distro: ubuntu
 kolla_install_type: source
 
@@ -113,7 +111,6 @@ ironic_agent_files_directory: /share/ironic
 enable_ironic_prometheus_exporter: false
 
 # keystone
-keystone_token_provider: "fernet"
 # NOTE: use authorization code in keystone instead of default upstream
 keystone_federation_oidc_response_type: "code"
 keystone_federation_oidc_forwarded_headers: "X-Forwarded-Proto"
