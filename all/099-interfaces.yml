@@ -19,7 +19,6 @@ tunnel_interface: "{{ network_interface }}"
 network_address_family: "ipv4"
 
 api_address_family: "{{ network_address_family }}"
-bifrost_network_address_family: "{{ network_address_family }}"
 dns_address_family: "{{ network_address_family }}"
 migration_address_family: "{{ api_address_family }}"
 octavia_network_address_family: "{{ api_address_family }}"
