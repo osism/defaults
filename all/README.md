@@ -6,8 +6,26 @@ and shipped into OSISM's Ansible container images. They provide the defaults for
 (**ceph-ansible**, **k3s-ansible**) and its own playbooks. For the kolla-ansible
 container this directory **replaces** upstream kolla-ansible's own `group_vars/all`.
 
-These are **defaults only** — an operator's inventory, `host_vars`, and extra-vars
-still override anything set here.
+These are **defaults only**: the maintainers' release-independent defaults.
+Two layers sit above them, in this order:
+
+- **Release values transported by the runner images.** osism/release pins the
+  release-specific values — above all image tags — and the runner images
+  (kolla-ansible, ceph-ansible, osism-ansible, osism-kubernetes) deliver them
+  as `group_vars/all/100-versions-<runner>.yml`. Those files sort after every
+  file here, so they override this whole layer (see the table below).
+- **The operator**, who reliably overrides both through the documented place,
+  `environments/<env>/images.yml` (or the other `environments/<env>/*.yml`
+  extra-vars files), and through inventory `group_vars/<group>` or
+  `host_vars` — vars outside `group_vars/all` win regardless of file name. A
+  file the operator drops directly into `group_vars/all` is not reliable that
+  way: to beat the release it must sort after `100-versions-osism-kubernetes.yml`,
+  the last runner file — a name starting with a letter (e.g. `images.yml`)
+  does; a numeric prefix before `100-` (e.g. `050-*.yml`) does not, and
+  loses to the release, same as this repo's own files. A flat inventory
+  `group_vars/all.yml` is a special case: the reconciler moves it to
+  `group_vars/all/999-all.yml`, which sorts after the runners too and so
+  wins.
 
 ## File layout and precedence
 
@@ -23,6 +41,7 @@ order. Effective precedence, low → high:
 | `010-` | `010-<release>.yml` | Upstream values an *older* release still needs; self-retiring. |
 | `099-` | `099-*.yml` | OSISM's overlay — overrides, invented vars, per domain. |
 | `100-` | `100-ansible.yml` | Must-win Ansible connection vars (e.g. the Python interpreter). |
+| `100-` | `100-overlays-*.yml`, `100-versions-<runner>.yml` | **Not in this repo**: added by the inventory reconciler from the runner images' `/interface/overlays/` and `/interface/versions/`. They sort after every file here, `100-ansible.yml` included. |
 
 One layer sits **higher, in another repo**: for the kolla container,
 `osism/container-image-kolla-ansible` ships per-release
@@ -76,11 +95,23 @@ Two things follow:
   loads later and wins. This keeps OSISM's deltas auditable in one place and
   the `001-*` layer cleanly diffable against upstream.
 
-The kolla container's *effective* `group_vars/all` is assembled from **three**
-sources, all of which the `osism/release` drift detector counts: this repo's
-`all/*.yml`; the container-image build's rendered `versions.yml.j2`
-(`openstack_release`, the `kolla_*_version` pins); and the deprecated per-release
-overlays above.
+The *effective* `group_vars/all` is one inventory. The inventory reconciler
+assembles it, and every runner shares it. It is built from:
+
+- this repo's `all/*.yml`;
+- the deprecated per-release kolla overlays above;
+- each runner image's rendered `versions.yml`: kolla-ansible's
+  (`openstack_release`, the `kolla_*_version` pins), ceph-ansible's,
+  osism-ansible's, which carries the image tags of OSISM's own services
+  (`stepca_tag`, `squid_tag`, `opentelemetry_collector_version`, …) and, in
+  numbered releases, the Ceph pins (`ceph_image_version`,
+  `cephclient_version`, selected by `ceph_version`), and osism-kubernetes'.
+
+The `osism/release` drift detector counts less than that: this repo's
+`all/*.yml`, the kolla overlays, and kolla-ansible's and osism-ansible's
+rendered `versions.yml.j2` templates. It reads ceph-ansible and
+osism-kubernetes only for their playbooks, not their `versions.yml` — a
+value only they transport is outside its drift coverage.
 
 ## Where a variable goes
 
@@ -180,7 +211,7 @@ A value can live in three places; pick by **who owns it and when it is decided**
 |------|------|---------|----------|
 | `all/*` (this repo) | OSISM | re-evaluated every run | `enable_proxysql`, `database_enable_tls_internal`, every release-gated or derived default |
 | operator `environments/kolla/configuration.yml` (cfg-cookiecutter) | the site | frozen at project generation | `kolla_internal_vip_address`, `*_fqdn` — site inputs; plus stable policy toggles (`kolla_enable_tls_internal`) |
-| release manifests (`osism/release`) | the release | per release tag | image tag *values* (`kolla_image_version`, …) |
+| release manifests (`osism/release`) | the release | per release tag | image tag *values*: `kolla_image_version`, …, and the tags of OSISM's own services (`stepca_tag`, `squid_tag`, …), delivered by the runner images' `versions.yml` |
 
 Anything whose correct answer **changes with `openstack_version` or another
 variable** belongs **here**, never in cfg-cookiecutter's `configuration.yml`.
@@ -188,6 +219,25 @@ cfg-cookiecutter runs once, so a value it emits is frozen at generation time and
 cannot follow an upgrade — leaving the deployment on the wrong default when the
 release moves. Keeping it here — evaluated fresh each run, maintained in one place
 — is the whole point of the split.
+
+**A tag set here loses to a transported release value.** Every
+`100-versions-*` file sorts after every file in this directory, so a key the
+release transports cannot be changed from here. The operator changes it in the
+configuration, and the maintainers change it in osism/release. A version value
+belongs here only as an **explicit exception**, for a key the release does not
+transport, or as a **fallback** for a track on which no runner transports the
+key: `ceph_image_version` defaults to `ceph_version` for the latest track,
+where a cephadm deployment runs no ceph-ansible container, and every numbered
+release overrides it.
+
+The stated exceptions are role-managed images, whose tags no release value
+overrides:
+
+- kepler (osism/issues#1403), Renovate-tracked in its role;
+- httpd and httpd_data, rolling by design;
+- homer and nexus, which are pinned in the release but not transported, so
+  their role defaults govern;
+- the zuul CI stack (osism/issues#1397).
 
 ## Consuming these values from code
 
@@ -246,7 +296,8 @@ Three things to keep in mind about the result:
   `<service>_tag`), a **superset across all supported releases**; shape only, tag
   values come from the build's `versions.yml` and the release manifests.
 - **`002-images-ceph.yml`** — the `osism/ceph-daemon` image name, tag wired to
-  `ceph_image_version` (supplied externally).
+  `ceph_image_version`, which defaults to `ceph_version` here; release pins
+  override it.
 - **`003-kolla-overlays.yml`** — near-frozen; the only load-bearing entry is
   `ironic_notification_topics`. Do not add here; prefer `099-kolla.yml` (this file
   could be folded in and deleted).
@@ -259,7 +310,8 @@ Three things to keep in mind about the result:
   user); not kolla.
 - **`099-hosts.yml`** — OSISM playbook control vars.
 - **`099-infrastructure.yml`** — OSISM "infrastructure" services (cephclient,
-  openstackclient, traefik, squid, …).
+  openstackclient, traefik, squid, …). An explicit exception — a version value
+  for a key the release does not transport — goes here.
 - **`099-ceph.yml`** — **ceph-ansible** defaults + the OpenStack pool/keyring
   topology (not a kolla overlay). `ceph_uid: 64045` is load-bearing (it matches the
   `osism/ceph-daemon` image). Prefer the `*_extra` list vars to extend.
