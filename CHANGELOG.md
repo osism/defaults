@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20260928.0] - 2026-09-28
+
+### Fixed
+- Prevent designate's bind9 remote-control channel from being disabled on kolla-ansible 2024.1-2025.2 by keeping designate_backend_external as the string "no" below 2026.1 (osism/defaults#309)
+- Use the upstream keystone_federation_oidc_forwarded_headers variable so the OIDC X-Forwarded-Proto header setting takes effect again (osism/defaults#313)
+- Pin mariadb_backup_target to "active" to avoid backup stalls and ProxySQL handshake failures caused by deriving the value from the load balancer (osism/defaults#314)
+
+### Changed
+- Document the shared-value role trap where mirroring a variable's value alone can split it from the release-specific role that consumes it (osism/defaults#310)
+- Gate enable_kolla_operations to only 2024.1 and 2024.2, since the feature is inert on 2025.1 and later (osism/defaults#311)
+
 ## [v0.20260911.0] - 2026-09-11
 
 ### Fixed
