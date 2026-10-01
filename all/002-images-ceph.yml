@@ -2,6 +2,10 @@
 ##########################
 # project: ceph
 
+# Release pins (osism-ansible's versions.yml) override this. On the
+# latest track the rolling tag named after the Ceph release is used.
+ceph_image_version: "{{ ceph_version }}"
+
 ceph_docker_image: osism/ceph-daemon
 ceph_docker_image_tag: "{{ ceph_image_version }}"
 ceph_docker_tag: "{{ ceph_image_version }}}"
