@@ -308,6 +308,10 @@ Three things to keep in mind about the result:
   ceph-ansible, k3s, playbooks).
 - **`099-generic.yml`** — host/OS-level config (docker, chrony, hardening, operator
   user); not kolla.
+- **`099-ubuntu24-cis.yml`** — OSISM-safe defaults for the UBUNTU24-CIS role
+  (`osism apply ubuntu24-cis`, `enable_cis_hardening`). The block between
+  `# BEGIN level2` and `# END level2` must match the pinned role; osism/release's
+  `ubuntu24_cis_level2` drift check reports the toggles to add or remove.
 - **`099-hosts.yml`** — OSISM playbook control vars.
 - **`099-infrastructure.yml`** — OSISM "infrastructure" services (cephclient,
   openstackclient, traefik, squid, …). An explicit exception — a version value
