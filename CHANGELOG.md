@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20261005.0] - 2026-10-05
+
+### Changed
+- Default `ceph_image_version` to `ceph_version` so cephadm deployments on the latest track resolve an image tag (osism/defaults#317)
+- Pull OSISM-built images from `registry.osism.tech` instead of `quay.io` (osism/defaults#319)
+
+### Fixed
+- Drop silently dead SSH sessions after five minutes by adding server-alive probes to `ssh_args` (osism/defaults#316)
+
 ## [v0.20260928.0] - 2026-09-28
 
 ### Fixed
