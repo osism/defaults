@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20261010.0] - 2026-10-10
+
+### Changed
+- Document that release values transported by the runner images (kolla-ansible, ceph-ansible, osism-ansible, osism-kubernetes) override this repository's maintainer defaults, and clarify where the operator reliably overrides both (osism/defaults#318)
+
+### Fixed
+- Fix the monitoring k3s label variable name so monitoring nodes receive the `monitoring-plane` label (osism/defaults#322)
+- Fix incorrect kolla image tags for httpd-based services (keystone, ironic, Let's Encrypt webserver), add tags for the 2026.1 Prometheus valkey and OpenStack network exporters, and give hacluster-corosync its own tag variable (osism/defaults#323)
+
+### Removed
+- Remove unused kolla defaults `certificates_dir` and `keystone_token_provider` (osism/defaults#322)
+- Remove unused infrastructure helper and client defaults `configure_adminer`, `configure_phpmyadmin`, `configure_rally`, `configure_sshconfig`, `cephclient_cluster_fsid`, and `opentstackclient_groupname` (osism/defaults#322)
+- Remove unused ceph defaults `bootstrap_dirs_owner`, `bootstrap_dirs_group`, `ceph_share_directory`, and `osd_scenario` (osism/defaults#322)
+- Remove unused k3s default `cilium_cli` (osism/defaults#322)
+- Remove unused generic defaults `docker_configure_storage_driver`, `grub_hidden_timeout`, `fluentd_host`, and `sysdig_configure_repository` (osism/defaults#322)
+- Remove unused interfaces default `bifrost_network_address_family` (osism/defaults#322)
+- Remove unused ceph default `ceph_docker_tag` (osism/defaults#322)
+
 ## [v0.20261005.0] - 2026-10-05
 
 ### Changed
