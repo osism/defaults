@@ -176,7 +176,7 @@ cinder_api_tag: "{{ cinder_tag }}"
 
 hacluster_tag: "{{ kolla_hacluster_version|default(kolla_image_version) }}"
 hacluster_corosync_image: "{{ docker_image_url }}hacluster-corosync"
-hacluster_corosync_tag: "{{ hacluster_tag }}"
+hacluster_corosync_tag: "{{ kolla_hacluster_corosync_version|default(hacluster_tag) }}"
 hacluster_pacemaker_image: "{{ docker_image_url }}hacluster-pacemaker"
 hacluster_pacemaker_tag: "{{ hacluster_tag }}"
 hacluster_pacemaker_remote_image: "{{ docker_image_url }}hacluster-pacemaker-remote"
