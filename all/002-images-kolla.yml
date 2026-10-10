@@ -131,7 +131,7 @@ keystone_fernet_tag: "{{ keystone_tag }}"
 keystone_ssh_image: "{{ docker_image_url }}keystone-ssh"
 keystone_ssh_tag: "{{ keystone_tag }}"
 keystone_httpd_image: "{{ docker_image_url }}httpd"
-keystone_httpd_tag: "{{ keystone_tag }}"
+keystone_httpd_tag: "{{ kolla_httpd_version|default(kolla_image_version) }}"
 
 ##############################
 # role: mariadb
@@ -549,6 +549,8 @@ ironic_pxe_image: "{{ docker_image_url }}ironic-pxe"
 ironic_pxe_tag: "{{ ironic_tag }}"
 ironic_pxe_filter_image: "{{ docker_image_url }}ironic-pxe-filter"
 ironic_pxe_filter_tag: "{{ ironic_tag }}"
+ironic_http_image: "{{ docker_image_url }}httpd"
+ironic_http_tag: "{{ kolla_httpd_version|default(kolla_image_version) }}"
 ironic_inspector_image: "{{ docker_image_url }}ironic-inspector"
 ironic_inspector_tag: "{{ kolla_ironic_inspector_version|default(kolla_image_version) }}"
 ironic_dnsmasq_image: "{{ docker_image_url }}dnsmasq"
@@ -606,7 +608,7 @@ skyline_console_image: "{{ docker_image_url }}skyline-console"
 letsencrypt_tag: "{{ kolla_letsencrypt_version|default(kolla_image_version) }}"
 letsencrypt_lego_tag: "{{ kolla_letsencrypt_lego_version|default(letsencrypt_tag) }}"
 letsencrypt_lego_image: "{{ docker_image_url }}letsencrypt-lego"
-letsencrypt_webserver_tag: "{{ kolla_letsencrypt_webserver_version|default(letsencrypt_tag) }}"
+letsencrypt_webserver_tag: "{{ kolla_letsencrypt_webserver_version|default(letsencrypt_tag) if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2'] else kolla_httpd_version|default(letsencrypt_tag) }}"
 letsencrypt_webserver_image: "{{ docker_image_url }}{{ 'letsencrypt-webserver' if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2'] else 'httpd' }}"
 
 ##############################
