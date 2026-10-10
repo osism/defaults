@@ -290,6 +290,10 @@ prometheus_blackbox_exporter_image: "{{ docker_image_url }}prometheus-blackbox-e
 prometheus_blackbox_exporter_tag: "{{ kolla_prometheus_blackbox_exporter_version|default(prometheus_tag) }}"
 prometheus_libvirt_exporter_image: "{{ docker_image_url }}prometheus-libvirt-exporter"
 prometheus_libvirt_exporter_tag: "{{ kolla_prometheus_libvirt_exporter_version|default(prometheus_tag) }}"
+prometheus_openstack_network_exporter_image: "{{ docker_image_url }}prometheus-openstack-network-exporter"
+prometheus_openstack_network_exporter_tag: "{{ kolla_prometheus_openstack_network_exporter_version|default(prometheus_tag) }}"
+prometheus_valkey_exporter_image: "{{ docker_image_url }}prometheus-valkey-exporter"
+prometheus_valkey_exporter_tag: "{{ kolla_prometheus_valkey_exporter_version|default(prometheus_tag) }}"
 
 ##############################
 # role: designate
