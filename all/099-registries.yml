@@ -7,7 +7,6 @@ docker_registry_cephclient: registry.osism.tech
 docker_registry_cgit: registry.osism.tech
 docker_registry_dnsdist: registry.osism.tech
 docker_registry_homer: registry.osism.tech
-docker_registry_memcached: index.docker.io
 docker_registry_netbox: registry.osism.tech
 docker_registry_nexus: registry.osism.tech
 docker_registry_openstackclient: registry.osism.tech
@@ -17,7 +16,6 @@ docker_registry_service: index.docker.io
 docker_registry_squid: index.docker.io
 docker_registry_traefik: index.docker.io
 docker_registry_vault: index.docker.io
-docker_registry_zookeeper: index.docker.io
 docker_registry_zuul: quay.io
 
 dnsmasq_docker_registry: registry.osism.tech
