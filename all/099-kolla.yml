@@ -230,6 +230,18 @@ grafana_custom_dashboards_paths: "{{
   [node_custom_config + '/grafana/dashboards']
 }}"
 
+# Ceilometer's polling agents serve their samples to the Prometheus scrape job
+# on this port when both services are enabled (carried kolla-ansible patch
+# "ceilometer: export polled metrics to Prometheus"). 9181 is the port the
+# Prometheus default port allocations list for an OpenStack Ceilometer
+# exporter; the agents' own default, 9101, is taken by HAProxy's exporter.
+enable_ceilometer_prometheus_exporter: "{{ enable_ceilometer | bool and enable_prometheus | bool }}"
+ceilometer_prometheus_exporter_port: "9181"
+# A host that runs both the central and the compute agent needs one of them
+# on another port, set for that host; the deploy refuses the clash.
+ceilometer_central_prometheus_exporter_port: "{{ ceilometer_prometheus_exporter_port }}"
+ceilometer_compute_prometheus_exporter_port: "{{ ceilometer_prometheus_exporter_port }}"
+
 ##########################################################
 # Backward compability
 
