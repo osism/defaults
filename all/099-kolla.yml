@@ -156,6 +156,13 @@ glance_enable_rolling_upgrade: "yes"
 # k8s volumes should be monitored inside the cluster and not by the node-exporter
 prometheus_node_exporter_cmdline_extras: "--collector.filesystem.mount-points-exclude=^/(dev|proc|run/credentials/.+|sys|var/lib/docker/.+|var/lib/containers/storage/.+|var/lib/kubelet/pods/.+)($|/)"
 
+# prometheus ceph mgr exporter
+# Scrape the prometheus module of every Ceph mgr when OSISM deploys Ceph.
+# Standby mgrs answer with an empty body, so the metrics follow the active one.
+# On 2024.1/2024.2 kolla-operations ships its own "ceph" job instead.
+enable_prometheus_ceph_mgr_exporter: "{{ enable_prometheus | bool and not enable_kolla_operations | bool and groups['ceph-mgr'] | default([]) | length > 0 }}"
+prometheus_ceph_mgr_exporter_endpoints: "{% set endpoints = [] %}{% for host in groups['ceph-mgr'] | default([]) %}{% set _ = endpoints.append('api' | kolla_address(host, override_var='prometheus_target_address') | put_address_in_context('url') ~ ':9283') %}{% endfor %}{{ endpoints }}"
+
 ##########################################################
 # Custom features
 
