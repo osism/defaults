@@ -235,8 +235,6 @@ overrides:
 
 - kepler (osism/issues#1403), Renovate-tracked in its role;
 - httpd and httpd_data, rolling by design;
-- nexus, which is pinned in the release but not transported, so its role
-  default governs;
 - the zuul CI stack (osism/issues#1397).
 
 ## Consuming these values from code
