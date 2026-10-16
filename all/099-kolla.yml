@@ -137,6 +137,13 @@ enable_octavia_jobboard: "no"
 # ceph
 ceph_nova_user: nova
 
+# cinder
+# Run cinder-volume active/active when it has more than one host and RBD is its
+# only backend. Without a cluster each volume belongs to one cinder-volume
+# host and cannot be managed while that host is down. Set "" to opt out, e.g.
+# for a backend configured only in an overlay that does not support A/A.
+cinder_cluster_name: "{{ ceph_cluster if (groups['cinder-volume'] | default([]) | length > 1 and cinder_backend_ceph | bool and cinder_backends | selectattr('enabled', 'equalto', true) | list | length == 0) else '' }}"
+
 # rabbitmq
 rabbitmq_monitoring_user: monitoring
 
