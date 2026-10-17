@@ -29,13 +29,13 @@ tunnel_address_family: "{{ network_address_family }}"
 
 # default interfaces as used in OSISM playbooks + roles
 
-console_interface: "{{ internal_interface|default(loopback0) }}"
-hosts_interface: "{{ internal_interface|default(loopback0) }}"
-management_interface: "{{ internal_interface|default(loopback0) }}"
+console_interface: "{{ internal_interface|default('loopback0') }}"
+hosts_interface: "{{ internal_interface|default('loopback0') }}"
+management_interface: "{{ internal_interface|default('loopback0') }}"
 
 # default interfaces as defined in k3s-ansible
 
-k3s_interface: "{{ internal_interface|default(loopback0) }}"
+k3s_interface: "{{ internal_interface|default('loopback0') }}"
 cilium_iface: "{{ k3s_interface }}"
 kube_vip_iface: "{{ k3s_interface }}"
 
