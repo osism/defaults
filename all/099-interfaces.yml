@@ -40,6 +40,8 @@ cilium_iface: "{{ k3s_interface }}"
 kube_vip_iface: "{{ k3s_interface }}"
 
 # default interfaces as defined in ceph-ansible
+# Read by ceph-ansible only. The cephadm plays never read them; they take
+# monitor_address and radosgw_address instead.
 
 monitor_interface: "{{ network_interface }}"
 radosgw_interface: "{{ network_interface }}"
