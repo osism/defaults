@@ -100,6 +100,10 @@ mariadb_backup_target: active
 
 # horizon
 horizon_backend_database: "yes"
+# Ask for the domain at login and manage identity per domain. The domain
+# tokens this needs do not fit into cookie sessions; horizon_backend_database
+# keeps sessions in the database.
+horizon_keystone_multidomain: "yes"
 # 2025.2 switched Horizon to uWSGI (horizon_wsgi_provider defaults to uwsgi);
 # behind HAProxy the uWSGI backend must listen on the unprivileged 8080, not
 # the privileged 80. Match upstream for 2025.2+, keep the pre-uWSGI value for
