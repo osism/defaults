@@ -140,6 +140,10 @@ enable_octavia_jobboard: "no"
 
 # ceph
 ceph_nova_user: nova
+# When OSISM deploys Ceph, point Gnocchi at the pool it creates
+# (openstack_gnocchi_pool in 099-ceph.yml). An external cluster keeps
+# upstream's pool name.
+ceph_gnocchi_pool_name: "{{ openstack_gnocchi_pool.name if groups['ceph-mgr'] | default([]) | length > 0 else 'gnocchi' }}"
 
 # cinder
 # Run cinder-volume active/active when it has more than one host and RBD is its
