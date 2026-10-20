@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20261019.0] - 2026-10-19
+
+### Added
+- Derive cinder_cluster_name automatically for RBD-only active/active HA when cinder-volume has more than one host (osism/defaults#329)
+- Scrape the Ceph mgr Prometheus exporter automatically when OSISM deploys Ceph (osism/defaults#330)
+- Enable Horizon multi-domain support so users of non-default Keystone domains can log in (osism/defaults#331)
+
+### Changed
+- Stop listing homer among role-managed images now that its tag comes from the release pin (osism/defaults#326)
+- Clarify that the ceph-ansible interface keys monitor_interface and radosgw_interface are read only by ceph-ansible, not the cephadm plays (osism/defaults#332)
+
+### Fixed
+- Quote the loopback0 fallback for console, hosts, management and k3s interfaces so it no longer fails with an undefined-variable error (osism/defaults#332)
+- Point Gnocchi at OSISM's own Ceph pool name instead of upstream's default (osism/defaults#333)
+
+### Removed
+- Drop the unused docker_registry_memcached and docker_registry_zookeeper registry defaults (osism/defaults#325)
+- Remove the nexus defaults nexus_host, nexus_bind_host and docker_registry_nexus as nexus is being removed from OSISM (osism/defaults#327)
+
 ## [v0.20261010.0] - 2026-10-10
 
 ### Changed
