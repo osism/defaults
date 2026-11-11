@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file was started on September 03, 2022. Changes prior to this date are not included in the CHANGELOG.
 
+## [v0.20261111.0] - 2026-11-11
+
+### Added
+- Add defaults for ceilometer's Prometheus exporter (enable flag and port) used by a carried kolla-ansible patch (osism/defaults#328)
+
 ## [v0.20261019.0] - 2026-10-19
 
 ### Added
