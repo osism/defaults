@@ -3,7 +3,7 @@
 # cephclient
 
 cephclient_groupname: cephclient
-cephclient_keyring: "{{ lookup('file', '{{ configuration_directory }}/environments/infrastructure/files/ceph/ceph.client.admin.keyring', rstrip=false) | default('', true) }}"
+cephclient_keyring: "{{ lookup('file', configuration_directory ~ '/environments/infrastructure/files/ceph/ceph.client.admin.keyring', rstrip=false) | default('', true) }}"
 cephclient_keyring_name: client.admin
 
 ##########################
