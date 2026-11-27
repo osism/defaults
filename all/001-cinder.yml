@@ -10,6 +10,7 @@ enable_cinder_backend_pure_fc: false
 enable_cinder_backend_pure_roce: false
 enable_cinder_backend_pure_nvme_tcp: false
 enable_cinder_backend_lightbits: false
+enable_cinder_backend_vast: false
 
 #################################
 # Cinder backends
@@ -27,6 +28,7 @@ cinder_backend_pure_fc_name: "Pure-FlashArray-fc"
 cinder_backend_pure_roce_name: "Pure-FlashArray-roce"
 cinder_backend_pure_nvme_tcp_name: "Pure-FlashArray-nvme-tcp"
 cinder_backend_lightbits_name: "Lightbits-NVMe-TCP"
+cinder_backend_vast_name: "vast-nvme-tcp"
 
 cinder_backends:
   - name: "{{ cinder_backend_lvm_name }}"
@@ -45,6 +47,8 @@ cinder_backends:
     enabled: "{{ enable_cinder_backend_pure_nvme_tcp | bool }}"
   - name: "{{ cinder_backend_lightbits_name }}"
     enabled: "{{ enable_cinder_backend_lightbits | bool }}"
+  - name: "{{ cinder_backend_vast_name }}"
+    enabled: "{{ enable_cinder_backend_vast | bool }}"
 
 cinder_ceph_backends:
   - name: "{{ cinder_backend_ceph_name }}"
