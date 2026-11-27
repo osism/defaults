@@ -312,6 +312,18 @@ designate_backend_external: "{{ 'no' if openstack_version in ['2024.1', '2024.2'
 # (drop when 2026.1 support ends)
 update_keystone_service_user_passwords: "{{ true if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2', '2026.1'] else false }}"
 
+# 2026.2 dropped policy.json from the policy override names kolla-ansible
+# looks for. Below 2026.2 keep it, so an existing policy.json override still
+# applies there. _supported_policy_format_list_current must track
+# 001-common.yml.
+# (drop the whole block when 2026.1 support ends)
+_supported_policy_format_list_legacy:
+  - policy.yaml
+  - policy.json
+_supported_policy_format_list_current:
+  - policy.yaml
+supported_policy_format_list: "{{ _supported_policy_format_list_legacy if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2', '2026.1'] else _supported_policy_format_list_current }}"
+
 ##########################################################
 # Bugfixes
 
