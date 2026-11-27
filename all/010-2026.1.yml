@@ -1,0 +1,22 @@
+---
+# generated-by: sync-mirror
+# Self-retiring backward-compat layer for release 2026.1.
+#
+# Upstream group_vars/all keys that a newer supported release dropped but
+# that release 2026.1 still defines. Loads between the 001-* mirror and
+# 099 (OSISM opinions). Values are re-serialized, not byte-copied:
+# verbatim is enforced on the 001 layer only. No OSISM edits belong here.
+#
+# Remove this file when 2026.1 leaves the supported release range.
+# Source: openstack/kolla-ansible ansible/group_vars/all, at the pinned
+# commit for each supported release in this run:
+#   2024.1: a8be33be844c0b77374a1d4b4d6020553e6672df
+#   2024.2: e3f40c8cbdc0a4a59699d11cb2bcca0d797b0ac3
+#   2025.1: f63247aba05c0337253e553e2b0da748d5c5a220
+#   2025.2: 24f2c562f5f70d70cf16c57b212a9f3724ba9181
+#   2026.1: b4594f465ba60914438aeae1317ff8633617ca87
+#   2026.2: cbce6778e84dd46ba15378810530dd25e6906983
+enable_neutron_infoblox_ipam_agent: false
+neutron_ipam_driver: "internal"
+redis_port: "6379"
+redis_sentinel_port: "26379"
