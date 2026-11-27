@@ -304,6 +304,14 @@ openstack_auth: "{{ _openstack_auth_legacy if openstack_version in ['2024.1', '2
 # (drop when 2025.2 support ends)
 designate_backend_external: "{{ 'no' if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2'] else false }}"
 
+# 2026.2 changed update_keystone_service_user_passwords to false: with true,
+# every deploy or reconfigure writes each service user's password into
+# Keystone again, which revokes that user's tokens. Below 2026.2 keep true, so
+# a password changed in secrets.yml still reaches Keystone the way it always
+# has there. The else branch must track 001-keystone.yml.
+# (drop when 2026.1 support ends)
+update_keystone_service_user_passwords: "{{ true if openstack_version in ['2024.1', '2024.2', '2025.1', '2025.2', '2026.1'] else false }}"
+
 ##########################################################
 # Bugfixes
 
